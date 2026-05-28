@@ -1823,20 +1823,21 @@ export default function SchoolDetailModal({
           {/* ── Footer ── */}
           <div
             className="flex items-center justify-between px-6 py-4 gap-3"
-            style={{ borderTop: "1px solid #1E1E1E", flexShrink: 0 }}
+            style={{ borderTop: "1px solid #1E2A42", flexShrink: 0 }}
           >
             <button
               onClick={onToggleOutreach}
               className="flex-1 py-2.5"
               style={{
                 background: isInOutreachList ? "transparent" : "#F5C518",
-                color: isInOutreachList ? "#F5C518" : "#0A0A0A",
+                color: isInOutreachList ? "#F5C518" : "#090D18",
                 border: isInOutreachList ? "1px solid #F5C518" : "none",
-                borderRadius: "0px",
+                borderRadius: "8px",
                 fontFamily: "Barlow Condensed, sans-serif",
                 fontSize: "13px",
                 letterSpacing: "0.1em",
                 cursor: "pointer",
+                boxShadow: !isInOutreachList ? "0 4px 20px rgba(245,197,24,0.32)" : "none",
               }}
             >
               {isInOutreachList ? "✓ ADDED TO LIST" : "ADD TO LIST"}
@@ -1846,9 +1847,9 @@ export default function SchoolDetailModal({
               className="py-2.5 px-5"
               style={{
                 background: "transparent",
-                color: "#6B6B6B",
-                border: "1px solid #2A2A2A",
-                borderRadius: "0px",
+                color: "#4A5570",
+                border: "1px solid #1E2A42",
+                borderRadius: "8px",
                 fontFamily: "Barlow Condensed, sans-serif",
                 fontSize: "13px",
                 letterSpacing: "0.1em",
