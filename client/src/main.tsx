@@ -8,6 +8,11 @@ import App from "./App";
 import { getLoginUrl } from "./const";
 import "./index.css";
 
+if (import.meta.env.VITE_MOCK === "true") {
+  const { installMockFetch } = await import("./lib/mockFetch");
+  installMockFetch();
+}
+
 const queryClient = new QueryClient();
 
 const redirectToLoginIfUnauthorized = (error: unknown) => {
