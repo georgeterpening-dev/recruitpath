@@ -127,7 +127,7 @@ function SchoolCard({
             <div
               className="absolute top-3 left-3"
               style={{
-                background: "#F5B800",
+                background: "#F5C518",
                 color: "#090D18",
                 fontFamily: "Barlow Condensed, sans-serif",
                 fontSize: "10px",
@@ -482,7 +482,7 @@ export default function Schools() {
                 style={{
                   fontFamily: "Inter, sans-serif",
                   fontSize: "15px",
-                  color: "#94A3B8",
+                  color: "#8B9BB8",
                   lineHeight: 1.65,
                   marginBottom: "28px",
                 }}

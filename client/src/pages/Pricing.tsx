@@ -62,7 +62,7 @@ function TopNav() {
                 key={label}
                 href={label === "ABOUT" ? "/about" : "/how-it-works"}
                 className={`text-xs font-semibold tracking-widest transition-colors duration-150 ${
-                  isActive ? "text-[#F8FAFC]" : "text-[#94A3B8] hover:text-[#F8FAFC]"
+                  isActive ? "text-[#F8FAFC]" : "text-[#8B9BB8] hover:text-[#F8FAFC]"
                 }`}
                 style={{ fontFamily: "Inter, sans-serif" }}
               >
@@ -72,7 +72,7 @@ function TopNav() {
           })}
           <Link href="/pricing">
             <span className={`text-xs font-semibold tracking-widest transition-colors duration-150 cursor-pointer ${
-              location === "/pricing" ? "text-[#F8FAFC]" : "text-[#94A3B8] hover:text-[#F8FAFC]"
+              location === "/pricing" ? "text-[#F8FAFC]" : "text-[#8B9BB8] hover:text-[#F8FAFC]"
             }`} style={{ fontFamily: "Inter, sans-serif" }}>
               PRICING
             </span>
@@ -97,7 +97,7 @@ function TopNav() {
           ) : (
             <>
               <Link href="/signin">
-                <span className="text-xs font-semibold tracking-widest text-[#94A3B8] hover:text-[#F8FAFC] transition-colors duration-150 cursor-pointer" style={{ fontFamily: "Inter, sans-serif" }}>
+                <span className="text-xs font-semibold tracking-widest text-[#8B9BB8] hover:text-[#F8FAFC] transition-colors duration-150 cursor-pointer" style={{ fontFamily: "Inter, sans-serif" }}>
                   SIGN IN
                 </span>
               </Link>
@@ -250,7 +250,7 @@ export default function Pricing() {
           style={{
             fontFamily: "Inter, sans-serif",
             fontSize: "17px",
-            color: "#94A3B8",
+            color: "#8B9BB8",
             maxWidth: "480px",
             margin: "0 auto",
             lineHeight: 1.6,
@@ -566,7 +566,7 @@ export default function Pricing() {
           style={{
             fontFamily: "Inter, sans-serif",
             fontSize: "14px",
-            color: "#94A3B8",
+            color: "#8B9BB8",
             lineHeight: 1.6,
             maxWidth: "480px",
             margin: "32px auto 0",

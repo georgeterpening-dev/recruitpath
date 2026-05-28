@@ -1956,7 +1956,7 @@ export default function SchoolDetailModal({
               <div
                 style={{
                   background: "#0F0F0F",
-                  border: "1px solid #2A2A2A",
+                  border: "1px solid #1E2A42",
                   borderRadius: "8px",
                   padding: "14px 16px",
                   marginBottom: "24px",
@@ -2030,7 +2030,7 @@ export default function SchoolDetailModal({
                   className="flex-1 py-3"
                   style={{
                     background: "#F5C518",
-                    color: "#0A0A0A",
+                    color: "#090D18",
                     border: "none",
                     borderRadius: "8px",
                     fontFamily: "Barlow Condensed, sans-serif",
@@ -2175,7 +2175,7 @@ export default function SchoolDetailModal({
                 className="w-full py-3"
                 style={{
                   background: "#F5C518",
-                  color: "#0A0A0A",
+                  color: "#090D18",
                   border: "none",
                   borderRadius: "8px",
                   fontFamily: "Barlow Condensed, sans-serif",

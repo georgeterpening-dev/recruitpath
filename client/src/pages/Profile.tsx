@@ -538,7 +538,7 @@ function ProfileCardModal({ profileData, activeTab, onTabChange, onClose, onChan
               {profileData.positions && (
                 <span
                   className="inline-block mb-2 px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider"
-                  style={{ background: "#F5C518", color: "#0A0A0A", fontFamily: "Inter, sans-serif" }}
+                  style={{ background: "#F5C518", color: "#090D18", fontFamily: "Inter, sans-serif" }}
                 >
                   {profileData.positions.split(",")[0].trim()}
                 </span>

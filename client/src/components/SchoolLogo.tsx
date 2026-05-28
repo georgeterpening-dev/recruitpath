@@ -112,7 +112,7 @@ export default function SchoolLogo({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#1A1A1A",
+          background: "#181E32",
           border: "1px solid #333333",
           flexShrink: 0,
         }}

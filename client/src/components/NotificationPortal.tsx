@@ -137,7 +137,7 @@ export default function NotificationPortal() {
             />
             <p
               style={{
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 fontSize: "13px",
                 color: "#F8FAFC",
                 lineHeight: 1.5,
@@ -157,10 +157,10 @@ export default function NotificationPortal() {
             <button
               onClick={handleGenerateReply}
               style={{
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 fontSize: "12px",
                 fontWeight: 700,
-                color: "#0A0A0A",
+                color: "#090D18",
                 background: "#F5C518",
                 border: "none",
                 borderRadius: "6px",
@@ -174,7 +174,7 @@ export default function NotificationPortal() {
             <button
               onClick={handleAlreadyReplied}
               style={{
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 fontSize: "12px",
                 color: "#6B6B6B",
                 background: "transparent",

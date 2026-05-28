@@ -386,7 +386,7 @@ Respectfully,
                     fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "11px",
                     letterSpacing: "0.1em",
-                    color: "#94A3B8",
+                    color: "#8B9BB8",
                     padding: "3px 10px",
                     background: "rgba(148,163,184,0.08)",
                     border: "1px solid rgba(148,163,184,0.2)",
@@ -402,7 +402,7 @@ Respectfully,
                     fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "11px",
                     letterSpacing: "0.1em",
-                    color: "#94A3B8",
+                    color: "#8B9BB8",
                     padding: "3px 10px",
                     background: "rgba(148,163,184,0.08)",
                     border: "1px solid rgba(148,163,184,0.2)",
@@ -523,7 +523,7 @@ Respectfully,
                         </div>
                       </div>
                     </div>
-                    <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#94A3B8", lineHeight: 1.6 }}>
+                    <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#8B9BB8", lineHeight: 1.6 }}>
                       {gap.reason}
                     </p>
                   </>
@@ -1353,7 +1353,7 @@ export default function Dashboard() {
           </h1>
 
           {/* Subtitle */}
-          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "16px", color: "#94A3B8", lineHeight: 1.5 }}>
+          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "16px", color: "#8B9BB8", lineHeight: 1.5 }}>
             You have{" "}
             <span style={{ color: "#22C55E", fontWeight: 600 }}>{openWindows}</span>{" "}
             open roster window{openWindows !== 1 ? "s" : ""} at your target schools.

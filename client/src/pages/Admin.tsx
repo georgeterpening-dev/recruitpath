@@ -114,7 +114,7 @@ export default function Admin() {
         <div className="flex items-center gap-4">
           <Link href="/">
             <span
-              className="text-[#F5B800] text-xl cursor-pointer"
+              className="text-[#F5C518] text-xl cursor-pointer"
               style={{ fontFamily: "Barlow Condensed, sans-serif", fontWeight: 800, letterSpacing: "-0.02em" }}
             >
               RECRUITPATH
@@ -127,7 +127,7 @@ export default function Admin() {
             ADMIN
           </span>
         </div>
-        <span className="text-[#94A3B8] text-xs" style={{ fontFamily: "Inter, sans-serif" }}>
+        <span className="text-[#8B9BB8] text-xs" style={{ fontFamily: "Inter, sans-serif" }}>
           admin@recruitpath.com
         </span>
       </div>
@@ -143,8 +143,8 @@ export default function Admin() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="rp-card p-5">
               <div className="flex items-center gap-2 mb-2">
-                <Database size={14} className="text-[#F5B800]" />
-                <span className="text-xs text-[#94A3B8] font-semibold tracking-wider uppercase" style={{ fontFamily: "Inter, sans-serif" }}>Total Coaches</span>
+                <Database size={14} className="text-[#F5C518]" />
+                <span className="text-xs text-[#8B9BB8] font-semibold tracking-wider uppercase" style={{ fontFamily: "Inter, sans-serif" }}>Total Coaches</span>
               </div>
               <div className="font-display text-white" style={{ fontSize: "40px" }}>
                 <CountUpNumber target={MOCK_STATS.total} />
@@ -166,7 +166,7 @@ export default function Admin() {
               </div>
             ))}
           </div>
-          <div className="mt-3 flex items-center gap-2 text-xs text-[#94A3B8]" style={{ fontFamily: "Inter, sans-serif" }}>
+          <div className="mt-3 flex items-center gap-2 text-xs text-[#8B9BB8]" style={{ fontFamily: "Inter, sans-serif" }}>
             <Clock size={12} />
             Last upload: {formatDate(MOCK_STATS.lastUpload)}
           </div>
@@ -185,8 +185,8 @@ export default function Admin() {
             className="mb-4 p-4 rounded-xl text-xs"
             style={{ background: "rgba(245,184,0,0.05)", border: "1px solid rgba(245,184,0,0.15)", fontFamily: "Inter, sans-serif" }}
           >
-            <p className="text-[#F5B800] font-semibold mb-2">Required CSV Columns:</p>
-            <p className="text-[#94A3B8]">{REQUIRED_COLUMNS.join(", ")}</p>
+            <p className="text-[#F5C518] font-semibold mb-2">Required CSV Columns:</p>
+            <p className="text-[#8B9BB8]">{REQUIRED_COLUMNS.join(", ")}</p>
           </div>
 
           {/* Drop zone */}
@@ -209,11 +209,11 @@ export default function Admin() {
               className="hidden"
               onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
             />
-            <Upload size={32} className="mx-auto mb-3 text-[#F5B800]" />
+            <Upload size={32} className="mx-auto mb-3 text-[#F5C518]" />
             <p className="text-[#F8FAFC] text-sm font-medium mb-1" style={{ fontFamily: "Inter, sans-serif" }}>
               {isDragOver ? "Drop your CSV file here" : "Drag & drop a CSV file, or click to browse"}
             </p>
-            <p className="text-[#94A3B8] text-xs" style={{ fontFamily: "Inter, sans-serif" }}>
+            <p className="text-[#8B9BB8] text-xs" style={{ fontFamily: "Inter, sans-serif" }}>
               .csv files only
             </p>
           </div>
@@ -229,17 +229,17 @@ export default function Admin() {
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <FileText size={16} className="text-[#F5B800]" />
+                    <FileText size={16} className="text-[#F5C518]" />
                     <span className="text-sm text-[#F8FAFC] font-medium" style={{ fontFamily: "Inter, sans-serif" }}>
                       {selectedFile.name}
                     </span>
-                    <span className="text-xs text-[#94A3B8]" style={{ fontFamily: "Inter, sans-serif" }}>
+                    <span className="text-xs text-[#8B9BB8]" style={{ fontFamily: "Inter, sans-serif" }}>
                       ({(selectedFile.size / 1024).toFixed(1)} KB)
                     </span>
                   </div>
                   <button
                     onClick={() => { setSelectedFile(null); setPreviewData([]); setPreviewHeaders([]); setUploadResult(null); }}
-                    className="text-[#94A3B8] hover:text-[#EF4444] transition-colors"
+                    className="text-[#8B9BB8] hover:text-[#EF4444] transition-colors"
                   >
                     <X size={16} />
                   </button>
@@ -248,7 +248,7 @@ export default function Admin() {
                 {/* Preview table */}
                 {previewData.length > 0 && (
                   <div className="rp-card overflow-hidden mb-4">
-                    <div className="p-3 text-xs text-[#94A3B8]" style={{ borderBottom: "1px solid #1E293B", fontFamily: "Inter, sans-serif" }}>
+                    <div className="p-3 text-xs text-[#8B9BB8]" style={{ borderBottom: "1px solid #1E293B", fontFamily: "Inter, sans-serif" }}>
                       Preview — first {previewData.length} rows
                     </div>
                     <div className="overflow-x-auto">
@@ -256,7 +256,7 @@ export default function Admin() {
                         <thead>
                           <tr style={{ borderBottom: "1px solid #1E293B" }}>
                             {previewHeaders.map((h) => (
-                              <th key={h} className="text-left px-3 py-2 text-[#F5B800] font-semibold tracking-wider uppercase whitespace-nowrap">
+                              <th key={h} className="text-left px-3 py-2 text-[#F5C518] font-semibold tracking-wider uppercase whitespace-nowrap">
                                 {h}
                               </th>
                             ))}
@@ -266,7 +266,7 @@ export default function Admin() {
                           {previewData.map((row, i) => (
                             <tr key={i} style={{ borderBottom: "1px solid rgba(30,41,59,0.5)" }}>
                               {row.map((cell, j) => (
-                                <td key={j} className="px-3 py-2 text-[#94A3B8] whitespace-nowrap max-w-32 truncate">
+                                <td key={j} className="px-3 py-2 text-[#8B9BB8] whitespace-nowrap max-w-32 truncate">
                                   {cell}
                                 </td>
                               ))}
@@ -322,15 +322,15 @@ export default function Admin() {
                       <div className="grid grid-cols-3 gap-4 mb-4">
                         <div className="text-center p-3 rounded-lg" style={{ background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.2)" }}>
                           <div className="font-display text-[#22C55E] text-3xl">{uploadResult.inserted}</div>
-                          <div className="text-xs text-[#94A3B8] mt-1" style={{ fontFamily: "Inter, sans-serif" }}>Inserted</div>
+                          <div className="text-xs text-[#8B9BB8] mt-1" style={{ fontFamily: "Inter, sans-serif" }}>Inserted</div>
                         </div>
                         <div className="text-center p-3 rounded-lg" style={{ background: "rgba(245,184,0,0.1)", border: "1px solid rgba(245,184,0,0.2)" }}>
-                          <div className="font-display text-[#F5B800] text-3xl">{uploadResult.updated}</div>
-                          <div className="text-xs text-[#94A3B8] mt-1" style={{ fontFamily: "Inter, sans-serif" }}>Updated</div>
+                          <div className="font-display text-[#F5C518] text-3xl">{uploadResult.updated}</div>
+                          <div className="text-xs text-[#8B9BB8] mt-1" style={{ fontFamily: "Inter, sans-serif" }}>Updated</div>
                         </div>
                         <div className="text-center p-3 rounded-lg" style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)" }}>
                           <div className="font-display text-[#EF4444] text-3xl">{uploadResult.skipped}</div>
-                          <div className="text-xs text-[#94A3B8] mt-1" style={{ fontFamily: "Inter, sans-serif" }}>Skipped</div>
+                          <div className="text-xs text-[#8B9BB8] mt-1" style={{ fontFamily: "Inter, sans-serif" }}>Skipped</div>
                         </div>
                       </div>
                       {uploadResult.errors.length > 0 && (
@@ -339,7 +339,7 @@ export default function Admin() {
                             Skipped Rows:
                           </p>
                           {uploadResult.errors.map((err, i) => (
-                            <p key={i} className="text-xs text-[#94A3B8]" style={{ fontFamily: "Inter, sans-serif" }}>
+                            <p key={i} className="text-xs text-[#8B9BB8]" style={{ fontFamily: "Inter, sans-serif" }}>
                               {err}
                             </p>
                           ))}
@@ -374,7 +374,7 @@ export default function Admin() {
           {flaggedRecords.length === 0 ? (
             <div className="rp-card p-8 text-center">
               <Check size={24} className="mx-auto mb-2 text-[#22C55E]" />
-              <p className="text-[#94A3B8] text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
+              <p className="text-[#8B9BB8] text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
                 All records reviewed. No flags pending.
               </p>
             </div>
@@ -396,7 +396,7 @@ export default function Admin() {
                       <p className="text-[#F8FAFC] text-sm font-medium" style={{ fontFamily: "Inter, sans-serif" }}>
                         {record.school} — {record.coach}
                       </p>
-                      <p className="text-[#94A3B8] text-xs mt-0.5" style={{ fontFamily: "Inter, sans-serif" }}>
+                      <p className="text-[#8B9BB8] text-xs mt-0.5" style={{ fontFamily: "Inter, sans-serif" }}>
                         {record.sport} · Flagged {record.flaggedAt}
                       </p>
                       <p className="text-[#EF4444] text-xs mt-1" style={{ fontFamily: "Inter, sans-serif" }}>
