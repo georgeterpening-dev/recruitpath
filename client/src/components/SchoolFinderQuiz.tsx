@@ -555,9 +555,9 @@ export default function SchoolFinderQuiz({ isOpen, onClose, onComplete, initialA
       <button
         onClick={onClose}
         className="absolute top-5 right-5 z-10 w-9 h-9 rounded-full flex items-center justify-center transition-colors"
-        style={{ background: "#181E32", color: "#888888" }}
+        style={{ background: "#181E32", color: "#8B9BB8" }}
         onMouseEnter={e => (e.currentTarget.style.color = "#F5C518")}
-        onMouseLeave={e => (e.currentTarget.style.color = "#888888")}
+        onMouseLeave={e => (e.currentTarget.style.color = "#8B9BB8")}
       >
         <X size={18} />
       </button>
@@ -577,7 +577,7 @@ export default function SchoolFinderQuiz({ isOpen, onClose, onComplete, initialA
                 transition={{ duration: 0.3, ease: "easeOut" }}
               >
                 {/* Step counter */}
-                <p className="text-center mb-4" style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", letterSpacing: "0.15em", color: "#888888" }}>
+                <p className="text-center mb-4" style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", letterSpacing: "0.15em", color: "#8B9BB8" }}>
                   QUESTION {step + 1} OF {QUESTIONS.length}
                 </p>
 
@@ -590,7 +590,7 @@ export default function SchoolFinderQuiz({ isOpen, onClose, onComplete, initialA
                 </h2>
 
                 {/* Subtitle */}
-                <p className="text-center mb-8" style={{ fontFamily: "Inter, sans-serif", fontSize: "15px", color: "#888888" }}>
+                <p className="text-center mb-8" style={{ fontFamily: "Inter, sans-serif", fontSize: "15px", color: "#8B9BB8" }}>
                   {currentQ.subtitle}
                   {currentQ.multi && <span style={{ color: "#F5C518" }}> (select all that apply)</span>}
                 </p>
@@ -625,7 +625,7 @@ export default function SchoolFinderQuiz({ isOpen, onClose, onComplete, initialA
                           className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
                           style={{
                             background: selected ? "#F5C518" : "transparent",
-                            border: selected ? "2px solid #F5C518" : "2px solid #444444",
+                            border: selected ? "2px solid #F5C518" : "2px solid #1E2A42",
                           }}
                         >
                           {selected && <Check size={13} color="#090D18" strokeWidth={3} />}
@@ -634,7 +634,7 @@ export default function SchoolFinderQuiz({ isOpen, onClose, onComplete, initialA
                           <div style={{ fontFamily: "Inter, sans-serif", fontWeight: 700, fontSize: "15px", color: selected ? "#F5C518" : "#F8FAFC" }}>
                             {opt.label}
                           </div>
-                          <div style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#888888", marginTop: "2px" }}>
+                          <div style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#8B9BB8", marginTop: "2px" }}>
                             {opt.desc}
                           </div>
                         </div>
@@ -700,7 +700,7 @@ export default function SchoolFinderQuiz({ isOpen, onClose, onComplete, initialA
                 >
                   YOUR TOP MATCHES
                 </h2>
-                <p className="text-center mb-8" style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#888888" }}>
+                <p className="text-center mb-8" style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#8B9BB8" }}>
                   Based on your answers — sorted by fit score
                 </p>
 
@@ -725,7 +725,7 @@ export default function SchoolFinderQuiz({ isOpen, onClose, onComplete, initialA
                     <div className="mt-3">
                       <a
                         href={getLoginUrl()}
-                        style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#888888", textDecoration: "underline" }}
+                        style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#8B9BB8", textDecoration: "underline" }}
                       >
                         Already have an account? Sign in
                       </a>
@@ -735,7 +735,7 @@ export default function SchoolFinderQuiz({ isOpen, onClose, onComplete, initialA
 
                 {/* School cards */}
                 {schoolsQuery.isLoading ? (
-                  <div className="text-center py-12" style={{ color: "#888888", fontFamily: "Inter, sans-serif" }}>
+                  <div className="text-center py-12" style={{ color: "#8B9BB8", fontFamily: "Inter, sans-serif" }}>
                     Finding your matches...
                   </div>
                 ) : (
@@ -775,7 +775,7 @@ export default function SchoolFinderQuiz({ isOpen, onClose, onComplete, initialA
                                 {school.division}
                               </span>
                             </div>
-                            <div style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#888888", marginTop: "2px" }}>
+                            <div style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#8B9BB8", marginTop: "2px" }}>
                               {[school.conference, school.state as string | null].filter(Boolean).join(" · ")}
                             </div>
                             {/* Tags */}
@@ -785,7 +785,7 @@ export default function SchoolFinderQuiz({ isOpen, onClose, onComplete, initialA
                                   <span
                                     key={tag}
                                     className="px-2 py-0.5 rounded-full text-xs"
-                                    style={{ background: "#1E2A42", color: "#888888", fontFamily: "Inter, sans-serif" }}
+                                    style={{ background: "#1E2A42", color: "#8B9BB8", fontFamily: "Inter, sans-serif" }}
                                   >
                                     {tag}
                                   </span>
@@ -839,9 +839,9 @@ export default function SchoolFinderQuiz({ isOpen, onClose, onComplete, initialA
                   <button
                     onClick={restart}
                     className="flex items-center gap-2 text-sm"
-                    style={{ fontFamily: "Inter, sans-serif", color: "#888888", background: "none", border: "none", cursor: "pointer" }}
+                    style={{ fontFamily: "Inter, sans-serif", color: "#8B9BB8", background: "none", border: "none", cursor: "pointer" }}
                     onMouseEnter={e => (e.currentTarget.style.color = "#F5C518")}
-                    onMouseLeave={e => (e.currentTarget.style.color = "#888888")}
+                    onMouseLeave={e => (e.currentTarget.style.color = "#8B9BB8")}
                   >
                     <RotateCcw size={14} />
                     START OVER

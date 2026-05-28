@@ -1544,10 +1544,10 @@ export default function SchoolDetailModal({
                         rows={12}
                         style={{
                           width: "100%",
-                          background: "#0D0D0D",
-                          border: "1px solid #2A2A2A",
-                          borderRadius: "4px",
-                          color: "#F8FAFC",
+                          background: "#0C1020",
+                          border: "1px solid #1E2A42",
+                          borderRadius: "10px",
+                          color: "#F0F4FF",
                           fontFamily: "Inter, sans-serif",
                           fontSize: "13px",
                           lineHeight: 1.65,
@@ -1573,7 +1573,7 @@ export default function SchoolDetailModal({
                             background: "transparent",
                             color: emailCopiedDraft ? "#22C55E" : "#8B9BB8",
                             border: `1px solid ${emailCopiedDraft ? "#22C55E" : "#1E2A42"}`,
-                            borderRadius: "0px",
+                            borderRadius: "8px",
                             fontFamily: "Barlow Condensed, sans-serif",
                             fontSize: "12px",
                             letterSpacing: "0.1em",
@@ -1592,9 +1592,9 @@ export default function SchoolDetailModal({
                           className="flex items-center gap-1.5 px-4 py-2.5"
                           style={{
                             background: "transparent",
-                            color: generateEmailMutation.isPending ? "#6B6B6B" : "#8B9BB8",
-                            border: "1px solid #2A2A2A",
-                            borderRadius: "0px",
+                            color: generateEmailMutation.isPending ? "#4A5570" : "#8B9BB8",
+                            border: "1px solid #1E2A42",
+                            borderRadius: "8px",
                             fontFamily: "Barlow Condensed, sans-serif",
                             fontSize: "12px",
                             letterSpacing: "0.1em",
@@ -1616,14 +1616,15 @@ export default function SchoolDetailModal({
                           className="flex items-center gap-1.5 px-4 py-2.5 ml-auto"
                           style={{
                             background: emailSent ? "#22C55E" : sending ? "#1E2A42" : "#F5C518",
-                            color: emailSent ? "#FFFFFF" : sending ? "#6B6B6B" : "#0A0A0A",
+                            color: emailSent ? "#F0F4FF" : sending ? "#4A5570" : "#090D18",
                             border: "none",
-                            borderRadius: "0px",
+                            borderRadius: "8px",
                             fontFamily: "Barlow Condensed, sans-serif",
                             fontSize: "12px",
                             letterSpacing: "0.1em",
                             cursor: sending || emailSent ? "not-allowed" : "pointer",
                             transition: "all 200ms ease",
+                            boxShadow: !sending && !emailSent ? "0 4px 20px rgba(245,197,24,0.32)" : "none",
                           }}
                         >
                           {emailSent ? (
@@ -1646,10 +1647,10 @@ export default function SchoolDetailModal({
                   {/* Section label */}
                   <p
                     style={{
-                      fontFamily: "Inter, sans-serif",
+                      fontFamily: "Barlow Condensed, sans-serif",
                       fontSize: "11px",
-                      letterSpacing: "0.12em",
-                      color: "#6B6B6B",
+                      letterSpacing: "0.15em",
+                      color: "#8B9BB8",
                       textTransform: "uppercase",
                       marginBottom: "16px",
                     }}
@@ -1660,8 +1661,8 @@ export default function SchoolDetailModal({
                   {/* Link 1 — Recruiting Questionnaire (primary, larger card) */}
                   <div
                     style={{
-                      background: schoolLinks?.recruitingQuestionnaireUrl ? "#181E32" : "#141414",
-                      border: "1px solid #2A2A2A",
+                      background: schoolLinks?.recruitingQuestionnaireUrl ? "#181E32" : "#131829",
+                      border: "1px solid #1E2A42",
                       borderRadius: "10px",
                       padding: "20px",
                       opacity: schoolLinks?.recruitingQuestionnaireUrl ? 1 : 0.5,
@@ -1684,10 +1685,10 @@ export default function SchoolDetailModal({
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p
                         style={{
-                          fontFamily: "Inter, sans-serif",
+                          fontFamily: "Barlow Condensed, sans-serif",
                           fontSize: "11px",
-                          letterSpacing: "0.1em",
-                          color: "#6B6B6B",
+                          letterSpacing: "0.15em",
+                          color: "#8B9BB8",
                           textTransform: "uppercase",
                           marginBottom: "4px",
                         }}
@@ -1698,7 +1699,7 @@ export default function SchoolDetailModal({
                         style={{
                           fontFamily: "Inter, sans-serif",
                           fontSize: "15px",
-                          color: schoolLinks?.recruitingQuestionnaireUrl ? "#FFFFFF" : "#4A4A4A",
+                          color: schoolLinks?.recruitingQuestionnaireUrl ? "#F0F4FF" : "#4A5570",
                           fontWeight: 500,
                         }}
                       >
@@ -1719,9 +1720,9 @@ export default function SchoolDetailModal({
                           gap: "6px",
                           padding: "10px 18px",
                           background: "#F5C518",
-                          color: "#0A0A0A",
+                          color: "#090D18",
                           border: "none",
-                          borderRadius: "6px",
+                          borderRadius: "8px",
                           fontFamily: "Barlow Condensed, sans-serif",
                           fontSize: "14px",
                           letterSpacing: "0.1em",
@@ -1729,6 +1730,7 @@ export default function SchoolDetailModal({
                           textDecoration: "none",
                           flexShrink: 0,
                           fontWeight: 700,
+                          boxShadow: "0 4px 20px rgba(245,197,24,0.32)",
                         }}
                       >
                         OPEN <ExternalLink size={12} />
@@ -1739,8 +1741,8 @@ export default function SchoolDetailModal({
                   {/* Link 2 — Athletics Website */}
                   <div
                     style={{
-                      background: schoolLinks?.athleticsWebsiteUrl ? "#181E32" : "#141414",
-                      border: "1px solid #2A2A2A",
+                      background: schoolLinks?.athleticsWebsiteUrl ? "#181E32" : "#131829",
+                      border: "1px solid #1E2A42",
                       borderRadius: "10px",
                       padding: "16px 20px",
                       opacity: schoolLinks?.athleticsWebsiteUrl ? 1 : 0.5,
@@ -1763,10 +1765,10 @@ export default function SchoolDetailModal({
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p
                         style={{
-                          fontFamily: "Inter, sans-serif",
+                          fontFamily: "Barlow Condensed, sans-serif",
                           fontSize: "11px",
-                          letterSpacing: "0.1em",
-                          color: "#6B6B6B",
+                          letterSpacing: "0.15em",
+                          color: "#8B9BB8",
                           textTransform: "uppercase",
                           marginBottom: "4px",
                         }}
@@ -1777,7 +1779,7 @@ export default function SchoolDetailModal({
                         style={{
                           fontFamily: "Inter, sans-serif",
                           fontSize: "14px",
-                          color: schoolLinks?.athleticsWebsiteUrl ? "#FFFFFF" : "#4A4A4A",
+                          color: schoolLinks?.athleticsWebsiteUrl ? "#F0F4FF" : "#4A5570",
                           fontWeight: 500,
                         }}
                       >
@@ -1798,9 +1800,9 @@ export default function SchoolDetailModal({
                           gap: "6px",
                           padding: "9px 16px",
                           background: "transparent",
-                          color: "#FFFFFF",
-                          border: "1px solid #FFFFFF",
-                          borderRadius: "6px",
+                          color: "#F0F4FF",
+                          border: "1px solid #1E2A42",
+                          borderRadius: "8px",
                           fontFamily: "Barlow Condensed, sans-serif",
                           fontSize: "13px",
                           letterSpacing: "0.1em",
