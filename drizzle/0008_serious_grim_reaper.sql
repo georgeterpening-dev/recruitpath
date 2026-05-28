@@ -1,0 +1,1 @@
+ALTER TABLE `schools` ADD `sortOrder` int DEFAULT 999 NOT NULL;

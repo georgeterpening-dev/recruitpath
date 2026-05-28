@@ -1,0 +1,125 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1771891531645,
+      "tag": "0000_silly_boomer",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1771905557238,
+      "tag": "0001_worthless_the_initiative",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1773013722358,
+      "tag": "0002_curved_avengers",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1773026295875,
+      "tag": "0003_secret_fallen_one",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1773174457998,
+      "tag": "0004_redundant_praxagora",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1774213678622,
+      "tag": "0005_slippery_mole_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1774298207496,
+      "tag": "0006_panoramic_nekra",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1774497755991,
+      "tag": "0007_secret_pixie",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1774499799565,
+      "tag": "0008_serious_grim_reaper",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1774906769483,
+      "tag": "0009_flaky_bucky",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1774920219529,
+      "tag": "0010_serious_secret_warriors",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "5",
+      "when": 1774925179855,
+      "tag": "0011_simple_earthquake",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "5",
+      "when": 1774926950189,
+      "tag": "0012_fair_zemo",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "5",
+      "when": 1774986821901,
+      "tag": "0013_lowly_speedball",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "5",
+      "when": 1775005313033,
+      "tag": "0014_public_callisto",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "5",
+      "when": 1775092357257,
+      "tag": "0015_smart_morlocks",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "5",
+      "when": 1776035830336,
+      "tag": "0016_steep_captain_midlands",
+      "breakpoints": true
+    }
+  ]
+}

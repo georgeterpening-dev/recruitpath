@@ -1,0 +1,1 @@
+ALTER TABLE `schools` ADD `isTestSchool` boolean DEFAULT false NOT NULL;
