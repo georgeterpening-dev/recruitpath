@@ -56,18 +56,18 @@ const sections = [
 
 export default function Privacy() {
   return (
-    <div style={{ background: "#090D18", minHeight: "100vh", color: "#E2E8F0", paddingBottom: "120px" }}>
+    <div style={{ background: "#0A0A0A", minHeight: "100vh", color: "#E2E8F0", paddingBottom: "120px" }}>
       {/* Back nav */}
       <div
         className="max-w-3xl mx-auto px-6 pt-10 pb-2"
-        style={{ fontFamily: "Inter, sans-serif", fontSize: "13px" }}
+        style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px" }}
       >
         <Link href="/">
           <span
             className="cursor-pointer transition-colors duration-150"
-            style={{ color: "#8B9BB8" }}
+            style={{ color: "#888888" }}
             onMouseEnter={(e) => (e.currentTarget.style.color = "#F5C518")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "#8B9BB8")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "#888888")}
           >
             ← Back to RecruitPath
           </span>
@@ -86,7 +86,7 @@ export default function Privacy() {
         />
         <h1
           style={{
-            fontFamily: "Barlow Condensed, sans-serif",
+            fontFamily: "Bebas Neue, sans-serif",
             fontSize: "clamp(52px, 8vw, 72px)",
             color: "#FFFFFF",
             lineHeight: 1,
@@ -98,9 +98,9 @@ export default function Privacy() {
         </h1>
         <p
           style={{
-            fontFamily: "Inter, sans-serif",
+            fontFamily: "DM Sans, sans-serif",
             fontSize: "14px",
-            color: "#8B9BB8",
+            color: "#888888",
           }}
         >
           Effective Date: {EFFECTIVE_DATE}
@@ -109,16 +109,16 @@ export default function Privacy() {
 
       {/* Divider */}
       <div className="max-w-3xl mx-auto px-6">
-        <div style={{ height: "1px", background: "#1E2A42", marginBottom: "40px" }} />
+        <div style={{ height: "1px", background: "#1E1E1E", marginBottom: "40px" }} />
       </div>
 
       {/* Intro */}
       <div className="max-w-3xl mx-auto px-6 mb-10">
         <p
           style={{
-            fontFamily: "Inter, sans-serif",
+            fontFamily: "DM Sans, sans-serif",
             fontSize: "15px",
-            color: "#8B9BB8",
+            color: "#94A3B8",
             lineHeight: 1.75,
           }}
         >
@@ -132,7 +132,7 @@ export default function Privacy() {
           <div key={i} style={{ marginBottom: "40px" }}>
             <h2
               style={{
-                fontFamily: "Barlow Condensed, sans-serif",
+                fontFamily: "Bebas Neue, sans-serif",
                 fontSize: "22px",
                 color: "#F5C518",
                 letterSpacing: "0.04em",
@@ -145,9 +145,9 @@ export default function Privacy() {
               <p
                 key={j}
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "DM Sans, sans-serif",
                   fontSize: "15px",
-                  color: "#8B9BB8",
+                  color: "#94A3B8",
                   lineHeight: 1.75,
                   marginBottom: "16px",
                   whiteSpace: "pre-line",
@@ -157,7 +157,7 @@ export default function Privacy() {
               </p>
             ))}
             {i < sections.length - 1 && (
-              <div style={{ height: "1px", background: "#1E2A42", marginTop: "32px" }} />
+              <div style={{ height: "1px", background: "#1A1A1A", marginTop: "32px" }} />
             )}
           </div>
         ))}

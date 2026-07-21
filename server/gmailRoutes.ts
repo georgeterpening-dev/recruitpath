@@ -9,7 +9,11 @@
  */
 
 import type { Express, Request, Response } from "express";
-import { sdk } from "./_core/sdk";
+import { parse as parseCookieHeader } from "cookie";
+import { jwtVerify } from "jose";
+import { COOKIE_NAME } from "@shared/const";
+import { getUserByOpenId } from "./db";
+import { ENV } from "./_core/env";
 import {
   buildGmailAuthUrl,
   exchangeCodeForTokens,
@@ -24,7 +28,14 @@ import {
 /** Extract the authenticated user from the session cookie. Returns null if not authed. */
 async function getSessionUser(req: Request) {
   try {
-    return await sdk.authenticateRequest(req);
+    const cookies = parseCookieHeader(req.headers.cookie ?? "");
+    const token = cookies[COOKIE_NAME];
+    if (!token) return null;
+    const secretKey = new TextEncoder().encode(ENV.cookieSecret);
+    const { payload } = await jwtVerify(token, secretKey, { algorithms: ["HS256"] });
+    const openId = payload.openId;
+    if (typeof openId !== "string" || !openId) return null;
+    return (await getUserByOpenId(openId)) ?? null;
   } catch {
     return null;
   }

@@ -7,7 +7,7 @@ import { Link, useLocation } from "wouter";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
-const NBA_COURT_IMAGE = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663375439833/SRehjqPlUumleEQt.png";
+const NBA_COURT_IMAGE = "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1600&q=80";
 
 // Google "G" logo SVG (official colors)
 function GoogleLogo() {
@@ -27,10 +27,36 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/profile");
+    setError(null);
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const affiliateRef = sessionStorage.getItem("affiliateRef") || localStorage.getItem("affiliateRef") || undefined;
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email: email.trim(), password, name: name.trim(), affiliateRef }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Registration failed. Please try again.");
+        return;
+      }
+      window.location.href = data.redirect || "/onboarding";
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleGoogleSignIn = () => {
@@ -64,17 +90,8 @@ export default function SignUp() {
         <div className="text-center mb-8">
           <Link href="/">
             <span
-              className="cursor-pointer"
-              style={{
-                fontFamily: "Barlow Condensed, sans-serif",
-                fontWeight: 800,
-                fontSize: "28px",
-                letterSpacing: "-0.02em",
-                background: "linear-gradient(135deg, #F5C518 0%, #FFD640 100%)",
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
+              className="text-[#F5B800] text-3xl cursor-pointer"
+              style={{ fontFamily: "Barlow Condensed, sans-serif", fontWeight: 800, letterSpacing: "-0.02em" }}
             >
               RECRUITPATH
             </span>
@@ -84,7 +101,7 @@ export default function SignUp() {
         {/* Card */}
         <div className="rp-card p-8">
           {/* Free trial banner */}
-          <div className="mb-6 pb-6 border-b border-[#1E2A42]">
+          <div className="mb-6 pb-6 border-b border-[#2A2A2A]">
             <div className="flex justify-center mb-3">
               <span
                 className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase"
@@ -92,7 +109,7 @@ export default function SignUp() {
                   background: "rgba(245,197,24,0.12)",
                   color: "#F5C518",
                   border: "1px solid rgba(245,197,24,0.25)",
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "DM Sans, sans-serif",
                 }}
               >
                 FREE TO START -- NO CARD NEEDED
@@ -101,12 +118,12 @@ export default function SignUp() {
             <p
               className="text-center text-sm"
               style={{
-                fontFamily: "Inter, sans-serif",
-                color: "#8B9BB8",
+                fontFamily: "DM Sans, sans-serif",
+                color: "#94A3B8",
                 lineHeight: 1.5,
               }}
             >
-              Add up to 5 schools completely free. Unlock unlimited access for $49.99 -- one time, no subscription.
+              Add up to 5 schools completely free. Upgrade to Pro from $25/month for unlimited access.
             </p>
           </div>
 
@@ -116,7 +133,7 @@ export default function SignUp() {
           >
             CREATE ACCOUNT
           </h1>
-          <p className="text-[#8B9BB8] text-sm mb-6" style={{ fontFamily: "Inter, sans-serif" }}>
+          <p className="text-[#94A3B8] text-sm mb-6" style={{ fontFamily: "Inter, sans-serif" }}>
             Start your recruiting journey today
           </p>
 
@@ -128,11 +145,11 @@ export default function SignUp() {
             whileTap={{ scale: 0.98 }}
             className="w-full flex items-center justify-center gap-3 py-3 rounded-[10px] mb-5 transition-colors"
             style={{
-              background: "#181E32",
-              border: "1px solid #1E2A42",
-              fontFamily: "Inter, sans-serif",
+              background: "#1A1A1A",
+              border: "1px solid #2A2A2A",
+              fontFamily: "DM Sans, sans-serif",
               fontSize: "14px",
-              color: "#F0F4FF",
+              color: "#F8FAFC",
               fontWeight: 500,
             }}
           >
@@ -142,20 +159,30 @@ export default function SignUp() {
 
           {/* OR Divider */}
           <div className="flex items-center gap-3 mb-5">
-            <div className="flex-1 h-px" style={{ background: "#1E2A42" }} />
+            <div className="flex-1 h-px" style={{ background: "#2A2A2A" }} />
             <span
               className="text-xs font-semibold tracking-widest"
-              style={{ color: "#555", fontFamily: "Inter, sans-serif" }}
+              style={{ color: "#555", fontFamily: "DM Sans, sans-serif" }}
             >
               OR
             </span>
-            <div className="flex-1 h-px" style={{ background: "#1E2A42" }} />
+            <div className="flex-1 h-px" style={{ background: "#2A2A2A" }} />
           </div>
+
+          {/* Error message */}
+          {error && (
+            <div
+              className="mb-4 px-4 py-3 rounded-lg text-sm"
+              style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.3)", color: "#F87171", fontFamily: "Inter, sans-serif" }}
+            >
+              {error}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label
-                className="block text-xs font-semibold tracking-widest uppercase text-[#8B9BB8] mb-2"
+                className="block text-xs font-semibold tracking-widest uppercase text-[#94A3B8] mb-2"
                 style={{ fontFamily: "Inter, sans-serif" }}
               >
                 Full Name
@@ -173,7 +200,7 @@ export default function SignUp() {
 
             <div>
               <label
-                className="block text-xs font-semibold tracking-widest uppercase text-[#8B9BB8] mb-2"
+                className="block text-xs font-semibold tracking-widest uppercase text-[#94A3B8] mb-2"
                 style={{ fontFamily: "Inter, sans-serif" }}
               >
                 Email Address
@@ -191,7 +218,7 @@ export default function SignUp() {
 
             <div>
               <label
-                className="block text-xs font-semibold tracking-widest uppercase text-[#8B9BB8] mb-2"
+                className="block text-xs font-semibold tracking-widest uppercase text-[#94A3B8] mb-2"
                 style={{ fontFamily: "Inter, sans-serif" }}
               >
                 Password
@@ -209,7 +236,7 @@ export default function SignUp() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8B9BB8] hover:text-[#F8FAFC] transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#F8FAFC] transition-colors"
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -218,27 +245,21 @@ export default function SignUp() {
 
             <motion.button
               type="submit"
-              whileHover={{ scale: 1.02, filter: "brightness(1.1)" }}
-              whileTap={{ scale: 0.98 }}
+              disabled={loading}
+              whileHover={loading ? {} : { scale: 1.02, filter: "brightness(1.1)" }}
+              whileTap={loading ? {} : { scale: 0.98 }}
               className="w-full py-3.5 text-sm font-semibold tracking-wider uppercase rounded-lg mt-2"
-              style={{
-                background: "#F5C518",
-                color: "#090D18",
-                fontFamily: "Barlow Condensed, sans-serif",
-                fontSize: "15px",
-                letterSpacing: "0.1em",
-                boxShadow: "0 4px 20px rgba(245,197,24,0.32)",
-              }}
+              style={{ background: loading ? "#8A7000" : "#F5B800", color: "#0A0E1A", fontFamily: "Inter, sans-serif", cursor: loading ? "not-allowed" : "pointer" }}
             >
-              Create Account
+              {loading ? "CREATING ACCOUNT..." : "CREATE ACCOUNT"}
             </motion.button>
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-[#8B9BB8] text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
+            <p className="text-[#94A3B8] text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
               Already have an account?{" "}
               <Link href="/signin">
-                <span className="text-[#F5C518] hover:underline cursor-pointer font-medium">
+                <span className="text-[#F5B800] hover:underline cursor-pointer font-medium">
                   Sign in
                 </span>
               </Link>

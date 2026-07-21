@@ -10,6 +10,7 @@ import { X, Copy, Check, Lock, Mail, Phone, ExternalLink, Sparkles, RefreshCw, S
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import SchoolLogoImg from "@/components/SchoolLogo";
+import ProGate from "@/components/ProGate";
 import { type AthleteProfile } from "@/hooks/useAthleteProfile";
 
 const ATHLETE_PROFILE_KEY = "recruitpath_athlete_profile";
@@ -20,6 +21,11 @@ function loadAthleteProfile(): Partial<AthleteProfile> {
   } catch {
     return {};
   }
+}
+
+function getStoredGradYear(): string {
+  const p = loadAthleteProfile();
+  return p.graduationYear ?? "";
 }
 
 type EmailTone = "confident" | "respectful" | "energetic" | "concise";
@@ -152,7 +158,7 @@ function RosterGapBanner({ athleteGradYear }: { athleteGradYear?: string }) {
         <div className="flex items-center gap-2">
           <span
             style={{
-              fontFamily: "Barlow Condensed, sans-serif",
+              fontFamily: "Bebas Neue, sans-serif",
               fontSize: "13px",
               letterSpacing: "0.12em",
               color: config.color,
@@ -169,7 +175,7 @@ function RosterGapBanner({ athleteGradYear }: { athleteGradYear?: string }) {
           </span>
           <p
             style={{
-              fontFamily: "Inter, sans-serif",
+              fontFamily: "DM Sans, sans-serif",
               fontSize: "12.5px",
               color: config.color,
               lineHeight: 1.55,
@@ -220,16 +226,64 @@ export default function SchoolDetailModal({
   initialTab = "school",
 }: SchoolModalProps) {
   const [activeTab, setActiveTab] = useState<Tab>(initialTab);
+
+  // Subscription status for feature gating
+  const { data: subStatus } = trpc.subscription.status.useQuery(undefined, {
+    staleTime: 60_000,
+  });
+  const hasPaidAccess = subStatus?.hasPaidAccess ?? true; // default true to avoid flash of gate on load
   const [showFullRoster, setShowFullRoster] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
+  // Year toggle for Roster Gap tab — defaults to athlete's grad year (set once gapData loads)
+  const [displayYear, setDisplayYear] = useState<number | null>(null);
+  
+  const { data: serverProfile } = trpc.athleteProfile.get.useQuery();
+  const resolvedGradYear = athleteGradYear
+    || serverProfile?.graduationYear
+    || getStoredGradYear()
+    || "";
+  
+  const [selectedRosterYear, setSelectedRosterYear] = useState<number>(() => {
+    const year = parseInt(athleteGradYear || getStoredGradYear() || "");
+    return isNaN(year) ? 2027 : year;
+  });
+
+  useEffect(() => {
+    if (selectedRosterYear === 2027) {
+      const year = parseInt(resolvedGradYear);
+      if (!isNaN(year)) setSelectedRosterYear(year);
+    }
+  }, [resolvedGradYear]);
   const [tabFading, setTabFading] = useState(false);
   const [coachStaffExpanded, setCoachStaffExpanded] = useState(false);
   const [copiedCoachEmail, setCopiedCoachEmail] = useState<string | null>(null);
 
-  const { data: players, isLoading: playersLoading } = trpc.volleyball.players.useQuery(
+  // Use schoolGap as single source of truth: players + gap data in one query
+  const { data: schoolGapResult, isLoading: playersLoading } = trpc.volleyball.schoolGap.useQuery(
     { schoolId: school.id },
     { enabled: activeTab === "roster" && !!school.hasRosterData }
   );
+
+  // Separate gap query keyed to the roster tab being active
+  const { data: gapResult } = trpc.volleyball.schoolGap.useQuery(
+    { schoolId: school.id },
+    { enabled: activeTab === "roster" && !!school.id }
+  );
+
+  const { data: schoolCommits = [] } = trpc.volleyball.commitsForSchool.useQuery(
+    { schoolId: school.id },
+    { enabled: activeTab === "roster" && !!school.id }
+  );
+
+  const players = schoolGapResult?.players ?? [];
+  const gapData = schoolGapResult; // shape: { players, gradYear, athletePositions, gap }
+
+  // Set displayYear from gapData on first load
+  useEffect(() => {
+    if (schoolGapResult?.gradYear && displayYear === null) {
+      setDisplayYear(schoolGapResult.gradYear);
+    }
+  }, [schoolGapResult?.gradYear, displayYear]);
 
   // Load coaches data eagerly (not just when Coach tab is active) so the
   // email address is available to the Email tab's send function too.
@@ -299,18 +353,34 @@ export default function SchoolDetailModal({
     }
   };
 
+  // Derived gap values — use selectedRosterYear for filtering
   const totalGraduating = useMemo(() => {
     if (!players) return 0;
-    return players.filter((p) => p.graduationYear && p.graduationYear <= 2026).length;
-  }, [players]);
-
+    const graduatingNames = new Set(
+      players
+        .filter(pl => pl.graduationYear === selectedRosterYear)
+        .map(pl => pl.name?.trim().toLowerCase())
+        .filter(Boolean)
+    );
+    return graduatingNames.size;
+  }, [players, selectedRosterYear]);
+  const positionOpenings = gapResult?.gap?.atPosition ?? 0;
+  const positionGraduating = positionOpenings;
+  const graduatingNames = new Set<string>(
+    (gapResult?.gap?.graduatingNames ?? []).map((n: string) => n.trim().toLowerCase())
+  );
+  const positionGraduatingNames = new Set<string>(
+    (gapResult?.gap?.positionGraduatingNames ?? []).map((n: string) => n.trim().toLowerCase())
+  );
+  const athleteGradYearFromGap = gapData?.gradYear;
+  const athletePositionsFromGap = gapData?.athletePositions ?? [];
   const totalOpenings = useMemo(() => totalGraduating, [totalGraduating]);
 
   // ── Email tab state ──
   const [emailDraft, setEmailDraft] = useState("");
   const [emailEdited, setEmailEdited] = useState(false);
   const [emailCopiedDraft, setEmailCopiedDraft] = useState(false);
-  const [emailTone, setEmailTone] = useState<EmailTone>("respectful");
+  const [specificMention, setSpecificMention] = useState("");
 
   const generateEmailMutation = trpc.volleyball.generate.useMutation({
     onSuccess: (data) => {
@@ -334,7 +404,6 @@ export default function SchoolDetailModal({
       division: school.division,
       conference: school.conference,
       coachName: school.coachName || undefined,
-      tone: emailTone,
       // Core identity
       athleteName: fullName,
       athletePosition: p.positions || undefined,
@@ -357,6 +426,7 @@ export default function SchoolDetailModal({
       athleteInstagramUrl: p.instagramHandle ? `instagram.com/${p.instagramHandle}` : undefined,
       athleteKeyStats: p.keyStats || undefined,
       athleteHighlightUrl: p.highlightFilmUrl || undefined,
+      specificMention: specificMention || undefined,
     });
   };
 
@@ -374,6 +444,7 @@ export default function SchoolDetailModal({
   const [sending, setSending] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showCommitsModal, setShowCommitsModal] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [resolvedSendEmail, setResolvedSendEmail] = useState("");
 
@@ -415,7 +486,7 @@ export default function SchoolDetailModal({
   const handleConfirmSend = async () => {
     setShowConfirmModal(false);
     setSending(true);
-    const subject = `Prospective Student-Athlete — ${school.school}`;
+    const subject = `Prospective Student-Athlete - ${school.school}`;
     try {
       const res = await fetch("/api/email/send", {
         method: "POST",
@@ -481,30 +552,33 @@ export default function SchoolDetailModal({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4"
+        className="fixed inset-0 z-50 flex md:items-center md:justify-center md:p-4"
         style={{ background: "rgba(0,0,0,0.8)", backdropFilter: "blur(8px)" }}
         onClick={onClose}
       >
+        {/* Mobile: iOS bottom sheet; Desktop: centered modal */}
         <motion.div
           key="modal-body"
-          initial={{ opacity: 0, scale: 0.96, y: 16 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.96, y: 16 }}
-          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: "100%" }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: "100%" }}
+          transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
           onClick={(e) => e.stopPropagation()}
-          className="flex flex-col w-full max-w-2xl"
+          className="school-modal-container flex flex-col w-full md:max-w-2xl"
           style={{
-            background: "#131829",
-            border: "1px solid #1E2A42",
-            borderRadius: "18px",
-            maxHeight: "90vh",
+            background: "#111111",
+            border: "1px solid #2A2A2A",
             overflow: "hidden",
-          }}
+          } as React.CSSProperties}
         >
+          {/* Drag handle (mobile only) */}
+          <div className="flex justify-center pt-3 pb-1 md:hidden" style={{ flexShrink: 0 }}>
+            <div style={{ width: 36, height: 4, borderRadius: 2, background: "rgba(255,255,255,0.2)" }} />
+          </div>
           {/* ── Header ── */}
           <div
-            className="flex items-center justify-between px-6 py-5"
-            style={{ borderBottom: "1px solid #1E2A42", flexShrink: 0 }}
+            className="flex items-center justify-between px-4 md:px-6 py-3 md:py-5"
+            style={{ borderBottom: "1px solid #1E1E1E", flexShrink: 0 }}
           >
             <div className="flex items-center gap-4">
               <SchoolLogo
@@ -517,49 +591,65 @@ export default function SchoolDetailModal({
               <div>
                 <h2
                   style={{
-                    fontFamily: "Barlow Condensed, sans-serif",
-                    fontSize: "28px",
+                    fontFamily: "Bebas Neue, sans-serif",
+                    fontSize: "clamp(20px, 5vw, 28px)",
                     fontWeight: 700,
-                    color: "#F0F4FF",
+                    color: "#FFFFFF",
                     lineHeight: 1.05,
                   }}
                 >
                   {school.school.toUpperCase()}
                 </h2>
+                {school.id === "mvb-202" && (
+                  <div style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    background: "rgba(245,197,24,0.12)",
+                    border: "1px solid rgba(245,197,24,0.3)",
+                    borderRadius: "6px",
+                    padding: "4px 10px",
+                    marginTop: "6px",
+                  }}>
+                    <span style={{ fontSize: "11px", color: "#F5C518", fontFamily: "Bebas Neue, sans-serif", letterSpacing: "0.1em" }}>
+                      ⭐ INAUGURAL SEASON 2026–2027
+                    </span>
+                  </div>
+                )}
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
                   <span
                     style={{
-                      fontFamily: "Barlow Condensed, sans-serif",
+                      fontFamily: "Bebas Neue, sans-serif",
                       fontSize: "11px",
                       letterSpacing: "0.12em",
-                      color: "#8B9BB8",
+                      color: "#6B6B6B",
                       padding: "2px 8px",
-                      background: "#181E32",
-                      border: "1px solid #1E2A42",
-                      borderRadius: "6px",
+                      background: "#1A1A1A",
+                      border: "1px solid #2A2A2A",
+                      borderRadius: "2px",
                     }}
                   >
                     {school.division}
                   </span>
                   <span
                     style={{
-                      fontFamily: "Barlow Condensed, sans-serif",
+                      fontFamily: "Bebas Neue, sans-serif",
                       fontSize: "11px",
                       letterSpacing: "0.12em",
-                      color: "#8B9BB8",
+                      color: "#6B6B6B",
                       padding: "2px 8px",
-                      background: "#181E32",
-                      border: "1px solid #1E2A42",
-                      borderRadius: "6px",
+                      background: "#1A1A1A",
+                      border: "1px solid #2A2A2A",
+                      borderRadius: "2px",
                     }}
                   >
                     {school.conference}
                   </span>
                   <span
                     style={{
-                      fontFamily: "Inter, sans-serif",
+                      fontFamily: "DM Sans, sans-serif",
                       fontSize: "12px",
-                      color: "#8B9BB8",
+                      color: "#6B6B6B",
                     }}
                   >
                     {school.city}, {school.state}
@@ -570,11 +660,17 @@ export default function SchoolDetailModal({
             <button
               onClick={onClose}
               style={{
-                color: "#8B9BB8",
+                color: "#6B6B6B",
                 background: "none",
                 border: "none",
                 cursor: "pointer",
-                padding: "4px",
+                padding: "0",
+                width: "44px",
+                height: "44px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
               }}
             >
               <X size={20} />
@@ -582,21 +678,24 @@ export default function SchoolDetailModal({
           </div>
 
           {/* ── Tab Bar ── */}
-          <div className="flex" style={{ borderBottom: "1px solid #1E2A42", flexShrink: 0 }}>
+          <div className="flex" style={{ borderBottom: "1px solid #1E1E1E", flexShrink: 0, overflowX: "auto" }}>
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
-                className="flex-1 py-3.5 relative"
+                className="flex-1 relative"
                 style={{
-                  fontFamily: "Barlow Condensed, sans-serif",
-                  fontSize: "13px",
+                  fontFamily: "Bebas Neue, sans-serif",
+                  fontSize: "clamp(11px, 2.5vw, 13px)",
                   letterSpacing: "0.12em",
-                  color: activeTab === tab.id ? "#F5C518" : "#8B9BB8",
+                  color: activeTab === tab.id ? "#F5C518" : "#6B6B6B",
                   background: "none",
                   border: "none",
                   cursor: "pointer",
                   transition: "color 200ms ease",
+                  minWidth: "80px",
+                  height: "44px",
+                  whiteSpace: "nowrap",
                 }}
               >
                 {tab.label}
@@ -619,25 +718,25 @@ export default function SchoolDetailModal({
               initial={{ opacity: 0 }}
               animate={{ opacity: tabFading ? 0 : 1 }}
               transition={{ duration: 0.15 }}
-              className="p-6"
+              className="p-4 md:p-6"
             >
               {/* ─── TAB 1: SCHOOL INFO ─────────────────────────────────────── */}
               {activeTab === "school" && (
                 <div className="space-y-5">
                   <div
                     style={{
-                      background: "#181E32",
-                      border: "1px solid #1E2A42",
-                      borderRadius: "10px",
+                      background: "#141414",
+                      border: "1px solid #1E1E1E",
+                      borderRadius: "4px",
                       padding: "20px",
                     }}
                   >
                     <p
                       style={{
-                        fontFamily: "Barlow Condensed, sans-serif",
+                        fontFamily: "Bebas Neue, sans-serif",
                         fontSize: "11px",
                         letterSpacing: "0.15em",
-                        color: "#8B9BB8",
+                        color: "#6B6B6B",
                         marginBottom: "12px",
                       }}
                     >
@@ -655,9 +754,9 @@ export default function SchoolDetailModal({
                         <div key={label}>
                           <p
                             style={{
-                              fontFamily: "Inter, sans-serif",
+                              fontFamily: "DM Sans, sans-serif",
                               fontSize: "11px",
-                              color: "#8B9BB8",
+                              color: "#6B6B6B",
                               marginBottom: "2px",
                             }}
                           >
@@ -665,9 +764,9 @@ export default function SchoolDetailModal({
                           </p>
                           <p
                             style={{
-                              fontFamily: "Inter, sans-serif",
+                              fontFamily: "DM Sans, sans-serif",
                               fontSize: "15px",
-                              color: highlight ? "#F5C518" : "#F0F4FF",
+                              color: highlight ? "#F5C518" : "#FFFFFF",
                               fontWeight: 500,
                             }}
                           >
@@ -680,18 +779,18 @@ export default function SchoolDetailModal({
 
                   <div
                     style={{
-                      background: "#181E32",
-                      border: "1px solid #1E2A42",
-                      borderRadius: "10px",
+                      background: "#141414",
+                      border: "1px solid #1E1E1E",
+                      borderRadius: "4px",
                       padding: "20px",
                     }}
                   >
                     <p
                       style={{
-                        fontFamily: "Barlow Condensed, sans-serif",
+                        fontFamily: "Bebas Neue, sans-serif",
                         fontSize: "11px",
                         letterSpacing: "0.15em",
-                        color: "#8B9BB8",
+                        color: "#6B6B6B",
                         marginBottom: "12px",
                       }}
                     >
@@ -707,14 +806,14 @@ export default function SchoolDetailModal({
                         <span
                           key={tag}
                           style={{
-                            fontFamily: "Barlow Condensed, sans-serif",
+                            fontFamily: "Bebas Neue, sans-serif",
                             fontSize: "12px",
                             letterSpacing: "0.1em",
-                            color: "#8B9BB8",
+                            color: "#A3A3A3",
                             padding: "4px 12px",
-                            background: "#0C1020",
-                            border: "1px solid #1E2A42",
-                            borderRadius: "6px",
+                            background: "#1A1A1A",
+                            border: "1px solid #2A2A2A",
+                            borderRadius: "2px",
                           }}
                         >
                           {tag}
@@ -731,12 +830,12 @@ export default function SchoolDetailModal({
                       className="flex items-center gap-2 w-full py-3 px-4"
                       style={{
                         background: "transparent",
-                        border: "1px solid #1E2A42",
-                        borderRadius: "8px",
-                        fontFamily: "Barlow Condensed, sans-serif",
+                        border: "1px solid #2A2A2A",
+                        borderRadius: "4px",
+                        fontFamily: "Bebas Neue, sans-serif",
                         fontSize: "13px",
                         letterSpacing: "0.1em",
-                        color: "#8B9BB8",
+                        color: "#A3A3A3",
                         textDecoration: "none",
                       }}
                     >
@@ -753,18 +852,18 @@ export default function SchoolDetailModal({
                   {/* ── Primary Head Coach Card ── */}
                   <div
                     style={{
-                      background: "#181E32",
-                      border: "1px solid #1E2A42",
-                      borderRadius: "10px",
+                      background: "#141414",
+                      border: "1px solid #1E1E1E",
+                      borderRadius: "4px",
                       padding: "20px",
                     }}
                   >
                     <p
                       style={{
-                        fontFamily: "Barlow Condensed, sans-serif",
+                        fontFamily: "Bebas Neue, sans-serif",
                         fontSize: "11px",
                         letterSpacing: "0.15em",
-                        color: "#8B9BB8",
+                        color: "#6B6B6B",
                         marginBottom: "16px",
                       }}
                     >
@@ -775,9 +874,9 @@ export default function SchoolDetailModal({
                       <div>
                         <p
                           style={{
-                            fontFamily: "Inter, sans-serif",
+                            fontFamily: "DM Sans, sans-serif",
                             fontSize: "11px",
-                            color: "#8B9BB8",
+                            color: "#6B6B6B",
                             marginBottom: "4px",
                           }}
                         >
@@ -786,16 +885,16 @@ export default function SchoolDetailModal({
                         <div
                           className="px-3 py-2.5"
                           style={{
-                            background: "#0C1020",
-                            border: "1px solid #1E2A42",
-                            borderRadius: "8px",
+                            background: "#0A0A0A",
+                            border: "1px solid #2A2A2A",
+                            borderRadius: "4px",
                           }}
                         >
                           <p
                             style={{
-                              fontFamily: "Inter, sans-serif",
+                              fontFamily: "DM Sans, sans-serif",
                               fontSize: "15px",
-                              color: primaryCoach ? "#F0F4FF" : "#4A5570",
+                              color: primaryCoach ? "#FFFFFF" : "#6B6B6B",
                             }}
                           >
                             {primaryCoach
@@ -809,9 +908,9 @@ export default function SchoolDetailModal({
                       <div>
                         <p
                           style={{
-                            fontFamily: "Inter, sans-serif",
+                            fontFamily: "DM Sans, sans-serif",
                             fontSize: "11px",
-                            color: "#8B9BB8",
+                            color: "#6B6B6B",
                             marginBottom: "4px",
                           }}
                         >
@@ -820,16 +919,16 @@ export default function SchoolDetailModal({
                         <div
                           className="px-3 py-2.5"
                           style={{
-                            background: "#0C1020",
-                            border: "1px solid #1E2A42",
-                            borderRadius: "8px",
+                            background: "#0A0A0A",
+                            border: "1px solid #2A2A2A",
+                            borderRadius: "4px",
                           }}
                         >
                           <p
                             style={{
-                              fontFamily: "Inter, sans-serif",
+                              fontFamily: "DM Sans, sans-serif",
                               fontSize: "15px",
-                              color: "#F0F4FF",
+                              color: "#FFFFFF",
                             }}
                           >
                             {primaryCoach ? primaryCoach.position : (school.coachTitle || "Head Coach")}
@@ -841,9 +940,9 @@ export default function SchoolDetailModal({
                       <div>
                         <p
                           style={{
-                            fontFamily: "Inter, sans-serif",
+                            fontFamily: "DM Sans, sans-serif",
                             fontSize: "11px",
-                            color: "#8B9BB8",
+                            color: "#6B6B6B",
                             marginBottom: "4px",
                           }}
                         >
@@ -852,18 +951,18 @@ export default function SchoolDetailModal({
                         <div
                           className="flex items-center justify-between px-3 py-2.5"
                           style={{
-                            background: "#0C1020",
-                            border: "1px solid #1E2A42",
-                            borderRadius: "8px",
+                            background: "#0A0A0A",
+                            border: "1px solid #2A2A2A",
+                            borderRadius: "4px",
                           }}
                         >
                           <div className="flex items-center gap-2">
-                            <Mail size={14} style={{ color: "#8B9BB8", flexShrink: 0 }} />
+                            <Mail size={14} style={{ color: "#6B6B6B", flexShrink: 0 }} />
                             <p
                               style={{
-                                fontFamily: "Inter, sans-serif",
+                                fontFamily: "DM Sans, sans-serif",
                                 fontSize: "15px",
-                                color: (primaryCoach?.email || school.coachEmail) ? "#F0F4FF" : "#4A5570",
+                                color: (primaryCoach?.email || school.coachEmail) ? "#FFFFFF" : "#6B6B6B",
                                 wordBreak: "break-all",
                               }}
                             >
@@ -874,7 +973,7 @@ export default function SchoolDetailModal({
                             <button
                               onClick={() => handleCopyCoachEmail(primaryCoach?.email || school.coachEmail || "")}
                               style={{
-                                color: copiedCoachEmail === (primaryCoach?.email || school.coachEmail) ? "#22C55E" : "#8B9BB8",
+                                color: copiedCoachEmail === (primaryCoach?.email || school.coachEmail) ? "#22C55E" : "#6B6B6B",
                                 background: "none",
                                 border: "none",
                                 cursor: "pointer",
@@ -894,9 +993,9 @@ export default function SchoolDetailModal({
                   {staffCoaches.length > 0 && (
                     <div
                       style={{
-                        background: "#181E32",
-                        border: "1px solid #1E2A42",
-                        borderRadius: "10px",
+                        background: "#141414",
+                        border: "1px solid #1E1E1E",
+                        borderRadius: "4px",
                         overflow: "hidden",
                       }}
                     >
@@ -911,13 +1010,13 @@ export default function SchoolDetailModal({
                         }}
                       >
                         <div className="flex items-center gap-2.5">
-                          <Users size={14} style={{ color: "#8B9BB8" }} />
+                          <Users size={14} style={{ color: "#6B6B6B" }} />
                           <p
                             style={{
-                              fontFamily: "Barlow Condensed, sans-serif",
+                              fontFamily: "Bebas Neue, sans-serif",
                               fontSize: "11px",
                               letterSpacing: "0.15em",
-                              color: "#8B9BB8",
+                              color: "#6B6B6B",
                               margin: 0,
                             }}
                           >
@@ -925,10 +1024,10 @@ export default function SchoolDetailModal({
                           </p>
                           <span
                             style={{
-                              fontFamily: "Inter, sans-serif",
+                              fontFamily: "DM Sans, sans-serif",
                               fontSize: "11px",
-                              color: "#4A5570",
-                              background: "#1E2A42",
+                              color: "#4A4A4A",
+                              background: "#1E1E1E",
                               borderRadius: "10px",
                               padding: "1px 8px",
                             }}
@@ -937,15 +1036,15 @@ export default function SchoolDetailModal({
                           </span>
                         </div>
                         {coachStaffExpanded
-                          ? <ChevronUp size={14} style={{ color: "#8B9BB8" }} />
-                          : <ChevronDown size={14} style={{ color: "#8B9BB8" }} />}
+                          ? <ChevronUp size={14} style={{ color: "#6B6B6B" }} />
+                          : <ChevronDown size={14} style={{ color: "#6B6B6B" }} />}
                       </button>
 
                       {/* Expandable content */}
                       {coachStaffExpanded && (
                         <div
                           style={{
-                            borderTop: "1px solid #1E2A42",
+                            borderTop: "1px solid #1E1E1E",
                             padding: "16px 20px",
                           }}
                         >
@@ -955,18 +1054,18 @@ export default function SchoolDetailModal({
                                 key={coach.id}
                                 className="flex items-center justify-between"
                                 style={{
-                                  background: "#0C1020",
-                                  border: "1px solid #1E2A42",
-                                  borderRadius: "8px",
+                                  background: "#0A0A0A",
+                                  border: "1px solid #2A2A2A",
+                                  borderRadius: "4px",
                                   padding: "12px 14px",
                                 }}
                               >
                                 <div className="flex-1 min-w-0">
                                   <p
                                     style={{
-                                      fontFamily: "Inter, sans-serif",
+                                      fontFamily: "DM Sans, sans-serif",
                                       fontSize: "14px",
-                                      color: "#F0F4FF",
+                                      color: "#FFFFFF",
                                       fontWeight: 500,
                                       marginBottom: "2px",
                                     }}
@@ -975,9 +1074,9 @@ export default function SchoolDetailModal({
                                   </p>
                                   <p
                                     style={{
-                                      fontFamily: "Inter, sans-serif",
+                                      fontFamily: "DM Sans, sans-serif",
                                       fontSize: "12px",
-                                      color: "#4A5570",
+                                      color: "#6B6B6B",
                                       marginBottom: coach.email ? "4px" : 0,
                                     }}
                                   >
@@ -986,9 +1085,9 @@ export default function SchoolDetailModal({
                                   {coach.email && (
                                     <p
                                       style={{
-                                        fontFamily: "Inter, sans-serif",
+                                        fontFamily: "DM Sans, sans-serif",
                                         fontSize: "12px",
-                                        color: "#8B9BB8",
+                                        color: "#A3A3A3",
                                         wordBreak: "break-all",
                                       }}
                                     >
@@ -1000,7 +1099,7 @@ export default function SchoolDetailModal({
                                   <button
                                     onClick={() => handleCopyCoachEmail(coach.email!)}
                                     style={{
-                                      color: copiedCoachEmail === coach.email ? "#22C55E" : "#4A5570",
+                                      color: copiedCoachEmail === coach.email ? "#22C55E" : "#6B6B6B",
                                       background: "none",
                                       border: "none",
                                       cursor: "pointer",
@@ -1026,14 +1125,14 @@ export default function SchoolDetailModal({
                     style={{
                       background: "rgba(245,197,24,0.04)",
                       border: "1px solid rgba(245,197,24,0.15)",
-                      borderRadius: "8px",
+                      borderRadius: "4px",
                     }}
                   >
                     <p
                       style={{
-                        fontFamily: "Inter, sans-serif",
+                        fontFamily: "DM Sans, sans-serif",
                         fontSize: "13px",
-                        color: "#8B9BB8",
+                        color: "#A3A3A3",
                         lineHeight: 1.5,
                       }}
                     >
@@ -1046,22 +1145,30 @@ export default function SchoolDetailModal({
               {/* ─── TAB 3: ROSTER GAP FINDER ───────────────────────────────── */}
               {activeTab === "roster" && (
                 <div>
+                  {/* ── Pro gate for free users ── */}
+                  {!hasPaidAccess ? (
+                    <ProGate
+                      headline="ROSTER GAP FINDER"
+                      subtext="See exactly which programs have openings at your position when you'd arrive. Available on Pro."
+                    />
+                  ) : (
+                  <>
                   {/* ── Personalized grad-year warning banner ── */}
-                  <RosterGapBanner athleteGradYear={athleteGradYear} />
+                  <RosterGapBanner athleteGradYear={resolvedGradYear} />
 
                   {!school.hasRosterData ? (
                     <div className="flex flex-col items-center justify-center py-16 text-center">
                       <div
                         className="w-14 h-14 rounded-full flex items-center justify-center mb-5"
-                        style={{ background: "#181E32", border: "1px solid #1E2A42" }}
+                        style={{ background: "#1A1A1A", border: "1px solid #2A2A2A" }}
                       >
-                        <Lock size={24} style={{ color: "#4A5570" }} />
+                        <Lock size={24} style={{ color: "#6B6B6B" }} />
                       </div>
                       <h3
                         style={{
-                          fontFamily: "Barlow Condensed, sans-serif",
+                          fontFamily: "Bebas Neue, sans-serif",
                           fontSize: "24px",
-                          color: "#F0F4FF",
+                          color: "#FFFFFF",
                           marginBottom: "8px",
                         }}
                       >
@@ -1069,9 +1176,9 @@ export default function SchoolDetailModal({
                       </h3>
                       <p
                         style={{
-                          fontFamily: "Inter, sans-serif",
+                          fontFamily: "DM Sans, sans-serif",
                           fontSize: "14px",
-                          color: "#4A5570",
+                          color: "#6B6B6B",
                           maxWidth: "320px",
                           lineHeight: 1.6,
                         }}
@@ -1087,20 +1194,20 @@ export default function SchoolDetailModal({
                           key={i}
                           className="h-24 animate-pulse"
                           style={{
-                            background: "#181E32",
-                            border: "1px solid #1E2A42",
-                            borderRadius: "10px",
+                            background: "#141414",
+                            border: "1px solid #1E1E1E",
+                            borderRadius: "4px",
                           }}
                         />
                       ))}
                     </div>
-                  ) : !players || players.length === 0 ? (
+                  ) : (!players || players.length === 0) && schoolCommits.length === 0 ? (
                     <div className="text-center py-16">
                       <p
                         style={{
-                          fontFamily: "Inter, sans-serif",
+                          fontFamily: "DM Sans, sans-serif",
                           fontSize: "14px",
-                          color: "#4A5570",
+                          color: "#6B6B6B",
                         }}
                       >
                         No roster data available.
@@ -1111,28 +1218,70 @@ export default function SchoolDetailModal({
                       {/* Summary */}
                       <div
                         style={{
-                          background: "#181E32",
-                          border: "1px solid #1E2A42",
-                          borderRadius: "10px",
+                          background: "#141414",
+                          border: "1px solid #1E1E1E",
+                          borderRadius: "4px",
                           padding: "20px",
                         }}
                       >
-                        <p
-                          style={{
-                            fontFamily: "Barlow Condensed, sans-serif",
-                            fontSize: "11px",
-                            letterSpacing: "0.15em",
-                            color: "#8B9BB8",
-                            marginBottom: "16px",
-                          }}
-                        >
-                          ROSTER GAP ANALYSIS — 2026
-                        </p>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
+                          <p style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "11px", letterSpacing: "0.15em", color: "#6B6B6B", margin: 0 }}>
+                            ROSTER GAP ANALYSIS
+                          </p>
+                          <div style={{ display: "flex", gap: "6px" }}>
+                            {[2026, 2027, 2028, 2029].map((yr) => (
+                              <button
+                                key={yr}
+                                onClick={() => setSelectedRosterYear(yr)}
+                                style={{
+                                  padding: "4px 10px",
+                                  borderRadius: "999px",
+                                  fontSize: "11px",
+                                  fontFamily: "DM Sans, sans-serif",
+                                  cursor: "pointer",
+                                  border: selectedRosterYear === yr ? "none" : "1px solid rgba(255,255,255,0.08)",
+                                  background: selectedRosterYear === yr ? "#F5C518" : "rgba(255,255,255,0.04)",
+                                  color: selectedRosterYear === yr ? "#000" : "#888",
+                                  fontWeight: selectedRosterYear === yr ? 700 : 400,
+                                  transition: "all 0.15s ease",
+                                }}
+                              >
+                                {yr}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                        {/* Old year toggle pills - to be removed */}
+                        <div className="flex items-center gap-2 mb-4" style={{ display: "none" }}>
+                          {[2025, 2026, 2027, 2028, 2029].map((yr) => {
+                            const isActive = (displayYear || athleteGradYearFromGap || 2027) === yr;
+                            return (
+                              <button
+                                key={yr}
+                                onClick={() => setDisplayYear(yr)}
+                                style={{
+                                  fontFamily: "Bebas Neue, sans-serif",
+                                  fontSize: "13px",
+                                  letterSpacing: "0.08em",
+                                  padding: "4px 12px",
+                                  borderRadius: "3px",
+                                  border: isActive ? "1px solid #F5C518" : "1px solid #2A2A2A",
+                                  background: isActive ? "rgba(245,197,24,0.12)" : "transparent",
+                                  color: isActive ? "#F5C518" : "#6B6B6B",
+                                  cursor: "pointer",
+                                  transition: "all 0.15s ease",
+                                }}
+                              >
+                                {yr}
+                              </button>
+                            );
+                          })}
+                        </div>
                         <div className="grid grid-cols-3 gap-4">
                           <div className="text-center">
                             <p
                               style={{
-                                fontFamily: "Barlow Condensed, sans-serif",
+                                fontFamily: "Bebas Neue, sans-serif",
                                 fontSize: "36px",
                                 color: "#EF4444",
                                 lineHeight: 1,
@@ -1142,10 +1291,10 @@ export default function SchoolDetailModal({
                             </p>
                             <p
                               style={{
-                                fontFamily: "Barlow Condensed, sans-serif",
+                                fontFamily: "Bebas Neue, sans-serif",
                                 fontSize: "11px",
                                 letterSpacing: "0.1em",
-                                color: "#8B9BB8",
+                                color: "#6B6B6B",
                                 marginTop: "4px",
                               }}
                             >
@@ -1155,36 +1304,48 @@ export default function SchoolDetailModal({
                           <div
                             className="text-center"
                             style={{
-                              borderLeft: "1px solid #1E2A42",
-                              borderRight: "1px solid #1E2A42",
+                              borderLeft: "1px solid #1E1E1E",
+                              borderRight: "1px solid #1E1E1E",
                             }}
                           >
-                            <p
+                            <button
+                              onClick={() => schoolCommits.length > 0 && setShowCommitsModal(true)}
                               style={{
-                                fontFamily: "Barlow Condensed, sans-serif",
-                                fontSize: "36px",
-                                color: "#4A5570",
-                                lineHeight: 1,
+                                background: "none",
+                                border: "none",
+                                padding: 0,
+                                cursor: schoolCommits.length > 0 ? "pointer" : "default",
+                                width: "100%",
                               }}
                             >
-                              0
-                            </p>
-                            <p
-                              style={{
-                                fontFamily: "Barlow Condensed, sans-serif",
-                                fontSize: "11px",
-                                letterSpacing: "0.1em",
-                                color: "#8B9BB8",
-                                marginTop: "4px",
-                              }}
-                            >
-                              COMMITS FILLING
-                            </p>
+                              <p
+                                style={{
+                                  fontFamily: "Bebas Neue, sans-serif",
+                                  fontSize: "36px",
+                                  color: schoolCommits.length > 0 ? "#F5C518" : "#6B6B6B",
+                                  lineHeight: 1,
+                                }}
+                              >
+                                {schoolCommits.length}
+                              </p>
+                              <p
+                                style={{
+                                  fontFamily: "Bebas Neue, sans-serif",
+                                  fontSize: "11px",
+                                  letterSpacing: "0.1em",
+                                  color: schoolCommits.length > 0 ? "#F5C518" : "#6B6B6B",
+                                  marginTop: "4px",
+                                  textDecoration: schoolCommits.length > 0 ? "underline" : "none",
+                                }}
+                              >
+                                COMMITS FILLING
+                              </p>
+                            </button>
                           </div>
                           <div className="text-center">
                             <p
                               style={{
-                                fontFamily: "Barlow Condensed, sans-serif",
+                                fontFamily: "Bebas Neue, sans-serif",
                                 fontSize: "36px",
                                 color: totalOpenings > 0 ? "#22C55E" : "#EF4444",
                                 lineHeight: 1,
@@ -1194,31 +1355,31 @@ export default function SchoolDetailModal({
                             </p>
                             <p
                               style={{
-                                fontFamily: "Barlow Condensed, sans-serif",
+                                fontFamily: "Bebas Neue, sans-serif",
                                 fontSize: "11px",
                                 letterSpacing: "0.1em",
-                                color: "#8B9BB8",
+                                color: "#6B6B6B",
                                 marginTop: "4px",
                               }}
                             >
-                              REAL OPENINGS
+                              SPOTS OPENING
                             </p>
                           </div>
                         </div>
                         <p
                           style={{
-                            fontFamily: "Inter, sans-serif",
+                            fontFamily: "DM Sans, sans-serif",
                             fontSize: "13px",
-                            color: "#8B9BB8",
+                            color: "#A3A3A3",
                             marginTop: "16px",
                             lineHeight: 1.5,
                           }}
                         >
                           {school.school} loses{" "}
-                          <strong style={{ color: "#F0F4FF" }}>
+                          <strong style={{ color: "#FFFFFF" }}>
                             {totalGraduating} player{totalGraduating !== 1 ? "s" : ""}
                           </strong>{" "}
-                          to graduation in 2026 with no known commits filling those spots, leaving{" "}
+                          to graduation in {displayYear || athleteGradYearFromGap || 2027} with no known commits filling those spots, leaving{" "}
                           <strong
                             style={{ color: totalOpenings > 0 ? "#22C55E" : "#EF4444" }}
                           >
@@ -1226,6 +1387,26 @@ export default function SchoolDetailModal({
                           </strong>{" "}
                           across all positions.
                         </p>
+                        {/* Position-specific openings one-liner */}
+                        {positionGraduating > 0 && athletePositionsFromGap.length > 0 && (
+                          <p
+                            style={{
+                              fontFamily: "DM Sans, sans-serif",
+                              fontSize: "12.5px",
+                              color: "#F5C518",
+                              marginTop: "10px",
+                              lineHeight: 1.5,
+                              padding: "8px 12px",
+                              background: "rgba(245,197,24,0.06)",
+                              border: "1px solid rgba(245,197,24,0.15)",
+                              borderRadius: "4px",
+                            }}
+                          >
+                            ⚡ <strong>{positionGraduating}</strong> of those openings are at{" "}
+                            <strong>your position{athletePositionsFromGap.length > 1 ? "s" : ""}</strong>{" "}
+                            ({athletePositionsFromGap.join(", ")})
+                          </p>
+                        )}
                       </div>
 
                       {/* VIEW FULL ROSTER toggle button */}
@@ -1233,9 +1414,9 @@ export default function SchoolDetailModal({
                         onClick={() => setShowFullRoster((v) => !v)}
                         style={{
                           width: "100%",
-                          background: "#181E32",
-                          border: "1px solid #1E2A42",
-                          borderRadius: "10px",
+                          background: "#141414",
+                          border: "1px solid #2A2A2A",
+                          borderRadius: "4px",
                           padding: "12px 20px",
                           display: "flex",
                           alignItems: "center",
@@ -1247,12 +1428,12 @@ export default function SchoolDetailModal({
                           (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(245,197,24,0.4)";
                         }}
                         onMouseLeave={(e) => {
-                          (e.currentTarget as HTMLButtonElement).style.borderColor = "#1E2A42";
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = "#2A2A2A";
                         }}
                       >
                         <span
                           style={{
-                            fontFamily: "Barlow Condensed, sans-serif",
+                            fontFamily: "Bebas Neue, sans-serif",
                             fontSize: "13px",
                             letterSpacing: "0.12em",
                             color: "#F5C518",
@@ -1262,7 +1443,7 @@ export default function SchoolDetailModal({
                         </span>
                         <span
                           style={{
-                            fontFamily: "Inter, sans-serif",
+                            fontFamily: "DM Sans, sans-serif",
                             fontSize: "14px",
                             color: "#F5C518",
                             transition: "transform 0.25s ease",
@@ -1276,18 +1457,20 @@ export default function SchoolDetailModal({
 
                       {/* Per-position breakdown — hidden behind toggle */}
                       {showFullRoster && POSITIONS.map((pos) => {
-                        const posPlayers = players.filter((p) => p.position === pos);
+                        const posPlayers = players.filter((p) => {
+                          if (!p.position) return false;
+                          const playerPositions = p.position.split("/").map((s: string) => s.trim().toUpperCase());
+                          return playerPositions.includes(pos);
+                        });
                         if (posPlayers.length === 0) return null;
-                        const graduating = posPlayers.filter(
-                          (p) => p.graduationYear && p.graduationYear <= 2026
-                        );
+                        const graduating = posPlayers.filter((p) => p.graduationYear === selectedRosterYear);
                         return (
                           <div
                             key={pos}
                             style={{
-                              background: "#181E32",
-                              border: "1px solid #1E2A42",
-                              borderRadius: "10px",
+                              background: "#141414",
+                              border: "1px solid #1E1E1E",
+                              borderRadius: "4px",
                               padding: "16px 20px",
                             }}
                           >
@@ -1295,7 +1478,7 @@ export default function SchoolDetailModal({
                               <div className="flex items-center gap-2">
                                 <span
                                   style={{
-                                    fontFamily: "Barlow Condensed, sans-serif",
+                                    fontFamily: "Bebas Neue, sans-serif",
                                     fontSize: "13px",
                                     letterSpacing: "0.12em",
                                     color: "#F5C518",
@@ -1309,9 +1492,9 @@ export default function SchoolDetailModal({
                                 </span>
                                 <span
                                   style={{
-                                    fontFamily: "Inter, sans-serif",
+                                    fontFamily: "DM Sans, sans-serif",
                                     fontSize: "13px",
-                                    color: "#8B9BB8",
+                                    color: "#A3A3A3",
                                   }}
                                 >
                                   {POSITION_LABELS[pos]}
@@ -1321,7 +1504,7 @@ export default function SchoolDetailModal({
                                 {graduating.length > 0 && (
                                   <span
                                     style={{
-                                      fontFamily: "Inter, sans-serif",
+                                      fontFamily: "DM Sans, sans-serif",
                                       fontSize: "12px",
                                       color: "#EF4444",
                                     }}
@@ -1331,9 +1514,9 @@ export default function SchoolDetailModal({
                                 )}
                                 <span
                                   style={{
-                                    fontFamily: "Inter, sans-serif",
+                                    fontFamily: "DM Sans, sans-serif",
                                     fontSize: "12px",
-                                    color: "#4A5570",
+                                    color: "#6B6B6B",
                                   }}
                                 >
                                   {posPlayers.length} total
@@ -1350,8 +1533,8 @@ export default function SchoolDetailModal({
                                   const gradInfo = player.graduationYear
                                     ? GRAD_YEAR_COLORS[player.graduationYear]
                                     : null;
-                                  const isGraduating =
-                                    player.graduationYear && player.graduationYear <= 2026;
+                                  // Use server-computed graduating names set for exact match (lowercased)
+                                  const isGraduating = player.graduationYear === selectedRosterYear;
                                   return (
                                     <div
                                       key={player.id}
@@ -1359,16 +1542,16 @@ export default function SchoolDetailModal({
                                       style={{
                                         background: isGraduating
                                           ? "rgba(239,68,68,0.08)"
-                                          : "#181E32",
-                                        border: `1px solid ${isGraduating ? "rgba(239,68,68,0.25)" : "#1E2A42"}`,
+                                          : "#1A1A1A",
+                                        border: `1px solid ${isGraduating ? "rgba(239,68,68,0.25)" : "#2A2A2A"}`,
                                         borderRadius: "3px",
                                       }}
                                     >
                                       <span
                                         style={{
-                                          fontFamily: "Inter, sans-serif",
+                                          fontFamily: "DM Sans, sans-serif",
                                           fontSize: "13px",
-                                          color: isGraduating ? "#EF4444" : "#F0F4FF",
+                                          color: isGraduating ? "#EF4444" : "#FFFFFF",
                                         }}
                                       >
                                         {player.name}
@@ -1376,7 +1559,7 @@ export default function SchoolDetailModal({
                                       {gradInfo && (
                                         <span
                                           style={{
-                                            fontFamily: "Barlow Condensed, sans-serif",
+                                            fontFamily: "Bebas Neue, sans-serif",
                                             fontSize: "10px",
                                             letterSpacing: "0.08em",
                                             color: gradInfo.color,
@@ -1408,9 +1591,9 @@ export default function SchoolDetailModal({
                               />
                               <span
                                 style={{
-                                  fontFamily: "Inter, sans-serif",
+                                  fontFamily: "DM Sans, sans-serif",
                                   fontSize: "12px",
-                                  color: "#4A5570",
+                                  color: "#6B6B6B",
                                 }}
                               >
                                 {info.label} (Grad {year})
@@ -1421,27 +1604,37 @@ export default function SchoolDetailModal({
                       )}
                     </div>
                   )}
+                  </>
+                  )}
                 </div>
               )}
 
-              {/* ─── TAB 4: EMAIL ─────────────────────────────────────────────── */}
+              {/* ─── TAB 4: EMAIL ─────────────────────────────────────────────────────── */}
               {activeTab === "email" && (
                 <div className="space-y-5">
+                  {/* ── Pro gate for free users ── */}
+                  {!hasPaidAccess ? (
+                    <ProGate
+                      headline="AI EMAIL GENERATION"
+                      subtext="Generate personalized outreach emails referencing real roster data and send directly from your Gmail. Available on Pro."
+                    />
+                  ) : (
+                  <>
                   {/* Intro card */}
                   <div
                     style={{
-                      background: "#181E32",
-                      border: "1px solid #1E2A42",
-                      borderRadius: "10px",
+                      background: "#141414",
+                      border: "1px solid #1E1E1E",
+                      borderRadius: "4px",
                       padding: "20px",
                     }}
                   >
                     <p
                       style={{
-                        fontFamily: "Barlow Condensed, sans-serif",
+                        fontFamily: "Bebas Neue, sans-serif",
                         fontSize: "11px",
                         letterSpacing: "0.15em",
-                        color: "#8B9BB8",
+                        color: "#6B6B6B",
                         marginBottom: "8px",
                       }}
                     >
@@ -1449,9 +1642,9 @@ export default function SchoolDetailModal({
                     </p>
                     <p
                       style={{
-                        fontFamily: "Inter, sans-serif",
+                        fontFamily: "DM Sans, sans-serif",
                         fontSize: "13px",
-                        color: "#8B9BB8",
+                        color: "#94A3B8",
                         lineHeight: 1.5,
                       }}
                     >
@@ -1461,44 +1654,92 @@ export default function SchoolDetailModal({
                     </p>
                   </div>
 
-                  {/* Tone selector */}
+                  {/* Anything Specific to Mention? */}
                   <div>
                     <p
                       style={{
-                        fontFamily: "Barlow Condensed, sans-serif",
-                        fontSize: "11px",
-                        letterSpacing: "0.15em",
-                        color: "#8B9BB8",
+                        fontFamily: "DM Sans, sans-serif",
+                        fontSize: "13px",
+                        fontWeight: 600,
+                        color: "#F8FAFC",
+                        marginBottom: "8px",
+                      }}
+                    >
+                      ANYTHING SPECIFIC TO MENTION?
+                    </p>
+                    <textarea
+                      value={specificMention}
+                      onChange={(e) => {
+                        if (e.target.value.length <= 200) {
+                          setSpecificMention(e.target.value);
+                        }
+                      }}
+                      placeholder="e.g. I saw you won the MPSF tournament, I noticed you lost two setters to graduation, I watched your match last week..."
+                      style={{
+                        width: "100%",
+                        height: "80px",
+                        background: "#1A1A1A",
+                        border: "2px solid #2A2A2A",
+                        borderLeft: "3px solid #F5C518",
+                        borderRadius: "8px",
+                        color: "#F8FAFC",
+                        fontFamily: "DM Sans, sans-serif",
+                        fontSize: "13px",
+                        padding: "12px",
+                        resize: "none",
+                        transition: "border-color 0.2s ease",
+                      }}
+                      onFocus={(e) => {
+                        (e.target as HTMLTextAreaElement).style.borderColor = "#F5C518";
+                      }}
+                      onBlur={(e) => {
+                        (e.target as HTMLTextAreaElement).style.borderColor = "#2A2A2A";
+                      }}
+                    />
+                    <p
+                      style={{
+                        fontFamily: "DM Sans, sans-serif",
+                        fontSize: "12px",
+                        color: "#5a6478",
+                        marginTop: "6px",
                         marginBottom: "10px",
                       }}
                     >
-                      TONE
+                      Reference something specific about this program — the AI will weave it in naturally. {specificMention.length}/200
                     </p>
-                    <div className="flex gap-2 flex-wrap">
-                      {TONE_OPTIONS.map((opt) => {
-                        const isSelected = emailTone === opt.id;
-                        return (
-                          <button
-                            key={opt.id}
-                            onClick={() => setEmailTone(opt.id)}
-                            style={{
-                              padding: "6px 16px",
-                              borderRadius: "8px",
-                              border: isSelected ? "1px solid #F5C518" : "1px solid #1E2A42",
-                              background: isSelected ? "#F5C518" : "#181E32",
-                              color: isSelected ? "#090D18" : "#8B9BB8",
-                              fontFamily: "Barlow Condensed, sans-serif",
-                              fontSize: "12px",
-                              letterSpacing: "0.12em",
-                              cursor: "pointer",
-                              transition: "all 200ms ease",
-                            }}
-                          >
-                            {opt.label}
-                          </button>
-                        );
-                      })}
-                    </div>
+                    {school.athleticsDomain && (
+                      <button
+                        onClick={() => {
+                          const url = school.athleticsDomain.startsWith("http")
+                            ? school.athleticsDomain
+                            : `https://${school.athleticsDomain}`;
+                          window.open(url, "_blank");
+                        }}
+                        style={{
+                          width: "100%",
+                          padding: "10px",
+                          background: "transparent",
+                          border: "1px solid #2A2A2A",
+                          borderRadius: "8px",
+                          color: "#F8FAFC",
+                          fontFamily: "DM Sans, sans-serif",
+                          fontSize: "11px",
+                          letterSpacing: "0.05em",
+                          cursor: "pointer",
+                          transition: "all 0.2s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = "#F5C518";
+                          (e.currentTarget as HTMLButtonElement).style.color = "#F5C518";
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = "#2A2A2A";
+                          (e.currentTarget as HTMLButtonElement).style.color = "#F8FAFC";
+                        }}
+                      >
+                        🔗 FIND RECENT NEWS →
+                      </button>
+                    )}
                   </div>
 
                   {/* Generate / Regenerate button */}
@@ -1508,16 +1749,15 @@ export default function SchoolDetailModal({
                       disabled={generateEmailMutation.isPending}
                       className="w-full py-3 flex items-center justify-center gap-2"
                       style={{
-                        background: generateEmailMutation.isPending ? "#1E2A42" : "#F5C518",
-                        color: generateEmailMutation.isPending ? "#4A5570" : "#090D18",
+                        background: generateEmailMutation.isPending ? "#2A2A2A" : "#F5C518",
+                        color: generateEmailMutation.isPending ? "#6B6B6B" : "#0A0A0A",
                         border: "none",
-                        borderRadius: "10px",
-                        fontFamily: "Barlow Condensed, sans-serif",
+                        borderRadius: "0px",
+                        fontFamily: "Bebas Neue, sans-serif",
                         fontSize: "14px",
                         letterSpacing: "0.12em",
                         cursor: generateEmailMutation.isPending ? "not-allowed" : "pointer",
                         transition: "background 200ms ease",
-                        boxShadow: generateEmailMutation.isPending ? "none" : "0 4px 20px rgba(245,197,24,0.32)",
                       }}
                     >
                       {generateEmailMutation.isPending ? (
@@ -1544,11 +1784,11 @@ export default function SchoolDetailModal({
                         rows={12}
                         style={{
                           width: "100%",
-                          background: "#0C1020",
-                          border: "1px solid #1E2A42",
-                          borderRadius: "10px",
-                          color: "#F0F4FF",
-                          fontFamily: "Inter, sans-serif",
+                          background: "#0D0D0D",
+                          border: "1px solid #2A2A2A",
+                          borderRadius: "4px",
+                          color: "#F8FAFC",
+                          fontFamily: "DM Sans, sans-serif",
                           fontSize: "13px",
                           lineHeight: 1.65,
                           padding: "16px",
@@ -1559,7 +1799,7 @@ export default function SchoolDetailModal({
                           e.currentTarget.style.borderColor = "#F5C518";
                         }}
                         onBlur={(e) => {
-                          e.currentTarget.style.borderColor = "#1E2A42";
+                          e.currentTarget.style.borderColor = "#2A2A2A";
                         }}
                       />
 
@@ -1571,10 +1811,10 @@ export default function SchoolDetailModal({
                           className="flex items-center gap-1.5 px-4 py-2.5"
                           style={{
                             background: "transparent",
-                            color: emailCopiedDraft ? "#22C55E" : "#8B9BB8",
-                            border: `1px solid ${emailCopiedDraft ? "#22C55E" : "#1E2A42"}`,
-                            borderRadius: "8px",
-                            fontFamily: "Barlow Condensed, sans-serif",
+                            color: emailCopiedDraft ? "#22C55E" : "#94A3B8",
+                            border: `1px solid ${emailCopiedDraft ? "#22C55E" : "#2A2A2A"}`,
+                            borderRadius: "0px",
+                            fontFamily: "Bebas Neue, sans-serif",
                             fontSize: "12px",
                             letterSpacing: "0.1em",
                             cursor: "pointer",
@@ -1592,10 +1832,10 @@ export default function SchoolDetailModal({
                           className="flex items-center gap-1.5 px-4 py-2.5"
                           style={{
                             background: "transparent",
-                            color: generateEmailMutation.isPending ? "#4A5570" : "#8B9BB8",
-                            border: "1px solid #1E2A42",
-                            borderRadius: "8px",
-                            fontFamily: "Barlow Condensed, sans-serif",
+                            color: generateEmailMutation.isPending ? "#6B6B6B" : "#94A3B8",
+                            border: "1px solid #2A2A2A",
+                            borderRadius: "0px",
+                            fontFamily: "Bebas Neue, sans-serif",
                             fontSize: "12px",
                             letterSpacing: "0.1em",
                             cursor: generateEmailMutation.isPending ? "not-allowed" : "pointer",
@@ -1615,16 +1855,15 @@ export default function SchoolDetailModal({
                           disabled={sending || emailSent}
                           className="flex items-center gap-1.5 px-4 py-2.5 ml-auto"
                           style={{
-                            background: emailSent ? "#22C55E" : sending ? "#1E2A42" : "#F5C518",
-                            color: emailSent ? "#F0F4FF" : sending ? "#4A5570" : "#090D18",
+                            background: emailSent ? "#22C55E" : sending ? "#2A2A2A" : "#F5C518",
+                            color: emailSent ? "#FFFFFF" : sending ? "#6B6B6B" : "#0A0A0A",
                             border: "none",
-                            borderRadius: "8px",
-                            fontFamily: "Barlow Condensed, sans-serif",
+                            borderRadius: "0px",
+                            fontFamily: "Bebas Neue, sans-serif",
                             fontSize: "12px",
                             letterSpacing: "0.1em",
                             cursor: sending || emailSent ? "not-allowed" : "pointer",
                             transition: "all 200ms ease",
-                            boxShadow: !sending && !emailSent ? "0 4px 20px rgba(245,197,24,0.32)" : "none",
                           }}
                         >
                           {emailSent ? (
@@ -1638,19 +1877,21 @@ export default function SchoolDetailModal({
                       </div>
                     </div>
                   )}
+                  </>
+                  )}
                 </div>
               )}
 
-              {/* ─── TAB 5: LINKS ─────────────────────────────────────────────── */}
+              {/* ─── TAB 5: LINKS ───────────────────────────────────────────────────── */}
               {activeTab === "links" && (
                 <div className="space-y-4">
                   {/* Section label */}
                   <p
                     style={{
-                      fontFamily: "Barlow Condensed, sans-serif",
+                      fontFamily: "DM Sans, sans-serif",
                       fontSize: "11px",
-                      letterSpacing: "0.15em",
-                      color: "#8B9BB8",
+                      letterSpacing: "0.12em",
+                      color: "#6B6B6B",
                       textTransform: "uppercase",
                       marginBottom: "16px",
                     }}
@@ -1661,8 +1902,8 @@ export default function SchoolDetailModal({
                   {/* Link 1 — Recruiting Questionnaire (primary, larger card) */}
                   <div
                     style={{
-                      background: schoolLinks?.recruitingQuestionnaireUrl ? "#181E32" : "#131829",
-                      border: "1px solid #1E2A42",
+                      background: schoolLinks?.recruitingQuestionnaireUrl ? "#1A1A1A" : "#141414",
+                      border: "1px solid #2A2A2A",
                       borderRadius: "10px",
                       padding: "20px",
                       opacity: schoolLinks?.recruitingQuestionnaireUrl ? 1 : 0.5,
@@ -1685,10 +1926,10 @@ export default function SchoolDetailModal({
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p
                         style={{
-                          fontFamily: "Barlow Condensed, sans-serif",
+                          fontFamily: "DM Sans, sans-serif",
                           fontSize: "11px",
-                          letterSpacing: "0.15em",
-                          color: "#8B9BB8",
+                          letterSpacing: "0.1em",
+                          color: "#6B6B6B",
                           textTransform: "uppercase",
                           marginBottom: "4px",
                         }}
@@ -1697,9 +1938,9 @@ export default function SchoolDetailModal({
                       </p>
                       <p
                         style={{
-                          fontFamily: "Inter, sans-serif",
+                          fontFamily: "DM Sans, sans-serif",
                           fontSize: "15px",
-                          color: schoolLinks?.recruitingQuestionnaireUrl ? "#F0F4FF" : "#4A5570",
+                          color: schoolLinks?.recruitingQuestionnaireUrl ? "#FFFFFF" : "#4A4A4A",
                           fontWeight: 500,
                         }}
                       >
@@ -1720,17 +1961,16 @@ export default function SchoolDetailModal({
                           gap: "6px",
                           padding: "10px 18px",
                           background: "#F5C518",
-                          color: "#090D18",
+                          color: "#0A0A0A",
                           border: "none",
-                          borderRadius: "8px",
-                          fontFamily: "Barlow Condensed, sans-serif",
+                          borderRadius: "6px",
+                          fontFamily: "Bebas Neue, sans-serif",
                           fontSize: "14px",
                           letterSpacing: "0.1em",
                           cursor: "pointer",
                           textDecoration: "none",
                           flexShrink: 0,
                           fontWeight: 700,
-                          boxShadow: "0 4px 20px rgba(245,197,24,0.32)",
                         }}
                       >
                         OPEN <ExternalLink size={12} />
@@ -1741,8 +1981,8 @@ export default function SchoolDetailModal({
                   {/* Link 2 — Athletics Website */}
                   <div
                     style={{
-                      background: schoolLinks?.athleticsWebsiteUrl ? "#181E32" : "#131829",
-                      border: "1px solid #1E2A42",
+                      background: schoolLinks?.athleticsWebsiteUrl ? "#1A1A1A" : "#141414",
+                      border: "1px solid #2A2A2A",
                       borderRadius: "10px",
                       padding: "16px 20px",
                       opacity: schoolLinks?.athleticsWebsiteUrl ? 1 : 0.5,
@@ -1765,10 +2005,10 @@ export default function SchoolDetailModal({
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p
                         style={{
-                          fontFamily: "Barlow Condensed, sans-serif",
+                          fontFamily: "DM Sans, sans-serif",
                           fontSize: "11px",
-                          letterSpacing: "0.15em",
-                          color: "#8B9BB8",
+                          letterSpacing: "0.1em",
+                          color: "#6B6B6B",
                           textTransform: "uppercase",
                           marginBottom: "4px",
                         }}
@@ -1777,9 +2017,9 @@ export default function SchoolDetailModal({
                       </p>
                       <p
                         style={{
-                          fontFamily: "Inter, sans-serif",
+                          fontFamily: "DM Sans, sans-serif",
                           fontSize: "14px",
-                          color: schoolLinks?.athleticsWebsiteUrl ? "#F0F4FF" : "#4A5570",
+                          color: schoolLinks?.athleticsWebsiteUrl ? "#FFFFFF" : "#4A4A4A",
                           fontWeight: 500,
                         }}
                       >
@@ -1800,10 +2040,10 @@ export default function SchoolDetailModal({
                           gap: "6px",
                           padding: "9px 16px",
                           background: "transparent",
-                          color: "#F0F4FF",
-                          border: "1px solid #1E2A42",
-                          borderRadius: "8px",
-                          fontFamily: "Barlow Condensed, sans-serif",
+                          color: "#FFFFFF",
+                          border: "1px solid #FFFFFF",
+                          borderRadius: "6px",
+                          fontFamily: "Bebas Neue, sans-serif",
                           fontSize: "13px",
                           letterSpacing: "0.1em",
                           cursor: "pointer",
@@ -1823,21 +2063,20 @@ export default function SchoolDetailModal({
           {/* ── Footer ── */}
           <div
             className="flex items-center justify-between px-6 py-4 gap-3"
-            style={{ borderTop: "1px solid #1E2A42", flexShrink: 0 }}
+            style={{ borderTop: "1px solid #1E1E1E", flexShrink: 0 }}
           >
             <button
               onClick={onToggleOutreach}
               className="flex-1 py-2.5"
               style={{
                 background: isInOutreachList ? "transparent" : "#F5C518",
-                color: isInOutreachList ? "#F5C518" : "#090D18",
+                color: isInOutreachList ? "#F5C518" : "#0A0A0A",
                 border: isInOutreachList ? "1px solid #F5C518" : "none",
-                borderRadius: "8px",
-                fontFamily: "Barlow Condensed, sans-serif",
+                borderRadius: "0px",
+                fontFamily: "Bebas Neue, sans-serif",
                 fontSize: "13px",
                 letterSpacing: "0.1em",
                 cursor: "pointer",
-                boxShadow: !isInOutreachList ? "0 4px 20px rgba(245,197,24,0.32)" : "none",
               }}
             >
               {isInOutreachList ? "✓ ADDED TO LIST" : "ADD TO LIST"}
@@ -1847,10 +2086,10 @@ export default function SchoolDetailModal({
               className="py-2.5 px-5"
               style={{
                 background: "transparent",
-                color: "#4A5570",
-                border: "1px solid #1E2A42",
-                borderRadius: "8px",
-                fontFamily: "Barlow Condensed, sans-serif",
+                color: "#6B6B6B",
+                border: "1px solid #2A2A2A",
+                borderRadius: "0px",
+                fontFamily: "Bebas Neue, sans-serif",
                 fontSize: "13px",
                 letterSpacing: "0.1em",
                 cursor: "pointer",
@@ -1861,6 +2100,75 @@ export default function SchoolDetailModal({
           </div>
         </motion.div>
       </motion.div>
+
+      {/* ── Commits Modal ── */}
+      {showCommitsModal && (
+        <div
+          style={{
+            position: "fixed", inset: 0, zIndex: 9999,
+            background: "rgba(0,0,0,0.85)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            padding: "20px",
+          }}
+          onClick={() => setShowCommitsModal(false)}
+        >
+          <div
+            style={{
+              background: "#1A1A1A", border: "1px solid #2A2A2A",
+              borderRadius: "12px", width: "100%", maxWidth: "480px",
+              maxHeight: "70vh", overflow: "hidden", display: "flex", flexDirection: "column",
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid #2A2A2A", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <p style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "18px", color: "#F5C518", letterSpacing: "0.05em", margin: 0 }}>
+                  KNOWN COMMITS — CLASS OF {selectedRosterYear}
+                </p>
+                <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", marginTop: "4px" }}>
+                  {schoolCommits.length} verified commit{schoolCommits.length !== 1 ? "s" : ""} · sourced from MiddleHitter.com
+                </p>
+              </div>
+              <button onClick={() => setShowCommitsModal(false)} style={{ background: "none", border: "none", cursor: "pointer", color: "#6B6B6B", fontSize: "20px", lineHeight: 1 }}>×</button>
+            </div>
+            {/* Commit list */}
+            <div style={{ overflowY: "auto", flex: 1, padding: "12px 20px 20px" }}>
+              {schoolCommits.map((commit, i) => (
+                <div
+                  key={commit.id}
+                  style={{
+                    display: "flex", alignItems: "center", justifyContent: "space-between",
+                    padding: "12px 0",
+                    borderBottom: i < schoolCommits.length - 1 ? "1px solid #222" : "none",
+                  }}
+                >
+                  <div>
+                    <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", fontWeight: 600, color: "#FFFFFF", margin: 0 }}>
+                      {commit.name}
+                    </p>
+                    {(commit.club || commit.highSchool) && (
+                      <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", margin: "2px 0 0" }}>
+                        {[commit.club, commit.highSchool].filter(Boolean).join(" · ")}
+                      </p>
+                    )}
+                  </div>
+                  {commit.position && (
+                    <span style={{
+                      fontFamily: "Bebas Neue, sans-serif", fontSize: "13px",
+                      color: "#F5C518", letterSpacing: "0.05em",
+                      background: "rgba(245,197,24,0.1)", border: "1px solid rgba(245,197,24,0.2)",
+                      borderRadius: "4px", padding: "3px 8px",
+                    }}>
+                      {commit.position}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── Pre-send Confirmation Modal ── */}
       <AnimatePresence>
@@ -1874,12 +2182,13 @@ export default function SchoolDetailModal({
             style={{ background: "rgba(0,0,0,0.75)" }}
           >
             <motion.div
+              className="pre-send-modal"
               initial={{ opacity: 0, scale: 0.95, y: 16 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 16 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
               style={{
-                background: "#181E32",
+                background: "#1A1A1A",
                 border: "1px solid #3A3A3A",
                 borderRadius: "16px",
                 padding: "32px",
@@ -1909,7 +2218,7 @@ export default function SchoolDetailModal({
               <p
                 className="text-center mb-6"
                 style={{
-                  fontFamily: "Barlow Condensed, sans-serif",
+                  fontFamily: "Bebas Neue, sans-serif",
                   fontSize: "26px",
                   letterSpacing: "0.06em",
                   color: "#FFFFFF",
@@ -1940,7 +2249,7 @@ export default function SchoolDetailModal({
                     />
                     <p
                       style={{
-                        fontFamily: "Inter, sans-serif",
+                        fontFamily: "DM Sans, sans-serif",
                         fontSize: "14px",
                         color: "#C0C0C0",
                         lineHeight: 1.5,
@@ -1956,7 +2265,7 @@ export default function SchoolDetailModal({
               <div
                 style={{
                   background: "#0F0F0F",
-                  border: "1px solid #1E2A42",
+                  border: "1px solid #2A2A2A",
                   borderRadius: "8px",
                   padding: "14px 16px",
                   marginBottom: "24px",
@@ -1964,7 +2273,7 @@ export default function SchoolDetailModal({
               >
                 <p
                   style={{
-                    fontFamily: "Inter, sans-serif",
+                    fontFamily: "DM Sans, sans-serif",
                     fontSize: "11px",
                     letterSpacing: "0.1em",
                     color: "#6B6B6B",
@@ -1976,7 +2285,7 @@ export default function SchoolDetailModal({
                 </p>
                 <p
                   style={{
-                    fontFamily: "Inter, sans-serif",
+                    fontFamily: "DM Sans, sans-serif",
                     fontSize: "13px",
                     color: "#E0E0E0",
                     marginBottom: "12px",
@@ -1987,15 +2296,15 @@ export default function SchoolDetailModal({
                 <div
                   style={{
                     height: "1px",
-                    background: "#1E2A42",
+                    background: "#2A2A2A",
                     marginBottom: "12px",
                   }}
                 />
                 <p
                   style={{
-                    fontFamily: "Inter, sans-serif",
+                    fontFamily: "DM Sans, sans-serif",
                     fontSize: "13px",
-                    color: "#8B9BB8",
+                    color: "#94A3B8",
                     lineHeight: 1.6,
                     whiteSpace: "pre-wrap",
                   }}
@@ -2017,7 +2326,7 @@ export default function SchoolDetailModal({
                     color: "#6B6B6B",
                     border: "1px solid #3A3A3A",
                     borderRadius: "8px",
-                    fontFamily: "Barlow Condensed, sans-serif",
+                    fontFamily: "Bebas Neue, sans-serif",
                     fontSize: "14px",
                     letterSpacing: "0.1em",
                     cursor: "pointer",
@@ -2030,10 +2339,10 @@ export default function SchoolDetailModal({
                   className="flex-1 py-3"
                   style={{
                     background: "#F5C518",
-                    color: "#090D18",
+                    color: "#0A0A0A",
                     border: "none",
                     borderRadius: "8px",
-                    fontFamily: "Barlow Condensed, sans-serif",
+                    fontFamily: "Bebas Neue, sans-serif",
                     fontSize: "14px",
                     letterSpacing: "0.1em",
                     cursor: "pointer",
@@ -2065,7 +2374,7 @@ export default function SchoolDetailModal({
               exit={{ opacity: 0, scale: 0.95, y: 16 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
               style={{
-                background: "#181E32",
+                background: "#1A1A1A",
                 border: "1px solid #3A3A3A",
                 borderRadius: "16px",
                 padding: "32px",
@@ -2095,7 +2404,7 @@ export default function SchoolDetailModal({
               <p
                 className="text-center mb-2"
                 style={{
-                  fontFamily: "Barlow Condensed, sans-serif",
+                  fontFamily: "Bebas Neue, sans-serif",
                   fontSize: "32px",
                   letterSpacing: "0.06em",
                   color: "#FFFFFF",
@@ -2108,9 +2417,9 @@ export default function SchoolDetailModal({
               <p
                 className="text-center mb-6"
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "DM Sans, sans-serif",
                   fontSize: "14px",
-                  color: "#8B9BB8",
+                  color: "#94A3B8",
                   lineHeight: 1.5,
                 }}
               >
@@ -2146,7 +2455,7 @@ export default function SchoolDetailModal({
               >
                 <p
                   style={{
-                    fontFamily: "Barlow Condensed, sans-serif",
+                    fontFamily: "Bebas Neue, sans-serif",
                     fontSize: "11px",
                     letterSpacing: "0.15em",
                     color: "#F5C518",
@@ -2157,7 +2466,7 @@ export default function SchoolDetailModal({
                 </p>
                 <p
                   style={{
-                    fontFamily: "Inter, sans-serif",
+                    fontFamily: "DM Sans, sans-serif",
                     fontSize: "13px",
                     color: "#C0C0C0",
                     lineHeight: 1.6,
@@ -2175,10 +2484,10 @@ export default function SchoolDetailModal({
                 className="w-full py-3"
                 style={{
                   background: "#F5C518",
-                  color: "#090D18",
+                  color: "#0A0A0A",
                   border: "none",
                   borderRadius: "8px",
-                  fontFamily: "Barlow Condensed, sans-serif",
+                  fontFamily: "Bebas Neue, sans-serif",
                   fontSize: "16px",
                   letterSpacing: "0.12em",
                   cursor: "pointer",

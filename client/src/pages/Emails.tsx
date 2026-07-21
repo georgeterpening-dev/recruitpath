@@ -12,7 +12,7 @@ import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { SCHOOL_DATABASE } from "@/data/schoolDatabase";
-import AppTopNav from "@/components/AppTopNav";
+
 
 const DIVISION_COLORS: Record<string, string> = {
   D1: "#1E3A8A",
@@ -166,15 +166,14 @@ export default function Emails() {
 
   return (
     <>
-    <AppTopNav />
-    <div className="min-h-screen pb-8" style={{ background: "#090D18", paddingTop: "56px" }}>
+    <div className="min-h-screen pb-8" style={{ background: "#0A0E1A" }}>
       {/* Header */}
       <div
         className="px-6 py-5 flex items-center justify-between"
-        style={{ borderBottom: "1px solid #1E2A42" }}
+        style={{ borderBottom: "1px solid #1E293B" }}
       >
         <span
-          className="text-[#F5C518] text-xl"
+          className="text-[#F5B800] text-xl"
           style={{
             fontFamily: "Barlow Condensed, sans-serif",
             fontWeight: 800,
@@ -190,9 +189,9 @@ export default function Emails() {
         {/* Loading state */}
         {outreachLoading ? (
           <div className="flex flex-col items-center justify-center py-32">
-            <Loader2 size={32} className="text-[#F5C518] animate-spin mb-4" />
+            <Loader2 size={32} className="text-[#F5B800] animate-spin mb-4" />
             <p
-              className="text-[#8B9BB8] text-sm"
+              className="text-[#94A3B8] text-sm"
               style={{ fontFamily: "Inter, sans-serif" }}
             >
               Loading your schools...
@@ -213,7 +212,7 @@ export default function Emails() {
                 border: "1px solid rgba(245,184,0,0.2)",
               }}
             >
-              <Target size={36} className="text-[#F5C518]" />
+              <Target size={36} className="text-[#F5B800]" />
             </div>
             <h2
               className="font-display text-white mb-3"
@@ -222,7 +221,7 @@ export default function Emails() {
               NO SCHOOLS SELECTED YET
             </h2>
             <p
-              className="text-[#8B9BB8] text-base max-w-md mb-8 leading-relaxed"
+              className="text-[#94A3B8] text-base max-w-md mb-8 leading-relaxed"
               style={{ fontFamily: "Inter, sans-serif" }}
             >
               Add schools to your target list in the Coach Directory first.
@@ -233,13 +232,12 @@ export default function Emails() {
               <motion.button
                 whileHover={{ scale: 1.03, filter: "brightness(1.1)" }}
                 whileTap={{ scale: 0.97 }}
-                className="px-8 py-3.5 text-sm font-bold tracking-wider uppercase rounded-lg cursor-pointer"
+                className="px-8 py-3.5 text-sm font-semibold tracking-wider uppercase rounded-lg cursor-pointer"
                 style={{
-                  background: "#F5C518",
-                  color: "#090D18",
-                  fontFamily: "Barlow Condensed, sans-serif",
+                  background: "#F5B800",
+                  color: "#0A0E1A",
+                  fontFamily: "Inter, sans-serif",
                   border: "none",
-                  boxShadow: "0 4px 20px rgba(245,197,24,0.32)",
                 }}
               >
                 SELECT YOUR SCHOOLS →
@@ -257,10 +255,10 @@ export default function Emails() {
               className="lg:w-72 flex-shrink-0"
             >
               <div className="rp-card h-full flex flex-col">
-                <div className="p-5" style={{ borderBottom: "1px solid #1E2A42" }}>
+                <div className="p-5" style={{ borderBottom: "1px solid #1E293B" }}>
                   <h2 className="font-display text-white text-xl">TARGET SCHOOLS</h2>
                   <p
-                    className="text-[#8B9BB8] text-xs mt-1"
+                    className="text-[#94A3B8] text-xs mt-1"
                     style={{ fontFamily: "Inter, sans-serif" }}
                   >
                     Select a school to generate your personalized intro email
@@ -281,7 +279,7 @@ export default function Emails() {
                         border: `1px solid ${
                           selectedSchool?.schoolId === school.schoolId
                             ? "rgba(245,184,0,0.3)"
-                            : "#1E2A42"
+                            : "#1E293B"
                         }`,
                       }}
                     >
@@ -292,14 +290,14 @@ export default function Emails() {
                             fontFamily: "Inter, sans-serif",
                             color:
                               selectedSchool?.schoolId === school.schoolId
-                                ? "#F5C518"
+                                ? "#F5B800"
                                 : "#F8FAFC",
                           }}
                         >
                           {school.schoolName || school.schoolId}
                         </p>
                         <p
-                          className="text-[#8B9BB8] text-xs mt-0.5"
+                          className="text-[#94A3B8] text-xs mt-0.5"
                           style={{ fontFamily: "Inter, sans-serif" }}
                         >
                           {school.coachName || "Coach TBD"} · {school.sport || "—"}
@@ -318,19 +316,19 @@ export default function Emails() {
                       </div>
                       <ChevronRight
                         size={14}
-                        className="text-[#8B9BB8] group-hover:text-[#F5C518] transition-colors flex-shrink-0"
+                        className="text-[#94A3B8] group-hover:text-[#F5B800] transition-colors flex-shrink-0"
                       />
                     </motion.button>
                   ))}
                 </div>
-                <div className="p-4" style={{ borderTop: "1px solid #1E2A42" }}>
+                <div className="p-4" style={{ borderTop: "1px solid #1E293B" }}>
                   <p
-                    className="text-[#8B9BB8] text-xs text-center"
+                    className="text-[#94A3B8] text-xs text-center"
                     style={{ fontFamily: "Inter, sans-serif" }}
                   >
                     Add more schools in the{" "}
                     <Link href="/schools">
-                      <span className="text-[#F5C518] hover:underline cursor-pointer">
+                      <span className="text-[#F5B800] hover:underline cursor-pointer">
                         Coach Directory
                       </span>
                     </Link>
@@ -350,7 +348,7 @@ export default function Emails() {
                 {/* Email header */}
                 <div
                   className="p-5 flex items-center justify-between"
-                  style={{ borderBottom: "1px solid #1E2A42" }}
+                  style={{ borderBottom: "1px solid #1E293B" }}
                 >
                   <div>
                     {selectedSchool ? (
@@ -362,7 +360,7 @@ export default function Emails() {
                           ).toUpperCase()}
                         </h2>
                         <p
-                          className="text-[#8B9BB8] text-xs mt-0.5"
+                          className="text-[#94A3B8] text-xs mt-0.5"
                           style={{ fontFamily: "Inter, sans-serif" }}
                         >
                           Attn: {selectedSchool.coachName || "Head Coach"} ·{" "}
@@ -389,8 +387,8 @@ export default function Emails() {
                           onClick={handleRegenerate}
                           className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer"
                           style={{
-                            border: "1px solid #1E2A42",
-                            color: "#8B9BB8",
+                            border: "1px solid #1E293B",
+                            color: "#94A3B8",
                             fontFamily: "Inter, sans-serif",
                             background: "transparent",
                           }}
@@ -406,11 +404,10 @@ export default function Emails() {
                           style={{
                             background: copied
                               ? "rgba(34,197,94,0.15)"
-                              : "#F5C518",
-                            color: copied ? "#22C55E" : "#090D18",
+                              : "#F5B800",
+                            color: copied ? "#22C55E" : "#0A0E1A",
                             border: copied ? "1px solid #22C55E" : "none",
-                            fontFamily: "Barlow Condensed, sans-serif",
-                            boxShadow: copied ? "none" : "0 4px 20px rgba(245,197,24,0.32)",
+                            fontFamily: "Inter, sans-serif",
                           }}
                         >
                           {copied ? <Check size={12} /> : <Copy size={12} />}
@@ -432,13 +429,13 @@ export default function Emails() {
                           border: "1px solid rgba(245,184,0,0.2)",
                         }}
                       >
-                        <Mail size={28} className="text-[#F5C518]" />
+                        <Mail size={28} className="text-[#F5B800]" />
                       </div>
                       <h3 className="font-display text-white text-2xl mb-2">
                         READY TO GENERATE
                       </h3>
                       <p
-                        className="text-[#8B9BB8] text-sm max-w-sm"
+                        className="text-[#94A3B8] text-sm max-w-sm"
                         style={{ fontFamily: "Inter, sans-serif" }}
                       >
                         Select a school from your target list to generate a
@@ -449,18 +446,18 @@ export default function Emails() {
                     <div
                       className="p-5 rounded-xl"
                       style={{
-                        background: "#0C1020",
-                        border: "1px solid #1E2A42",
+                        background: "#0A0E1A",
+                        border: "1px solid #1E293B",
                       }}
                     >
                       {/* Email metadata */}
                       <div
                         className="mb-5 pb-4"
-                        style={{ borderBottom: "1px solid #1E2A42" }}
+                        style={{ borderBottom: "1px solid #1E293B" }}
                       >
                         <div className="flex items-center gap-3 mb-2">
                           <span
-                            className="text-xs text-[#8B9BB8]"
+                            className="text-xs text-[#94A3B8]"
                             style={{ fontFamily: "Inter, sans-serif" }}
                           >
                             To:
@@ -478,7 +475,7 @@ export default function Emails() {
                         </div>
                         <div className="flex items-center gap-3">
                           <span
-                            className="text-xs text-[#8B9BB8]"
+                            className="text-xs text-[#94A3B8]"
                             style={{ fontFamily: "Inter, sans-serif" }}
                           >
                             Subject:
@@ -509,7 +506,7 @@ export default function Emails() {
                               repeat: Infinity,
                               ease: "linear",
                             }}
-                            className="w-6 h-6 rounded-full border-2 border-[#F5C518] border-t-transparent"
+                            className="w-6 h-6 rounded-full border-2 border-[#F5B800] border-t-transparent"
                           />
                         </div>
                       )}
@@ -521,14 +518,14 @@ export default function Emails() {
                 {isTyping && (
                   <div
                     className="px-5 py-3 flex items-center gap-2"
-                    style={{ borderTop: "1px solid #1E2A42" }}
+                    style={{ borderTop: "1px solid #1E293B" }}
                   >
                     <div className="flex gap-1">
                       {[0, 1, 2].map((i) => (
                         <motion.div
                           key={i}
                           className="w-1.5 h-1.5 rounded-full"
-                          style={{ background: "#F5C518" }}
+                          style={{ background: "#F5B800" }}
                           animate={{ opacity: [0.3, 1, 0.3] }}
                           transition={{
                             duration: 1.2,
@@ -539,7 +536,7 @@ export default function Emails() {
                       ))}
                     </div>
                     <span
-                      className="text-xs text-[#8B9BB8]"
+                      className="text-xs text-[#94A3B8]"
                       style={{ fontFamily: "Inter, sans-serif" }}
                     >
                       Generating personalized email...

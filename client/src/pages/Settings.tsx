@@ -11,11 +11,35 @@ import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import AppFooter from "@/components/AppFooter";
-import AppTopNav from "@/components/AppTopNav";
+
+
+/** Muted outlined cancel button — red tint only on hover */
+function CancelButton({ onClick }: { onClick: () => void }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="px-5 py-2 text-xs font-bold tracking-widest uppercase rounded-sm cursor-pointer"
+      style={{
+        background: "transparent",
+        border: `1px solid ${hovered ? "#E24B4A" : "#2A2A2A"}`,
+        color: hovered ? "#E24B4A" : "#888888",
+        fontFamily: "DM Sans, sans-serif",
+        transition: "border-color 0.2s, color 0.2s",
+      }}
+    >
+      CANCEL SUBSCRIPTION
+    </button>
+  );
+}
 
 export default function Settings() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState("");
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [cancelPeriodEnd, setCancelPeriodEnd] = useState<Date | null>(null);
 
   const { user, isAuthenticated, loading: authLoading, logout } = useAuth();
   const search = useSearch();
@@ -199,13 +223,58 @@ export default function Settings() {
     createPortal.mutate();
   };
 
+  // Cancel subscription mutation
+  const cancelSubscription = trpc.subscription.cancel.useMutation({
+    onSuccess: (data) => {
+      setShowCancelModal(false);
+      setCancelPeriodEnd(data.periodEnd);
+      utils.subscription.status.invalidate();
+      utils.auth.me.invalidate();
+    },
+    onError: (error) => {
+      setShowCancelModal(false);
+      toast.error(error.message || "Failed to cancel subscription. Please try again.");
+    },
+  });
+
+  // Reactivate subscription mutation
+  const reactivateSubscription = trpc.subscription.reactivate.useMutation({
+    onSuccess: () => {
+      setCancelPeriodEnd(null);
+      utils.subscription.status.invalidate();
+      utils.auth.me.invalidate();
+      toast.success("Your subscription has been reactivated!");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to reactivate subscription. Please try again.");
+    },
+  });
+
+  const handleConfirmCancel = () => {
+    cancelSubscription.mutate();
+  };
+
+  const handleReactivate = () => {
+    reactivateSubscription.mutate();
+  };
+
   const handleLogout = () => {
     logout();
     window.location.href = "/";
   };
 
+  const resetWalkthrough = trpc.auth.resetWalkthrough.useMutation();
+  const handleReplayWalkthrough = () => {
+    resetWalkthrough.mutate(undefined, {
+      onSuccess: () => {
+        window.location.href = "/dashboard";
+      },
+    });
+  };
+
   const currentPlan = subStatus?.plan || "free";
   const hasPaidAccess = subStatus?.hasPaidAccess ?? false;
+  const isCancelling = subStatus?.subscriptionStatus === "cancelling" || cancelPeriodEnd !== null;
   const userName = user?.name || "Athlete";
   const userEmail = user?.email || "—";
 
@@ -217,9 +286,8 @@ export default function Settings() {
 
   return (
     <>
-    <AppTopNav />
-    <div className="min-h-screen pb-8" style={{ background: "#090D18", paddingTop: "56px" }}>
-      <div className="max-w-3xl mx-auto px-6 pt-10">
+    <div className="min-h-screen pb-24 md:pb-8" style={{ background: "#0A0E1A" }}>
+      <div className="max-w-3xl mx-auto px-4 md:px-6 pt-6 md:pt-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -229,12 +297,12 @@ export default function Settings() {
         >
           <h1
             style={{
-              fontFamily: "Barlow Condensed, sans-serif",
+              fontFamily: "Bebas Neue, sans-serif",
               fontSize: "56px",
               fontWeight: 700,
-              color: "#F0F4FF",
+              color: "#FFFFFF",
               lineHeight: 1,
-              letterSpacing: "0.04em",
+              letterSpacing: "-0.02em",
             }}
           >
             SETTINGS
@@ -254,9 +322,9 @@ export default function Settings() {
               exit={{ opacity: 0, y: -10 }}
               className="mb-8"
               style={{
-                background: "#0C1020",
+                background: "#1A1A00",
                 border: "1px solid #F5C518",
-                borderRadius: "12px",
+                borderRadius: "4px",
                 padding: "24px",
               }}
             >
@@ -272,7 +340,7 @@ export default function Settings() {
                     style={{
                       width: "24px",
                       height: "24px",
-                      border: "3px solid #1E2A42",
+                      border: "3px solid #2A2A2A",
                       borderTop: "3px solid #F5C518",
                       borderRadius: "50%",
                     }}
@@ -281,7 +349,7 @@ export default function Settings() {
                 <div>
                   <div
                     style={{
-                      fontFamily: "Barlow Condensed, sans-serif",
+                      fontFamily: "Bebas Neue, sans-serif",
                       fontSize: "20px",
                       fontWeight: 700,
                       color: "#F5C518",
@@ -291,9 +359,9 @@ export default function Settings() {
                   </div>
                   <div
                     style={{
-                      fontFamily: "Inter, sans-serif",
+                      fontFamily: "DM Sans, sans-serif",
                       fontSize: "14px",
-                      color: "#8B9BB8",
+                      color: "#A3A3A3",
                       marginTop: "4px",
                     }}
                   >
@@ -314,20 +382,19 @@ export default function Settings() {
               exit={{ opacity: 0, y: -10 }}
               className="mb-8"
               style={{
-                background: "#0C1020",
+                background: "#1A1A00",
                 border: "2px solid #F5C518",
-                borderRadius: "12px",
+                borderRadius: "4px",
                 padding: "24px",
                 textAlign: "center",
               }}
             >
               <div
                 style={{
-                  fontFamily: "Barlow Condensed, sans-serif",
+                  fontFamily: "Bebas Neue, sans-serif",
                   fontSize: "24px",
                   fontWeight: 700,
-                  color: "#F0F4FF",
-                  letterSpacing: "0.04em",
+                  color: "#FFFFFF",
                   marginBottom: "8px",
                 }}
               >
@@ -335,9 +402,9 @@ export default function Settings() {
               </div>
               <div
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "DM Sans, sans-serif",
                   fontSize: "14px",
-                  color: "#8B9BB8",
+                  color: "#A3A3A3",
                   marginBottom: "16px",
                 }}
               >
@@ -345,15 +412,13 @@ export default function Settings() {
               </div>
               <button
                 onClick={handleManualRefresh}
-                className="px-8 py-3 text-sm font-bold tracking-widest uppercase cursor-pointer"
+                className="px-8 py-3 text-sm font-bold tracking-widest uppercase rounded-sm cursor-pointer"
                 style={{
                   background: "#F5C518",
-                  color: "#090D18",
-                  fontFamily: "Barlow Condensed, sans-serif",
+                  color: "#0A0A0A",
+                  fontFamily: "DM Sans, sans-serif",
                   border: "none",
-                  fontSize: "15px",
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 20px rgba(245,197,24,0.32)",
+                  fontSize: "14px",
                 }}
               >
                 REFRESH NOW
@@ -369,20 +434,20 @@ export default function Settings() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mb-12"
           style={{
-            background: "#131829",
-            border: "1px solid #1E2A42",
-            borderRadius: "16px",
+            background: "#141414",
+            border: "1px solid #2A2A2A",
+            borderRadius: "4px",
             padding: "32px",
           }}
         >
           <h2
             className="mb-6"
             style={{
-              fontFamily: "Barlow Condensed, sans-serif",
+              fontFamily: "Bebas Neue, sans-serif",
               fontSize: "24px",
               fontWeight: 700,
-              color: "#F0F4FF",
-              letterSpacing: "0.04em",
+              color: "#FFFFFF",
+              letterSpacing: "0.02em",
             }}
           >
             ACCESS
@@ -391,9 +456,9 @@ export default function Settings() {
           <div className="mb-6">
             <span
               style={{
-                fontFamily: "Inter, sans-serif",
+                fontFamily: "DM Sans, sans-serif",
                 fontSize: "13px",
-                color: "#4A5570",
+                color: "#6B6B6B",
                 textTransform: "uppercase",
                 letterSpacing: "0.05em",
               }}
@@ -403,17 +468,29 @@ export default function Settings() {
             <div
               className="mt-1"
               style={{
-                fontFamily: "Barlow Condensed, sans-serif",
+                fontFamily: "Bebas Neue, sans-serif",
                 fontSize: "24px",
                 fontWeight: 700,
                 color: "#F5C518",
               }}
             >
-              {subLoading || activating ? "ACTIVATING..." : hasPaidAccess ? "FULL ACCESS" : "FREE"}
+              {subLoading || activating
+                ? "ACTIVATING..."
+                : hasPaidAccess
+                ? subStatus?.subscriptionType === "annual"
+                  ? "PRO — ANNUAL"
+                  : subStatus?.subscriptionType === "monthly"
+                  ? "PRO — MONTHLY"
+                  : "PRO ACCESS"
+                : "FREE"}
             </div>
             {hasPaidAccess && (
-              <div style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#8B9BB8", marginTop: "4px" }}>
-                One-time purchase — lifetime access
+              <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#64748B", marginTop: "4px" }}>
+                {subStatus?.subscriptionType === "annual"
+                  ? "Annual subscription — $220/year"
+                  : subStatus?.subscriptionType === "monthly"
+                  ? "Monthly subscription — $25/month"
+                  : "Lifetime access (grandfathered)"}
               </div>
             )}
           </div>
@@ -422,9 +499,9 @@ export default function Settings() {
             <div className="mb-6">
               <span
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "DM Sans, sans-serif",
                   fontSize: "13px",
-                  color: "#4A5570",
+                  color: "#6B6B6B",
                   textTransform: "uppercase",
                   letterSpacing: "0.05em",
                 }}
@@ -434,9 +511,9 @@ export default function Settings() {
               <div
                 className="mt-1"
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "DM Sans, sans-serif",
                   fontSize: "16px",
-                  color: "#F0F4FF",
+                  color: "#FFFFFF",
                 }}
               >
                 {hasPaidAccess
@@ -446,9 +523,9 @@ export default function Settings() {
               {!hasPaidAccess && (
                 <div
                   style={{
-                    fontFamily: "Inter, sans-serif",
+                    fontFamily: "DM Sans, sans-serif",
                     fontSize: "11px",
-                    color: "#4A5570",
+                    color: "#6B6B6B",
                     marginTop: "4px",
                     fontStyle: "italic",
                   }}
@@ -463,36 +540,81 @@ export default function Settings() {
             {!hasPaidAccess && !activating ? (
               <Link href="/pricing">
                 <button
-                  className="px-6 py-3 font-bold tracking-widest uppercase cursor-pointer"
+                  className="px-6 py-3 text-sm font-bold tracking-widest uppercase rounded-sm cursor-pointer"
                   style={{
                     background: "#F5C518",
-                    color: "#090D18",
-                    fontFamily: "Barlow Condensed, sans-serif",
-                    fontSize: "15px",
+                    color: "#0A0A0A",
+                    fontFamily: "DM Sans, sans-serif",
                     border: "none",
-                    borderRadius: "10px",
-                    boxShadow: "0 4px 20px rgba(245,197,24,0.32)",
                   }}
                 >
-                  GET FULL ACCESS — $49.99 →
+                  UPGRADE TO PRO — FROM $25/MO →
                 </button>
               </Link>
             ) : hasPaidAccess ? (
               <div
-                className="px-6 py-3 font-bold tracking-widest uppercase"
+                className="px-6 py-3 text-sm font-bold tracking-widest uppercase rounded-sm"
                 style={{
                   background: "rgba(245,197,24,0.08)",
                   color: "#F5C518",
-                  fontFamily: "Barlow Condensed, sans-serif",
-                  fontSize: "15px",
+                  fontFamily: "DM Sans, sans-serif",
                   border: "1px solid rgba(245,197,24,0.2)",
-                  borderRadius: "10px",
                 }}
               >
-                ✓ FULL ACCESS ACTIVE
+                ✓ PRO ACCESS ACTIVE
               </div>
             ) : null}
           </div>
+
+          {/* Cancellation / Reactivation area */}
+          {hasPaidAccess && (
+            <div className="mt-6">
+              {isCancelling ? (
+                /* Cancelling state: show end date + reactivate button */
+                <div>
+                  <div
+                    className="mb-4 px-4 py-3 rounded-sm"
+                    style={{
+                      background: "rgba(226,75,74,0.08)",
+                      border: "1px solid rgba(226,75,74,0.25)",
+                      fontFamily: "DM Sans, sans-serif",
+                      fontSize: "13px",
+                      color: "#A3A3A3",
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    Your subscription has been cancelled. You’ll keep Pro access until{" "}
+                    <strong style={{ color: "#FFFFFF" }}>
+                      {cancelPeriodEnd
+                        ? cancelPeriodEnd.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })
+                        : "the end of your billing period"}
+                    </strong>.
+                  </div>
+                  <button
+                    onClick={handleReactivate}
+                    disabled={reactivateSubscription.isPending}
+                    className="px-6 py-3 text-sm font-bold tracking-widest uppercase rounded-sm cursor-pointer"
+                    style={{
+                      background: "transparent",
+                      color: "#F5C518",
+                      fontFamily: "DM Sans, sans-serif",
+                      border: "1px solid rgba(245,197,24,0.4)",
+                      opacity: reactivateSubscription.isPending ? 0.5 : 1,
+                      cursor: reactivateSubscription.isPending ? "not-allowed" : "pointer",
+                      transition: "border-color 0.2s, color 0.2s",
+                    }}
+                  >
+                    {reactivateSubscription.isPending ? "REACTIVATING..." : "REACTIVATE"}
+                  </button>
+                </div>
+              ) : (
+                /* Active state: show muted cancel button */
+                subStatus?.subscriptionType !== "grandfathered" && (
+                  <CancelButton onClick={() => setShowCancelModal(true)} />
+                )
+              )}
+            </div>
+          )}
         </motion.div>
 
         {/* Email Integration Section */}
@@ -502,20 +624,20 @@ export default function Settings() {
           transition={{ duration: 0.5, delay: 0.15 }}
           className="mb-12"
           style={{
-            background: "#131829",
-            border: "1px solid #1E2A42",
-            borderRadius: "16px",
+            background: "#141414",
+            border: "1px solid #2A2A2A",
+            borderRadius: "4px",
             padding: "32px",
           }}
         >
           <h2
             className="mb-2"
             style={{
-              fontFamily: "Barlow Condensed, sans-serif",
+              fontFamily: "Bebas Neue, sans-serif",
               fontSize: "24px",
               fontWeight: 700,
-              color: "#F0F4FF",
-              letterSpacing: "0.04em",
+              color: "#FFFFFF",
+              letterSpacing: "0.02em",
             }}
           >
             EMAIL INTEGRATION
@@ -523,9 +645,9 @@ export default function Settings() {
           <p
             className="mb-6"
             style={{
-              fontFamily: "Inter, sans-serif",
+              fontFamily: "DM Sans, sans-serif",
               fontSize: "13px",
-              color: "#8B9BB8",
+              color: "#6B6B6B",
               lineHeight: 1.6,
             }}
           >
@@ -534,7 +656,7 @@ export default function Settings() {
           </p>
 
           {gmailLoading ? (
-            <div style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#8B9BB8" }}>Loading...</div>
+            <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#6B6B6B" }}>Loading...</div>
           ) : gmailStatus?.connected ? (
             <div>
               {/* Connected state */}
@@ -548,16 +670,16 @@ export default function Settings() {
                     flexShrink: 0,
                   }}
                 />
-                <span style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#F0F4FF" }}>
+                <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#FFFFFF" }}>
                   {gmailStatus.email}
                 </span>
               </div>
               <div className="mb-6">
                 <span
                   style={{
-                    fontFamily: "Inter, sans-serif",
+                    fontFamily: "DM Sans, sans-serif",
                     fontSize: "13px",
-                    color: "#4A5570",
+                    color: "#6B6B6B",
                     textTransform: "uppercase",
                     letterSpacing: "0.05em",
                   }}
@@ -567,7 +689,7 @@ export default function Settings() {
                 <div
                   className="mt-1"
                   style={{
-                    fontFamily: "Barlow Condensed, sans-serif",
+                    fontFamily: "Bebas Neue, sans-serif",
                     fontSize: "24px",
                     fontWeight: 700,
                     color: "#F5C518",
@@ -579,13 +701,12 @@ export default function Settings() {
               <button
                 onClick={handleGmailDisconnect}
                 disabled={disconnecting}
-                className="px-5 py-2.5 text-sm font-bold tracking-widest uppercase cursor-pointer"
+                className="px-5 py-2.5 text-sm font-bold tracking-widest uppercase rounded-sm cursor-pointer"
                 style={{
                   background: "transparent",
                   color: "#EF4444",
                   border: "1px solid #EF4444",
-                  fontFamily: "Inter, sans-serif",
-                  borderRadius: "8px",
+                  fontFamily: "DM Sans, sans-serif",
                   opacity: disconnecting ? 0.5 : 1,
                   cursor: disconnecting ? "not-allowed" : "pointer",
                 }}
@@ -602,30 +723,55 @@ export default function Settings() {
                     width: "8px",
                     height: "8px",
                     borderRadius: "50%",
-                    background: "#4A5570",
+                    background: "#6B6B6B",
                     flexShrink: 0,
                   }}
                 />
-                <span style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#8B9BB8" }}>
+                <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#6B6B6B" }}>
                   Not connected
                 </span>
               </div>
               <a
-                href="/api/auth/gmail"
-                className="inline-flex items-center gap-2 px-6 py-3 font-bold tracking-widest uppercase"
+                href={hasPaidAccess ? "/api/auth/gmail" : undefined}
+                onClick={hasPaidAccess ? undefined : (e) => e.preventDefault()}
+                className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold tracking-widest uppercase rounded-sm"
                 style={{
                   background: "#F5C518",
-                  color: "#090D18",
-                  fontFamily: "Barlow Condensed, sans-serif",
-                  fontSize: "15px",
+                  color: "#0A0A0A",
+                  fontFamily: "DM Sans, sans-serif",
                   textDecoration: "none",
                   display: "inline-block",
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 20px rgba(245,197,24,0.32)",
+                  opacity: hasPaidAccess ? 1 : 0.4,
+                  cursor: hasPaidAccess ? "pointer" : "not-allowed",
+                  pointerEvents: hasPaidAccess ? "auto" : "none",
                 }}
               >
                 CONNECT GMAIL →
               </a>
+              {!hasPaidAccess && (
+                <p
+                  style={{
+                    fontFamily: "DM Sans, sans-serif",
+                    fontSize: "13px",
+                    color: "#6B6B6B",
+                    marginTop: "12px",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  Gmail integration is available on Pro.{" "}
+                  <a
+                    href="/pricing"
+                    style={{
+                      color: "#F5C518",
+                      textDecoration: "none",
+                      fontWeight: 600,
+                    }}
+                  >
+                    UPGRADE →
+                  </a>
+                  {" "}to connect your account and send emails directly.
+                </p>
+              )}
             </div>
           )}
         </motion.div>
@@ -636,20 +782,20 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           style={{
-            background: "#131829",
-            border: "1px solid #1E2A42",
-            borderRadius: "16px",
+            background: "#141414",
+            border: "1px solid #2A2A2A",
+            borderRadius: "4px",
             padding: "32px",
           }}
         >
           <h2
             className="mb-6"
             style={{
-              fontFamily: "Barlow Condensed, sans-serif",
+              fontFamily: "Bebas Neue, sans-serif",
               fontSize: "24px",
               fontWeight: 700,
-              color: "#F0F4FF",
-              letterSpacing: "0.04em",
+              color: "#FFFFFF",
+              letterSpacing: "0.02em",
             }}
           >
             ACCOUNT
@@ -659,9 +805,9 @@ export default function Settings() {
             <div>
               <span
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "DM Sans, sans-serif",
                   fontSize: "13px",
-                  color: "#4A5570",
+                  color: "#6B6B6B",
                   textTransform: "uppercase",
                   letterSpacing: "0.05em",
                 }}
@@ -671,9 +817,9 @@ export default function Settings() {
               <div
                 className="mt-1"
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "DM Sans, sans-serif",
                   fontSize: "16px",
-                  color: "#F0F4FF",
+                  color: "#FFFFFF",
                 }}
               >
                 {userName}
@@ -682,9 +828,9 @@ export default function Settings() {
             <div>
               <span
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "DM Sans, sans-serif",
                   fontSize: "13px",
-                  color: "#4A5570",
+                  color: "#6B6B6B",
                   textTransform: "uppercase",
                   letterSpacing: "0.05em",
                 }}
@@ -694,9 +840,9 @@ export default function Settings() {
               <div
                 className="mt-1"
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "DM Sans, sans-serif",
                   fontSize: "16px",
-                  color: "#F0F4FF",
+                  color: "#FFFFFF",
                 }}
               >
                 {userEmail}
@@ -707,26 +853,36 @@ export default function Settings() {
           <div className="flex flex-wrap gap-3">
             <button
               onClick={handleLogout}
-              className="px-6 py-3 text-sm font-bold tracking-widest uppercase cursor-pointer"
+              className="px-6 py-3 text-sm font-bold tracking-widest uppercase rounded-sm cursor-pointer"
               style={{
                 background: "transparent",
-                color: "#F0F4FF",
-                fontFamily: "Inter, sans-serif",
-                border: "1px solid #1E2A42",
-                borderRadius: "8px",
+                color: "#FFFFFF",
+                fontFamily: "DM Sans, sans-serif",
+                border: "1px solid #2A2A2A",
               }}
             >
               SIGN OUT
             </button>
             <button
+              onClick={handleReplayWalkthrough}
+              className="px-6 py-3 text-sm font-bold tracking-widest uppercase rounded-sm cursor-pointer"
+              style={{
+                background: "transparent",
+                color: "#F5C518",
+                fontFamily: "DM Sans, sans-serif",
+                border: "1px solid rgba(245,197,24,0.3)",
+              }}
+            >
+              REPLAY TOUR
+            </button>
+            <button
               onClick={() => setShowDeleteModal(true)}
-              className="px-6 py-3 text-sm font-bold tracking-widest uppercase cursor-pointer"
+              className="px-6 py-3 text-sm font-bold tracking-widest uppercase rounded-sm cursor-pointer"
               style={{
                 background: "transparent",
                 color: "#991B1B",
-                fontFamily: "Inter, sans-serif",
+                fontFamily: "DM Sans, sans-serif",
                 border: "1px solid #991B1B33",
-                borderRadius: "8px",
               }}
             >
               DELETE ACCOUNT
@@ -734,6 +890,87 @@ export default function Settings() {
           </div>
         </motion.div>
       </div>
+
+      {/* Cancel Subscription Modal */}
+      <AnimatePresence>
+        {showCancelModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center px-4"
+            style={{ background: "rgba(0,0,0,0.7)" }}
+            onClick={() => setShowCancelModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: "#141414",
+                border: "1px solid #2A2A2A",
+                borderRadius: "4px",
+                padding: "32px",
+                maxWidth: "440px",
+                width: "100%",
+              }}
+            >
+              <h3
+                className="mb-4"
+                style={{
+                  fontFamily: "Bebas Neue, sans-serif",
+                  fontSize: "28px",
+                  fontWeight: 700,
+                  color: "#FFFFFF",
+                }}
+              >
+                CANCEL SUBSCRIPTION?
+              </h3>
+              <p
+                className="mb-8"
+                style={{
+                  fontFamily: "DM Sans, sans-serif",
+                  fontSize: "14px",
+                  color: "#A3A3A3",
+                  lineHeight: 1.65,
+                }}
+              >
+                You’ll keep access until the end of your current billing period. After that your account will revert to the free tier (5 schools max).
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowCancelModal(false)}
+                  className="flex-1 py-3 text-sm font-bold tracking-widest uppercase rounded-sm cursor-pointer"
+                  style={{
+                    background: "transparent",
+                    color: "#888888",
+                    fontFamily: "DM Sans, sans-serif",
+                    border: "1px solid #2A2A2A",
+                  }}
+                >
+                  NEVER MIND
+                </button>
+                <button
+                  onClick={handleConfirmCancel}
+                  disabled={cancelSubscription.isPending}
+                  className="flex-1 py-3 text-sm font-bold tracking-widest uppercase rounded-sm"
+                  style={{
+                    background: "#E24B4A",
+                    color: "#FFFFFF",
+                    fontFamily: "DM Sans, sans-serif",
+                    border: "none",
+                    opacity: cancelSubscription.isPending ? 0.6 : 1,
+                    cursor: cancelSubscription.isPending ? "not-allowed" : "pointer",
+                  }}
+                >
+                  {cancelSubscription.isPending ? "CANCELLING..." : "YES, CANCEL"}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Delete Account Modal */}
       <AnimatePresence>
@@ -752,9 +989,9 @@ export default function Settings() {
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
               style={{
-                background: "#131829",
+                background: "#141414",
                 border: "2px solid #991B1B",
-                borderRadius: "16px",
+                borderRadius: "4px",
                 padding: "32px",
                 maxWidth: "480px",
                 width: "100%",
@@ -763,27 +1000,26 @@ export default function Settings() {
               <div className="flex items-start justify-between mb-6">
                 <h3
                   style={{
-                    fontFamily: "Barlow Condensed, sans-serif",
+                    fontFamily: "Bebas Neue, sans-serif",
                     fontSize: "36px",
                     fontWeight: 700,
-                    color: "#F0F4FF",
-                    letterSpacing: "0.04em",
+                    color: "#FFFFFF",
                   }}
                 >
                   DELETE ACCOUNT
                 </h3>
                 <button
                   onClick={() => setShowDeleteModal(false)}
-                  className="text-2xl text-[#4A5570] hover:text-[#F0F4FF] transition-colors cursor-pointer"
+                  className="text-2xl text-[#6B6B6B] hover:text-white transition-colors cursor-pointer"
                 >
                   ×
                 </button>
               </div>
               <p
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "DM Sans, sans-serif",
                   fontSize: "15px",
-                  color: "#8B9BB8",
+                  color: "#A3A3A3",
                   marginBottom: "24px",
                   lineHeight: 1.6,
                 }}
@@ -793,25 +1029,24 @@ export default function Settings() {
               <p
                 className="mb-4"
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "DM Sans, sans-serif",
                   fontSize: "14px",
-                  color: "#4A5570",
+                  color: "#6B6B6B",
                 }}
               >
-                Type <strong style={{ color: "#F0F4FF" }}>DELETE</strong> to confirm:
+                Type <strong style={{ color: "#FFFFFF" }}>DELETE</strong> to confirm:
               </p>
               <input
                 type="text"
                 value={deleteConfirm}
                 onChange={(e) => setDeleteConfirm(e.target.value)}
                 placeholder="DELETE"
-                className="w-full px-4 py-3 mb-6"
+                className="w-full px-4 py-3 mb-6 rounded-sm"
                 style={{
-                  background: "#0C1020",
-                  border: "1px solid #1E2A42",
-                  borderRadius: "8px",
-                  color: "#F0F4FF",
-                  fontFamily: "Inter, sans-serif",
+                  background: "#0A0A0A",
+                  border: "1px solid #2A2A2A",
+                  color: "#FFFFFF",
+                  fontFamily: "DM Sans, sans-serif",
                   fontSize: "14px",
                   outline: "none",
                 }}
@@ -819,26 +1054,24 @@ export default function Settings() {
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowDeleteModal(false)}
-                  className="flex-1 py-3 text-sm font-bold tracking-widest uppercase cursor-pointer"
+                  className="flex-1 py-3 text-sm font-bold tracking-widest uppercase rounded-sm cursor-pointer"
                   style={{
                     background: "transparent",
-                    color: "#F0F4FF",
-                    fontFamily: "Inter, sans-serif",
-                    border: "1px solid #1E2A42",
-                    borderRadius: "8px",
+                    color: "#FFFFFF",
+                    fontFamily: "DM Sans, sans-serif",
+                    border: "1px solid #2A2A2A",
                   }}
                 >
                   CANCEL
                 </button>
                 <button
                   disabled={deleteConfirm !== "DELETE"}
-                  className="flex-1 py-3 text-sm font-bold tracking-widest uppercase"
+                  className="flex-1 py-3 text-sm font-bold tracking-widest uppercase rounded-sm"
                   style={{
-                    background: deleteConfirm === "DELETE" ? "#991B1B" : "#1E2A42",
-                    color: deleteConfirm === "DELETE" ? "#FFFFFF" : "#4A5570",
-                    fontFamily: "Inter, sans-serif",
+                    background: deleteConfirm === "DELETE" ? "#991B1B" : "#2A2A2A",
+                    color: deleteConfirm === "DELETE" ? "#FFFFFF" : "#6B6B6B",
+                    fontFamily: "DM Sans, sans-serif",
                     border: "none",
-                    borderRadius: "8px",
                     cursor: deleteConfirm === "DELETE" ? "pointer" : "not-allowed",
                   }}
                   onClick={() => {

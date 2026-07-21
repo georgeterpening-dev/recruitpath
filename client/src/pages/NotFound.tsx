@@ -1,86 +1,52 @@
-import { Home } from "lucide-react";
-import { useLocation, Link } from "wouter";
-import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { AlertCircle, Home } from "lucide-react";
+import { useLocation } from "wouter";
 
 export default function NotFound() {
   const [, setLocation] = useLocation();
 
+  const handleGoHome = () => {
+    setLocation("/");
+  };
+
   return (
-    <div
-      className="min-h-screen w-full flex items-center justify-center px-4"
-      style={{ background: "#090D18" }}
-    >
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="text-center w-full"
-        style={{ maxWidth: 480 }}
-      >
-        <p
-          style={{
-            fontFamily: "Barlow Condensed, sans-serif",
-            fontSize: "120px",
-            fontWeight: 800,
-            lineHeight: 1,
-            letterSpacing: "-0.02em",
-            background: "linear-gradient(135deg, #F5C518 0%, #FFD640 100%)",
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            marginBottom: "8px",
-          }}
-        >
-          404
-        </p>
+    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
+      <Card className="w-full max-w-lg mx-4 shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+        <CardContent className="pt-8 pb-8 text-center">
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <div className="absolute inset-0 bg-red-100 rounded-full animate-pulse" />
+              <AlertCircle className="relative h-16 w-16 text-red-500" />
+            </div>
+          </div>
 
-        <h1
-          style={{
-            fontFamily: "Barlow Condensed, sans-serif",
-            fontSize: "28px",
-            fontWeight: 700,
-            color: "#F0F4FF",
-            letterSpacing: "0.04em",
-            marginBottom: "12px",
-          }}
-        >
-          PAGE NOT FOUND
-        </h1>
+          <h1 className="text-4xl font-bold text-slate-900 mb-2">404</h1>
 
-        <p
-          style={{
-            fontFamily: "Inter, sans-serif",
-            fontSize: "15px",
-            color: "#8B9BB8",
-            lineHeight: 1.6,
-            marginBottom: "36px",
-          }}
-        >
-          The page you're looking for doesn't exist or has been moved.
-        </p>
+          <h2 className="text-xl font-semibold text-slate-700 mb-4">
+            Page Not Found
+          </h2>
 
-        <Link href="/">
-          <motion.button
-            whileHover={{ filter: "brightness(1.08)" }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2 px-6 py-3 cursor-pointer"
-            style={{
-              background: "#F5C518",
-              color: "#090D18",
-              fontFamily: "Barlow Condensed, sans-serif",
-              fontSize: "14px",
-              fontWeight: 700,
-              letterSpacing: "0.1em",
-              borderRadius: "10px",
-              border: "none",
-              boxShadow: "0 4px 20px rgba(245,197,24,0.32)",
-            }}
+          <p className="text-slate-600 mb-8 leading-relaxed">
+            Sorry, the page you are looking for doesn't exist.
+            <br />
+            It may have been moved or deleted.
+          </p>
+
+          <div
+            id="not-found-button-group"
+            className="flex flex-col sm:flex-row gap-3 justify-center"
           >
-            <Home size={16} />
-            GO HOME
-          </motion.button>
-        </Link>
-      </motion.div>
+            <Button
+              onClick={handleGoHome}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
+            >
+              <Home className="w-4 h-4 mr-2" />
+              Go Home
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

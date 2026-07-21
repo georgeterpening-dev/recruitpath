@@ -24,11 +24,31 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Auth logic would go here (Supabase)
-    navigate("/profile");
+    setError(null);
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email: email.trim(), password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Sign in failed. Please try again.");
+        return;
+      }
+      window.location.href = data.redirect || "/dashboard";
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleGoogleSignIn = () => {
@@ -38,7 +58,7 @@ export default function SignIn() {
   return (
     <div
       className="min-h-screen flex items-center justify-center px-4 pb-24"
-      style={{ background: "#090D18" }}
+      style={{ background: "#0A0E1A" }}
     >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -50,17 +70,8 @@ export default function SignIn() {
         <div className="text-center mb-8">
           <Link href="/">
             <span
-              className="cursor-pointer"
-              style={{
-                fontFamily: "Barlow Condensed, sans-serif",
-                fontWeight: 800,
-                fontSize: "28px",
-                letterSpacing: "-0.02em",
-                background: "linear-gradient(135deg, #F5C518 0%, #FFD640 100%)",
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
+              className="text-[#F5B800] text-3xl cursor-pointer"
+              style={{ fontFamily: "Barlow Condensed, sans-serif", fontWeight: 800, letterSpacing: "-0.02em" }}
             >
               RECRUITPATH
             </span>
@@ -75,7 +86,7 @@ export default function SignIn() {
           >
             WELCOME BACK
           </h1>
-          <p className="text-[#8B9BB8] text-sm mb-6" style={{ fontFamily: "Inter, sans-serif" }}>
+          <p className="text-[#94A3B8] text-sm mb-6" style={{ fontFamily: "Inter, sans-serif" }}>
             Sign in to your RecruitPath account
           </p>
 
@@ -87,11 +98,11 @@ export default function SignIn() {
             whileTap={{ scale: 0.98 }}
             className="w-full flex items-center justify-center gap-3 py-3 rounded-[10px] mb-5 transition-colors"
             style={{
-              background: "#181E32",
-              border: "1px solid #1E2A42",
-              fontFamily: "Inter, sans-serif",
+              background: "#1A1A1A",
+              border: "1px solid #2A2A2A",
+              fontFamily: "DM Sans, sans-serif",
               fontSize: "14px",
-              color: "#F0F4FF",
+              color: "#F8FAFC",
               fontWeight: 500,
             }}
           >
@@ -101,20 +112,30 @@ export default function SignIn() {
 
           {/* OR Divider */}
           <div className="flex items-center gap-3 mb-5">
-            <div className="flex-1 h-px" style={{ background: "#1E2A42" }} />
+            <div className="flex-1 h-px" style={{ background: "#2A2A2A" }} />
             <span
               className="text-xs font-semibold tracking-widest"
-              style={{ color: "#555", fontFamily: "Inter, sans-serif" }}
+              style={{ color: "#555", fontFamily: "DM Sans, sans-serif" }}
             >
               OR
             </span>
-            <div className="flex-1 h-px" style={{ background: "#1E2A42" }} />
+            <div className="flex-1 h-px" style={{ background: "#2A2A2A" }} />
           </div>
+
+          {/* Error message */}
+          {error && (
+            <div
+              className="mb-4 px-4 py-3 rounded-lg text-sm"
+              style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.3)", color: "#F87171", fontFamily: "Inter, sans-serif" }}
+            >
+              {error}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label
-                className="block text-xs font-semibold tracking-widest uppercase text-[#8B9BB8] mb-2"
+                className="block text-xs font-semibold tracking-widest uppercase text-[#94A3B8] mb-2"
                 style={{ fontFamily: "Inter, sans-serif" }}
               >
                 Email Address
@@ -132,7 +153,7 @@ export default function SignIn() {
 
             <div>
               <label
-                className="block text-xs font-semibold tracking-widest uppercase text-[#8B9BB8] mb-2"
+                className="block text-xs font-semibold tracking-widest uppercase text-[#94A3B8] mb-2"
                 style={{ fontFamily: "Inter, sans-serif" }}
               >
                 Password
@@ -150,7 +171,7 @@ export default function SignIn() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8B9BB8] hover:text-[#F8FAFC] transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#F8FAFC] transition-colors"
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -159,27 +180,21 @@ export default function SignIn() {
 
             <motion.button
               type="submit"
-              whileHover={{ scale: 1.02, filter: "brightness(1.1)" }}
-              whileTap={{ scale: 0.98 }}
+              disabled={loading}
+              whileHover={loading ? {} : { scale: 1.02, filter: "brightness(1.1)" }}
+              whileTap={loading ? {} : { scale: 0.98 }}
               className="w-full py-3.5 text-sm font-semibold tracking-wider uppercase rounded-lg mt-2"
-              style={{
-                background: "#F5C518",
-                color: "#090D18",
-                fontFamily: "Barlow Condensed, sans-serif",
-                fontSize: "15px",
-                letterSpacing: "0.1em",
-                boxShadow: "0 4px 20px rgba(245,197,24,0.32)",
-              }}
+              style={{ background: loading ? "#8A7000" : "#F5B800", color: "#0A0E1A", fontFamily: "Inter, sans-serif", cursor: loading ? "not-allowed" : "pointer" }}
             >
-              Sign In
+              {loading ? "SIGNING IN..." : "SIGN IN"}
             </motion.button>
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-[#8B9BB8] text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
+            <p className="text-[#94A3B8] text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
               Don't have an account?{" "}
               <Link href="/signup">
-                <span className="text-[#F5C518] hover:underline cursor-pointer font-medium">
+                <span className="text-[#F5B800] hover:underline cursor-pointer font-medium">
                   Create one
                 </span>
               </Link>

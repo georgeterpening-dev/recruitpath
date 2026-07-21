@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Link } from "wouter";
 import { calculateRosterGap, rosterDatabase } from "@shared/rosterData";
 import { SCHOOL_DATABASE } from "@/data/schoolDatabase";
-import AppTopNav from "@/components/AppTopNav";
+
 
 type Sport = "Men's Basketball" | "Men's Volleyball";
 type Position = "Guard" | "Forward" | "Center" | "Outside Hitter" | "Middle Blocker" | "Setter" | "Opposite" | "Libero" | "Defensive Specialist";
@@ -69,15 +69,15 @@ export default function RosterGapFinder() {
   };
 
   const getMatchScoreColor = (score: number) => {
-    if (score >= 60) return "text-[#F5C518]";
-    if (score >= 30) return "text-[#C8D4E8]";
-    return "text-[#8B9BB8]";
+    if (score >= 60) return "text-green-400";
+    if (score >= 30) return "text-yellow-400";
+    return "text-red-400";
   };
 
   const getMatchScoreBg = (score: number) => {
-    if (score >= 60) return "border-[#F5C518]";
-    if (score >= 30) return "border-[#1E2A42]";
-    return "border-[#1E2A42]";
+    if (score >= 60) return "border-green-400";
+    if (score >= 30) return "border-yellow-400";
+    return "border-red-400";
   };
 
   const visibleResults = isPro ? results : results.slice(0, 3);
@@ -85,28 +85,27 @@ export default function RosterGapFinder() {
 
   return (
     <>
-    <AppTopNav />
-    <div className="min-h-screen bg-[#090D18] text-white py-12 px-6 pb-8" style={{ paddingTop: "68px" }}>
+    <div className="min-h-screen bg-[#0A0E1A] text-white py-12 px-6 pb-[100px] md:pb-8" style={{ paddingTop: "24px" }}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="font-display text-5xl mb-2" style={{ fontFamily: "Barlow Condensed, sans-serif", letterSpacing: "0.05em" }}>
+          <h1 className="font-display text-5xl mb-2" style={{ fontFamily: "Bebas Neue, sans-serif", letterSpacing: "0.05em" }}>
             ROSTER GAP FINDER
           </h1>
-          <p className="text-[#8B9BB8] text-lg mb-4" style={{ fontFamily: "Inter, sans-serif" }}>
+          <p className="text-gray-400 text-lg mb-4" style={{ fontFamily: "DM Sans, sans-serif" }}>
             Find programs that actually have room for you
           </p>
-          <p className="text-[#4A5570] max-w-2xl mx-auto" style={{ fontFamily: "Inter, sans-serif" }}>
+          <p className="text-gray-500 max-w-2xl mx-auto" style={{ fontFamily: "DM Sans, sans-serif" }}>
             This tool analyzes graduating seniors and committed recruits to show real openings at each program. Discover where you can make an impact.
           </p>
         </div>
 
         {/* Search Form */}
-        <form onSubmit={handleSearch} className="bg-[#131829] border border-[#1E2A42] p-8 mb-12 max-w-2xl mx-auto" style={{ borderRadius: "12px" }}>
+        <form onSubmit={handleSearch} className="bg-[#1a1f2e] border border-[#2a3142] p-8 mb-12 max-w-2xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             {/* Sport Dropdown */}
             <div>
-              <label className="block text-sm font-semibold mb-2" style={{ fontFamily: "Inter, sans-serif" }}>
+              <label className="block text-sm font-semibold mb-2" style={{ fontFamily: "DM Sans, sans-serif" }}>
                 SPORT
               </label>
               <select
@@ -115,8 +114,8 @@ export default function RosterGapFinder() {
                   setSport(e.target.value as Sport);
                   setPosition(POSITION_OPTIONS[e.target.value as Sport][0]);
                 }}
-                className="w-full bg-[#090D18] border border-[#1E2A42] text-white px-4 py-2 text-sm"
-                style={{ fontFamily: "Inter, sans-serif" }}
+                className="w-full bg-[#0A0E1A] border border-[#2a3142] text-white px-4 py-2 text-sm"
+                style={{ fontFamily: "DM Sans, sans-serif" }}
               >
                 <option value="Men's Basketball">Men's Basketball</option>
                 <option value="Men's Volleyball">Men's Volleyball</option>
@@ -125,14 +124,14 @@ export default function RosterGapFinder() {
 
             {/* Position Dropdown */}
             <div>
-              <label className="block text-sm font-semibold mb-2" style={{ fontFamily: "Inter, sans-serif" }}>
+              <label className="block text-sm font-semibold mb-2" style={{ fontFamily: "DM Sans, sans-serif" }}>
                 POSITION
               </label>
               <select
                 value={position}
                 onChange={(e) => setPosition(e.target.value as Position)}
-                className="w-full bg-[#090D18] border border-[#1E2A42] text-white px-4 py-2 text-sm"
-                style={{ fontFamily: "Inter, sans-serif" }}
+                className="w-full bg-[#0A0E1A] border border-[#2a3142] text-white px-4 py-2 text-sm"
+                style={{ fontFamily: "DM Sans, sans-serif" }}
               >
                 {POSITION_OPTIONS[sport].map((pos) => (
                   <option key={pos} value={pos}>
@@ -144,14 +143,14 @@ export default function RosterGapFinder() {
 
             {/* Graduation Year Dropdown */}
             <div>
-              <label className="block text-sm font-semibold mb-2" style={{ fontFamily: "Inter, sans-serif" }}>
+              <label className="block text-sm font-semibold mb-2" style={{ fontFamily: "DM Sans, sans-serif" }}>
                 GRADUATION YEAR
               </label>
               <select
                 value={graduationYear}
                 onChange={(e) => setGraduationYear(parseInt(e.target.value))}
-                className="w-full bg-[#090D18] border border-[#1E2A42] text-white px-4 py-2 text-sm"
-                style={{ fontFamily: "Inter, sans-serif" }}
+                className="w-full bg-[#0A0E1A] border border-[#2a3142] text-white px-4 py-2 text-sm"
+                style={{ fontFamily: "DM Sans, sans-serif" }}
               >
                 {[2025, 2026, 2027, 2028, 2029, 2030].map((year) => (
                   <option key={year} value={year}>
@@ -165,12 +164,8 @@ export default function RosterGapFinder() {
           {/* Search Button */}
           <button
             type="submit"
-            className="w-full bg-[#F5C518] text-[#090D18] font-bold py-3 text-sm tracking-widest uppercase"
-            style={{
-              fontFamily: "Barlow Condensed, sans-serif",
-              borderRadius: "10px",
-              boxShadow: "0 4px 20px rgba(245,197,24,0.32)",
-            }}
+            className="w-full bg-[#F5B800] text-[#0A0E1A] font-bold py-3 text-sm tracking-widest uppercase"
+            style={{ fontFamily: "DM Sans, sans-serif" }}
           >
             FIND MY OPPORTUNITIES
           </button>
@@ -181,10 +176,10 @@ export default function RosterGapFinder() {
           <>
             {results.length === 0 ? (
               <div className="text-center py-12">
-                <h2 className="font-display text-3xl mb-4" style={{ fontFamily: "Barlow Condensed, sans-serif" }}>
+                <h2 className="font-display text-3xl mb-4" style={{ fontFamily: "Bebas Neue, sans-serif" }}>
                   NO DATA AVAILABLE FOR THIS POSITION YET
                 </h2>
-                <p className="text-[#8B9BB8]" style={{ fontFamily: "Inter, sans-serif" }}>
+                <p className="text-gray-400" style={{ fontFamily: "DM Sans, sans-serif" }}>
                   More sports and positions coming soon. Check back later!
                 </p>
               </div>
@@ -197,44 +192,43 @@ export default function RosterGapFinder() {
                     return (
                       <div
                         key={result.schoolName}
-                        className={`bg-[#131829] border border-[#1E2A42] p-6 flex flex-col ${getMatchScoreBg(result.matchScore)}`}
-                        style={{ borderRadius: "12px" }}
+                        className={`bg-[#1a1f2e] border border-[#2a3142] p-6 flex flex-col ${getMatchScoreBg(result.matchScore)}`}
                       >
                         {/* School Name */}
-                        <h3 className="font-display text-xl mb-4" style={{ fontFamily: "Barlow Condensed, sans-serif", letterSpacing: "0.05em" }}>
+                        <h3 className="font-display text-xl mb-4" style={{ fontFamily: "Bebas Neue, sans-serif", letterSpacing: "0.05em" }}>
                           {result.schoolName}
                         </h3>
 
                         {/* Match Score */}
                         <div className="mb-4">
-                          <p className={`font-display text-4xl font-bold ${getMatchScoreColor(result.matchScore)}`} style={{ fontFamily: "Barlow Condensed, sans-serif" }}>
+                          <p className={`font-display text-4xl font-bold ${getMatchScoreColor(result.matchScore)}`} style={{ fontFamily: "Bebas Neue, sans-serif" }}>
                             {result.matchScore}%
                           </p>
-                          <p className="text-xs text-[#8B9BB8] mt-1" style={{ fontFamily: "Inter, sans-serif" }}>
+                          <p className="text-xs text-gray-400 mt-1" style={{ fontFamily: "DM Sans, sans-serif" }}>
                             MATCH SCORE
                           </p>
                         </div>
 
                         {/* Reason */}
-                        <p className="text-sm text-[#F0F4FF] mb-4 flex-grow" style={{ fontFamily: "Inter, sans-serif" }}>
+                        <p className="text-sm text-gray-300 mb-4 flex-grow" style={{ fontFamily: "DM Sans, sans-serif" }}>
                           {result.reason}
                         </p>
 
                         {/* Stats */}
                         <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
                           <div>
-                            <p className="text-[#8B9BB8] text-xs" style={{ fontFamily: "Inter, sans-serif" }}>
+                            <p className="text-gray-400 text-xs" style={{ fontFamily: "DM Sans, sans-serif" }}>
                               REAL OPENINGS
                             </p>
-                            <p className="font-bold text-lg" style={{ fontFamily: "Barlow Condensed, sans-serif" }}>
+                            <p className="font-bold text-lg" style={{ fontFamily: "Bebas Neue, sans-serif" }}>
                               {result.netOpenings}
                             </p>
                           </div>
                           <div>
-                            <p className="text-[#8B9BB8] text-xs" style={{ fontFamily: "Inter, sans-serif" }}>
+                            <p className="text-gray-400 text-xs" style={{ fontFamily: "DM Sans, sans-serif" }}>
                               COMMITS FILLING SPOTS
                             </p>
-                            <p className="font-bold text-lg" style={{ fontFamily: "Barlow Condensed, sans-serif" }}>
+                            <p className="font-bold text-lg" style={{ fontFamily: "Bebas Neue, sans-serif" }}>
                               {result.commits}
                             </p>
                           </div>
@@ -244,12 +238,8 @@ export default function RosterGapFinder() {
                         {coach && coach.email && (
                           <button
                             onClick={() => setSelectedSchool(result.schoolName)}
-                            className="bg-[#F5C518] text-[#090D18] font-bold py-2 text-xs tracking-widest uppercase w-full"
-                            style={{
-                              fontFamily: "Barlow Condensed, sans-serif",
-                              borderRadius: "8px",
-                              boxShadow: "0 4px 20px rgba(245,197,24,0.32)",
-                            }}
+                            className="bg-[#F5B800] text-[#0A0E1A] font-bold py-2 text-xs tracking-widest uppercase w-full"
+                            style={{ fontFamily: "DM Sans, sans-serif" }}
                           >
                             VIEW COACH INFO
                           </button>
@@ -264,24 +254,17 @@ export default function RosterGapFinder() {
                   <div className="relative">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-30 pointer-events-none">
                       {results.slice(3).map((result) => (
-                        <div key={result.schoolName} className="bg-[#131829] border border-[#1E2A42] p-6 h-64" style={{ borderRadius: "12px" }}></div>
+                        <div key={result.schoolName} className="bg-[#1a1f2e] border border-[#2a3142] p-6 h-64"></div>
                       ))}
                     </div>
                     <div className="absolute inset-0 flex items-center justify-center bg-black/60">
                       <div className="text-center">
-                        <p className="text-white font-bold mb-4" style={{ fontFamily: "Inter, sans-serif" }}>
-                          GET FULL ACCESS TO SEE ALL OPPORTUNITIES
+                        <p className="text-white font-bold mb-4" style={{ fontFamily: "DM Sans, sans-serif" }}>
+                          UPGRADE TO PRO TO SEE ALL OPPORTUNITIES
                         </p>
                         <Link href="/pricing">
-                          <button
-                            className="bg-[#F5C518] text-[#090D18] font-bold py-2 px-6 text-sm tracking-widest uppercase"
-                            style={{
-                              fontFamily: "Barlow Condensed, sans-serif",
-                              borderRadius: "8px",
-                              boxShadow: "0 4px 20px rgba(245,197,24,0.32)",
-                            }}
-                          >
-                            GET FULL ACCESS — $49.99 →
+                          <button className="bg-[#F5B800] text-[#0A0E1A] font-bold py-2 px-6 text-sm tracking-widest uppercase">
+                            UPGRADE TO PRO — FROM $25/MO →
                           </button>
                         </Link>
                       </div>
@@ -297,38 +280,38 @@ export default function RosterGapFinder() {
       {/* Coach Info Modal */}
       {selectedSchool && (
         <Dialog open={!!selectedSchool} onOpenChange={() => setSelectedSchool(null)}>
-          <DialogContent className="bg-[#131829] border border-[#1E2A42] text-white">
+          <DialogContent className="bg-[#1a1f2e] border border-[#2a3142] text-white">
             <DialogHeader>
-              <DialogTitle style={{ fontFamily: "Barlow Condensed, sans-serif", letterSpacing: "0.05em" }}>
+              <DialogTitle style={{ fontFamily: "Bebas Neue, sans-serif", letterSpacing: "0.05em" }}>
                 {selectedSchool.toUpperCase()} — COACH CONTACT
               </DialogTitle>
             </DialogHeader>
             {getCoachInfo(selectedSchool) && (
               <div className="space-y-4">
                 <div>
-                  <p className="text-[#8B9BB8] text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
+                  <p className="text-gray-400 text-sm" style={{ fontFamily: "DM Sans, sans-serif" }}>
                     COACH NAME
                   </p>
-                  <p className="font-bold text-lg" style={{ fontFamily: "Barlow Condensed, sans-serif" }}>
+                  <p className="font-bold text-lg" style={{ fontFamily: "Bebas Neue, sans-serif" }}>
                     {getCoachInfo(selectedSchool)?.name}
                   </p>
                 </div>
                 <div>
-                  <p className="text-[#8B9BB8] text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
+                  <p className="text-gray-400 text-sm" style={{ fontFamily: "DM Sans, sans-serif" }}>
                     TITLE
                   </p>
-                  <p className="text-white" style={{ fontFamily: "Inter, sans-serif" }}>
+                  <p className="text-white" style={{ fontFamily: "DM Sans, sans-serif" }}>
                     {getCoachInfo(selectedSchool)?.title}
                   </p>
                 </div>
                 <div>
-                  <p className="text-[#8B9BB8] text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
+                  <p className="text-gray-400 text-sm" style={{ fontFamily: "DM Sans, sans-serif" }}>
                     EMAIL
                   </p>
                   <a
                     href={`mailto:${getCoachInfo(selectedSchool)?.email}`}
-                    className="text-[#F5C518] hover:underline break-all"
-                    style={{ fontFamily: "Inter, sans-serif" }}
+                    className="text-[#F5B800] hover:underline break-all"
+                    style={{ fontFamily: "DM Sans, sans-serif" }}
                   >
                     {getCoachInfo(selectedSchool)?.email}
                   </a>

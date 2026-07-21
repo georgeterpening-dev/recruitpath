@@ -135,13 +135,25 @@ describe("subscription.createCheckout", () => {
     vi.clearAllMocks();
   });
 
-  it("creates a one-time checkout session", async () => {
-    process.env.STRIPE_FULL_ACCESS_PRICE_ID = "price_test_full_access";
+  it("creates a monthly subscription checkout session", async () => {
+    process.env.STRIPE_MONTHLY_PRICE_ID = "price_test_monthly";
     const user = createTestUser();
     const ctx = createTestContext(user);
     const caller = appRouter.createCaller(ctx);
 
-    const result = await caller.subscription.createCheckout();
+    const result = await caller.subscription.createCheckout({ billingPeriod: "monthly" });
+
+    expect(result).toHaveProperty("sessionUrl");
+    expect(result.sessionUrl).toBe("https://checkout.stripe.com/test-session");
+  });
+
+  it("creates an annual subscription checkout session", async () => {
+    process.env.STRIPE_ANNUAL_PRICE_ID = "price_test_annual";
+    const user = createTestUser();
+    const ctx = createTestContext(user);
+    const caller = appRouter.createCaller(ctx);
+
+    const result = await caller.subscription.createCheckout({ billingPeriod: "annual" });
 
     expect(result).toHaveProperty("sessionUrl");
     expect(result.sessionUrl).toBe("https://checkout.stripe.com/test-session");
@@ -297,7 +309,7 @@ describe("subscription.verifySession", () => {
     const result = await caller.subscription.verifySession({ sessionId: "cs_test_abc123" });
 
     expect(result.activated).toBe(true);
-    expect(result.message).toContain("Full Access");
+    expect(result.message).toContain("activated");
   });
 
   it("returns not activated when payment is unpaid", async () => {

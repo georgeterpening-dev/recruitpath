@@ -1,4 +1,4 @@
-import { boolean, int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { boolean, decimal, int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -30,6 +30,18 @@ export const users = mysqlTable("users", {
   stripeSubscriptionId: varchar("stripeSubscriptionId", { length: 255 }),
   /** Stripe Payment Intent ID — for the one-time $49.99 purchase */
   stripePaymentIntentId: varchar("stripePaymentIntentId", { length: 255 }),
+  /**
+   * Subscription billing period: 'monthly' ($25/mo), 'annual' ($220/yr),
+   * or 'grandfathered' (legacy one-time $49.99 buyers who keep full access forever).
+   * null = free tier.
+   */
+  subscriptionType: mysqlEnum("subscriptionType", ["monthly", "annual", "grandfathered"]),
+  /**
+   * Stripe subscription lifecycle status.
+   * 'active' = currently paying, 'cancelled' = cancelled, 'past_due' = payment failed.
+   * null = free tier or grandfathered (no subscription to track).
+   */
+  subscriptionStatus: mysqlEnum("subscriptionStatus", ["active", "cancelling", "cancelled", "past_due"]),
 
   /**
    * Lifetime counter of unique schools ever added to this user's outreach list.
@@ -54,10 +66,19 @@ export const users = mysqlTable("users", {
   /** Whether the user has seen the one-time welcome/onboarding overlay */
   hasSeenWelcome: boolean("hasSeenWelcome").default(false).notNull(),
 
+  /** Whether the user has completed the required onboarding wizard */
+  hasCompletedOnboarding: boolean("hasCompletedOnboarding").default(false).notNull(),
+
+  /** Whether the user has seen the first-time app walkthrough overlay */
+  hasSeenWalkthrough: boolean("hasSeenWalkthrough").default(false).notNull(),
+
   /** Whether this account was created via Google Sign-In (vs Manus OAuth) */
   googleAuthUser: boolean("googleAuthUser").default(false).notNull(),
   /** Google OAuth sub (unique ID from Google) — used to match returning Google users */
   googleId: varchar("googleId", { length: 255 }),
+
+  /** bcrypt hash of the user's password — null for Google-only accounts */
+  passwordHash: varchar("passwordHash", { length: 255 }),
 
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
@@ -79,6 +100,8 @@ export const outreachList = mysqlTable("outreach_list", {
   coachName: text("coachName"),
   sport: text("sport"),
   division: varchar("division", { length: 16 }),
+  /** Whether the user has starred this school — starred schools appear at the top of the TARGET SCHOOLS list */
+  starred: boolean("starred").default(false).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -98,6 +121,8 @@ export const schools = mysqlTable("schools", {
   conference: varchar("conference", { length: 64 }),
   hasRosterData: boolean("hasRosterData").default(false).notNull(),
   brandColor: varchar("brandColor", { length: 16 }),
+  logoBackgroundColor: varchar("logoBackgroundColor", { length: 16 }),
+  logoMixBlendMode: varchar("logoMixBlendMode", { length: 32 }),
   athleticsDomain: text("athleticsDomain"),
   logoUrl: text("logoUrl"),
   coachName: text("coachName"),
@@ -171,6 +196,8 @@ export const athleteProfiles = mysqlTable("athlete_profiles", {
   ncsaUrl: text("ncsaUrl"),
   hudlUrl: text("hudlUrl"),
   highSchool: text("highSchool"),
+  /** Date of birth collected during onboarding (stored as YYYY-MM-DD string) */
+  dateOfBirth: varchar("dateOfBirth", { length: 16 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -217,3 +244,93 @@ export const sentEmails = mysqlTable("sent_emails", {
 
 export type SentEmail = typeof sentEmails.$inferSelect;
 export type InsertSentEmail = typeof sentEmails.$inferInsert;
+
+// ─── Affiliate Program ───────────────────────────────────────────────────────
+
+/**
+ * Affiliate applications — submitted via the public /affiliates page.
+ */
+export const affiliateApplications = mysqlTable("affiliateApplications", {
+  id: int("id").autoincrement().primaryKey(),
+  firstName: varchar("firstName", { length: 100 }).notNull(),
+  lastName: varchar("lastName", { length: 100 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  graduationYear: varchar("graduationYear", { length: 4 }).notNull(),
+  position: varchar("position", { length: 64 }).notNull(),
+  highSchool: varchar("highSchool", { length: 255 }).notNull(),
+  clubTeam: varchar("clubTeam", { length: 255 }).notNull(),
+  instagramHandle: varchar("instagramHandle", { length: 100 }),
+  whyJoin: text("whyJoin").notNull(),
+  status: mysqlEnum("status", ["pending", "approved", "rejected"]).default("pending").notNull(),
+  appliedAt: timestamp("appliedAt").defaultNow().notNull(),
+});
+export type AffiliateApplication = typeof affiliateApplications.$inferSelect;
+export type InsertAffiliateApplication = typeof affiliateApplications.$inferInsert;
+
+/**
+ * Approved affiliates — created when an application is approved.
+ */
+export const affiliates = mysqlTable("affiliates", {
+  id: int("id").autoincrement().primaryKey(),
+  firstName: varchar("firstName", { length: 100 }).notNull(),
+  lastName: varchar("lastName", { length: 100 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull().unique(),
+  couponCode: varchar("couponCode", { length: 20 }).notNull().unique(),
+  discountPercent: int("discountPercent").default(15).notNull(),
+  commissionMonthly: decimal("commissionMonthly", { precision: 8, scale: 2 }).default("3.00").notNull(),
+  commissionAnnual: decimal("commissionAnnual", { precision: 8, scale: 2 }).default("5.00").notNull(),
+  totalConversions: int("totalConversions").default(0).notNull(),
+  totalEarned: decimal("totalEarned", { precision: 10, scale: 2 }).default("0.00").notNull(),
+  totalPaid: decimal("totalPaid", { precision: 10, scale: 2 }).default("0.00").notNull(),
+  status: mysqlEnum("status", ["active", "inactive"]).default("active").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type Affiliate = typeof affiliates.$inferSelect;
+export type InsertAffiliate = typeof affiliates.$inferInsert;
+
+/**
+ * Affiliate conversions — one row per subscription attributed to an affiliate.
+ */
+export const affiliateConversions = mysqlTable("affiliateConversions", {
+  id: int("id").autoincrement().primaryKey(),
+  affiliateId: int("affiliateId").notNull(),
+  couponCode: varchar("couponCode", { length: 20 }).notNull(),
+  convertedUserEmail: varchar("convertedUserEmail", { length: 320 }).notNull(),
+  subscriptionType: mysqlEnum("subscriptionType", ["monthly", "annual"]).notNull(),
+  commissionAmount: decimal("commissionAmount", { precision: 8, scale: 2 }).notNull(),
+  paid: boolean("paid").default(false).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type AffiliateConversion = typeof affiliateConversions.$inferSelect;
+export type InsertAffiliateConversion = typeof affiliateConversions.$inferInsert;
+
+/**
+ * Verified recruiting commits — sourced from MiddleHitter.com
+ * One row per committed recruit. gradYear is the athlete's class year.
+ */
+export const commits = mysqlTable("commits", {
+  id: int("id").autoincrement().primaryKey(),
+  schoolId: varchar("schoolId", { length: 64 }).notNull(),
+  name: text("name").notNull(),
+  position: varchar("position", { length: 32 }),
+  club: text("club"),
+  highSchool: text("highSchool"),
+  gradYear: int("gradYear").default(2026).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type Commit = typeof commits.$inferSelect;
+export type InsertCommit = typeof commits.$inferInsert;
+
+/**
+ * Waitlist — emails collected from the landing page before/during launch.
+ * Used to send founding member discount codes.
+ */
+export const waitlist = mysqlTable("waitlist", {
+  id: int("id").autoincrement().primaryKey(),
+  email: varchar("email", { length: 320 }).notNull().unique(),
+  source: varchar("source", { length: 64 }).default("landing_page"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type Waitlist = typeof waitlist.$inferSelect;

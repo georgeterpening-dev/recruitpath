@@ -8,11 +8,6 @@ import App from "./App";
 import { getLoginUrl } from "./const";
 import "./index.css";
 
-if (import.meta.env.VITE_MOCK === "true") {
-  const { installMockFetch } = await import("./lib/mockFetch");
-  installMockFetch();
-}
-
 const queryClient = new QueryClient();
 
 const redirectToLoginIfUnauthorized = (error: unknown) => {
@@ -57,10 +52,19 @@ const trpcClient = trpc.createClient({
   ],
 });
 
-createRoot(document.getElementById("root")!).render(
-  <trpc.Provider client={trpcClient} queryClient={queryClient}>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
-  </trpc.Provider>
-);
+async function bootstrap() {
+  if (import.meta.env.VITE_MOCK === "true") {
+    const { installMockFetch } = await import("./lib/mockFetch");
+    installMockFetch();
+  }
+
+  createRoot(document.getElementById("root")!).render(
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </trpc.Provider>
+  );
+}
+
+void bootstrap();

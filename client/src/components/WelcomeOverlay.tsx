@@ -3,7 +3,7 @@ import { trpc } from "@/lib/trpc";
 import { motion, AnimatePresence } from "framer-motion";
 
 const VOLLEYBALL_BG =
-  "https://files.manuscdn.com/user_upload_by_module/session_file/310519663375439833/PQQXkFFRvNhbNfCg.mp4";
+  "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1600&q=80";
 
 const steps = [
   {
@@ -58,7 +58,7 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
         className="fixed inset-0 z-[10000] flex items-center justify-center p-4"
-        style={{ background: "rgba(9, 13, 24, 0.97)" }}
+        style={{ background: "rgba(10, 10, 10, 0.97)" }}
       >
         {/* Subtle volleyball video background */}
         <video
@@ -83,11 +83,10 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
           <div
             className="mb-6 px-4 py-1.5 text-xs font-bold tracking-widest uppercase rounded-full"
             style={{
-              background: "rgba(245, 197, 24, 0.12)",
-              border: "1px solid rgba(245, 197, 24, 0.35)",
-              color: "#F5C518",
-              fontFamily: "Barlow Condensed, sans-serif",
-              letterSpacing: "0.1em",
+              background: "rgba(245, 184, 0, 0.12)",
+              border: "1px solid rgba(245, 184, 0, 0.35)",
+              color: "#F5B800",
+              fontFamily: "DM Sans, sans-serif",
             }}
           >
             WELCOME TO RECRUITPATH
@@ -97,7 +96,7 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
           <h1
             className="text-white text-center mb-4 leading-none"
             style={{
-              fontFamily: "Barlow Condensed, sans-serif",
+              fontFamily: "Bebas Neue, sans-serif",
               fontSize: "clamp(44px, 8vw, 64px)",
               letterSpacing: "0.01em",
             }}
@@ -109,9 +108,9 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
           <p
             className="text-center mb-8"
             style={{
-              fontFamily: "Inter, sans-serif",
+              fontFamily: "DM Sans, sans-serif",
               fontSize: 15,
-              color: "#8B9BB8",
+              color: "#94A3B8",
               lineHeight: 1.6,
               maxWidth: 460,
             }}
@@ -125,8 +124,8 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
           <div
             className="w-full mb-6"
             style={{
-              background: "#131829",
-              border: "1px solid #1E2A42",
+              background: "#1A1A1A",
+              border: "1px solid #2A2A2A",
               borderRadius: 14,
               overflow: "hidden",
             }}
@@ -136,15 +135,15 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
                 key={step.num}
                 className="flex items-center gap-4 px-5 py-4"
                 style={{
-                  borderBottom: i < steps.length - 1 ? "1px solid #1E2A42" : "none",
+                  borderBottom: i < steps.length - 1 ? "1px solid #2A2A2A" : "none",
                 }}
               >
                 {/* Yellow step number */}
                 <span
                   style={{
-                    fontFamily: "Barlow Condensed, sans-serif",
+                    fontFamily: "Bebas Neue, sans-serif",
                     fontSize: 22,
-                    color: "#F5C518",
+                    color: "#F5B800",
                     lineHeight: 1,
                     minWidth: 32,
                     flexShrink: 0,
@@ -157,7 +156,7 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
                 <div className="flex flex-col gap-0.5">
                   <span
                     style={{
-                      fontFamily: "Inter, sans-serif",
+                      fontFamily: "DM Sans, sans-serif",
                       fontSize: 13,
                       fontWeight: 700,
                       color: "#F8FAFC",
@@ -169,7 +168,7 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "Inter, sans-serif",
+                      fontFamily: "DM Sans, sans-serif",
                       fontSize: 12,
                       color: "#64748B",
                     }}
@@ -191,12 +190,10 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
               disabled={dismissWelcome.isPending}
               className="w-full py-3.5 text-sm font-bold tracking-wider uppercase rounded-xl"
               style={{
-                background: "#F5C518",
-                color: "#090D18",
-                fontFamily: "Barlow Condensed, sans-serif",
-                fontSize: "15px",
-                letterSpacing: "0.1em",
-                boxShadow: "0 4px 20px rgba(245,197,24,0.32)",
+                background: "#F5B800",
+                color: "#0A0E1A",
+                fontFamily: "DM Sans, sans-serif",
+                letterSpacing: "0.06em",
               }}
             >
               SHOW ME HOW IT WORKS →
@@ -210,12 +207,11 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
               disabled={dismissWelcome.isPending}
               className="w-full py-3 text-sm font-semibold tracking-wider uppercase rounded-xl border"
               style={{
-                borderColor: "#1E2A42",
+                borderColor: "#2A2A2A",
                 color: "#64748B",
                 background: "transparent",
-                fontFamily: "Barlow Condensed, sans-serif",
-                fontSize: "14px",
-                letterSpacing: "0.08em",
+                fontFamily: "DM Sans, sans-serif",
+                letterSpacing: "0.04em",
               }}
             >
               SKIP — TAKE ME TO MY DASHBOARD

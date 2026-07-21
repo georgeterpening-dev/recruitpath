@@ -4,10 +4,12 @@
  * Falls back gracefully if credentials are not configured.
  */
 import nodemailer from "nodemailer";
+import { ENV } from "./_core/env";
 
 function getTransporter() {
-  const user = process.env.EMAIL_USER;
-  const pass = process.env.EMAIL_PASS;
+  console.log("[Email] Checking credentials — user:", ENV.emailUser ? "SET" : "NOT SET", "pass:", ENV.emailPass ? "SET" : "NOT SET");
+  const user = ENV.emailUser || process.env.EMAIL_USER;
+  const pass = ENV.emailPass || process.env.EMAIL_PASS;
 
   if (!user || !pass) {
     console.warn("[Email] EMAIL_USER or EMAIL_PASS not set — email sending disabled");
@@ -125,4 +127,110 @@ export async function sendPurchaseConfirmationEmail({
     console.error("[Email] Failed to send confirmation:", err.message);
     return false;
   }
+}
+
+/**
+ * Generic email sender — used for affiliate approval/rejection emails.
+ */
+export async function sendEmail({
+  to,
+  subject,
+  html,
+  text,
+}: {
+  to: string;
+  subject: string;
+  html: string;
+  text: string;
+}): Promise<boolean> {
+  const transporter = getTransporter();
+  if (!transporter) return false;
+
+  try {
+    await transporter.sendMail({
+      from: `"RecruitPath" <${process.env.EMAIL_USER}>`,
+      to,
+      subject,
+      html,
+      text,
+    });
+    console.log(`[Email] Sent "${subject}" to ${to}`);
+    return true;
+  } catch (err: any) {
+    console.error("[Email] Failed to send:", err.message);
+    return false;
+  }
+}
+
+/**
+ * Send affiliate approval email with coupon code.
+ * Named export as specified in the affiliate program spec.
+ */
+export async function sendAffiliateApprovalEmail(
+  toEmail: string,
+  firstName: string,
+  couponCode: string
+): Promise<boolean> {
+  const link = `https://recruitpath.manus.space/?ref=${couponCode}`;
+  const text = `Hey ${firstName},
+
+You're in — welcome to the RecruitPath affiliate team.
+
+We built RecruitPath because the recruiting process needed to be better for athletes. You're now part of making that happen for your teammates and community.
+
+Here's everything you need to get started:
+
+Your personal code: ${couponCode}
+Your shareable link: ${link}
+
+When someone signs up using your code they get 15% off their first month — and you earn $3 for every monthly signup and $5 for every annual signup. No cap, no expiration.
+
+Share it anywhere — your Instagram bio, your club team group chat, at tournaments. The athletes who do best with this are the ones who genuinely believe in the product and talk about it naturally.
+
+To set up your payout method reply to this email with your Venmo or PayPal. We pay out monthly once you hit $10.
+
+Excited to have you with us.
+
+— George
+RecruitPath
+contact.recruitpath@gmail.com`;
+
+  return sendEmail({
+    to: toEmail,
+    subject: "Welcome to the RecruitPath Affiliate Team 🏐",
+    html: `<pre style="font-family:sans-serif;white-space:pre-wrap">${text}</pre>`,
+    text,
+  });
+}
+
+/**
+ * Send affiliate rejection email.
+ * Named export as specified in the affiliate program spec.
+ */
+export async function sendAffiliateRejectionEmail(
+  toEmail: string,
+  firstName: string
+): Promise<boolean> {
+  const text = `Hey ${firstName},
+
+Thank you for applying to the RecruitPath affiliate program — we genuinely appreciate your interest and the time you took to apply.
+
+We aren't able to bring on new affiliates at this moment as we're keeping the program small while we're in beta. This is not a reflection of you or your application.
+
+We'll be expanding the program as we grow and will keep your application on file. If a spot opens up that's a great fit we'll reach out directly.
+
+In the meantime if you ever want to share RecruitPath with teammates just because you believe in it, we'd love that too.
+
+Thanks again — and good luck with your recruiting process.
+
+— George
+RecruitPath
+contact.recruitpath@gmail.com`;
+
+  return sendEmail({
+    to: toEmail,
+    subject: "Your RecruitPath Affiliate Application",
+    html: `<pre style="font-family:sans-serif;white-space:pre-wrap">${text}</pre>`,
+    text,
+  });
 }

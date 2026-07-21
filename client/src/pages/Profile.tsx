@@ -1,18 +1,17 @@
 /**
  * RecruitPath — Athlete Profile Page
- * Design: Hero section + three-column photo panels + Profile card modal
- * Fields are inline-editable; saves to DB via tRPC on "Save" button click.
+ * Design: Full-screen hero + single CTA button → 2-panel profile modal
+ *         Left nav (160px) + full-width content panel, one section at a time.
  */
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 import { toast } from "sonner";
 import { useAthleteProfile, type AthleteProfile as ProfileData } from "@/hooks/useAthleteProfile";
 import { trpc } from "@/lib/trpc";
 import { useModal } from "@/contexts/ModalContext";
 import AppFooter from "@/components/AppFooter";
-import AppTopNav from "@/components/AppTopNav";
 
-type ProfileTab = "personal" | "athletic" | "media";
 
 // ─────────────────────────────────────────────
 // DROPDOWN OPTIONS
@@ -30,26 +29,18 @@ function buildHeightOptions() {
   return opts;
 }
 const HEIGHT_OPTIONS = buildHeightOptions();
-
 const WEIGHT_OPTIONS = Array.from({ length: 41 }, (_, i) => `${100 + i * 5} lbs`);
-
-const GPA_OPTIONS = [
-  ...Array.from({ length: 31 }, (_, i) => (1.0 + i * 0.1).toFixed(1)),
-  "4.0+",
-];
-
+const GPA_OPTIONS = [...Array.from({ length: 31 }, (_, i) => (1.0 + i * 0.1).toFixed(1)), "4.0+"];
 const SAT_OPTIONS = Array.from({ length: 81 }, (_, i) => `${800 + i * 10}`);
 const ACT_OPTIONS = Array.from({ length: 36 }, (_, i) => `${i + 1}`);
 const VERTICAL_OPTIONS = Array.from({ length: 31 }, (_, i) => `${18 + i}"`);
 const APPROACH_OPTIONS = Array.from({ length: 31 }, (_, i) => `${20 + i}"`);
-
 const US_STATES = [
   "AL","AK","AZ","AR","CA","CO","CT","DE","DC","FL","GA","HI","ID","IL","IN",
   "IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH",
   "NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT",
   "VT","VA","WA","WV","WI","WY",
 ];
-
 const MAJORS = [
   "Undecided","Business","Computer Science","Engineering","Kinesiology/Exercise Science",
   "Biology","Psychology","Communications","Education","Economics",
@@ -57,613 +48,825 @@ const MAJORS = [
 ];
 
 // ─────────────────────────────────────────────
-// INLINE EDITABLE FIELD
+// PROFILE STRENGTH CALCULATION (16 fields)
 // ─────────────────────────────────────────────
-interface EditableFieldProps {
-  label: string;
-  value: string;
-  onChange: (val: string) => void;
-  placeholder?: string;
-  type?: string;
+const STRENGTH_FIELDS: (keyof ProfileData)[] = [
+  "firstName", "lastName", "graduationYear", "positions", "highSchool",
+  "city", "gpa", "satScore", "actScore", "intendedMajor",
+  "height", "weight", "clubTeam", "verticalJump", "approachJump", "hudlUrl",
+];
+
+function calcStrength(profile: ProfileData): number {
+  let filled = 0;
+  for (const field of STRENGTH_FIELDS) {
+    if (profile[field]) filled++;
+  }
+  return Math.round((filled / STRENGTH_FIELDS.length) * 100);
 }
 
-function EditableField({ label, value, onChange, placeholder = "Not set", type = "text" }: EditableFieldProps) {
-  const [editing, setEditing] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+// ─────────────────────────────────────────────
+// SHARED FIELD COMPONENTS
+// ─────────────────────────────────────────────
+const fieldLabelStyle: React.CSSProperties = {
+  fontFamily: "DM Sans, sans-serif",
+  fontSize: "10px",
+  color: "#777",
+  letterSpacing: "1.5px",
+  textTransform: "uppercase",
+  marginBottom: "6px",
+};
 
-  useEffect(() => {
-    if (editing && inputRef.current) {
-      inputRef.current.focus();
-      inputRef.current.select();
-    }
-  }, [editing]);
-
+function ReadField({ label, value }: { label: string; value: string }) {
   return (
-    <div
-      className="rounded-lg p-3 cursor-pointer group transition-colors duration-150"
-      style={{ background: "#0C1020", border: editing ? "1px solid #F5C518" : "1px solid #1E2A42" }}
-      onClick={() => !editing && setEditing(true)}
-    >
-      <div style={{ fontFamily: "Inter, sans-serif", fontSize: "10px", color: "#8B9BB8", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "4px" }}>
-        {label}
+    <div style={{ paddingBottom: "20px", borderBottom: "1px solid #1A1A1A" }}>
+      <div style={fieldLabelStyle}>{label}</div>
+      <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "15px", color: value ? "#FFFFFF" : "#2E2E2E" }}>
+        {value || "Not added"}
       </div>
-      {editing ? (
-        <input
-          ref={inputRef}
-          type={type}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          onBlur={() => setEditing(false)}
-          onKeyDown={(e) => { if (e.key === "Enter" || e.key === "Escape") setEditing(false); }}
-          className="w-full bg-transparent outline-none"
-          style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#F0F4FF" }}
-          placeholder={placeholder}
-        />
-      ) : (
-        <div
-          className="group-hover:text-white transition-colors duration-100"
-          style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: value ? "#F0F4FF" : "#4A5570" }}
-        >
-          {value || placeholder}
-        </div>
-      )}
     </div>
   );
 }
 
-// ─────────────────────────────────────────────
-// SELECT FIELD (styled dark dropdown)
-// ─────────────────────────────────────────────
-function SelectField({
-  label,
-  value,
-  options,
-  onChange,
-  placeholder = "Not set",
-}: {
-  label: string;
-  value: string;
-  options: string[];
-  onChange: (val: string) => void;
-  placeholder?: string;
-}) {
-  const hasValue = !!value;
+function EditTextField({
+  label, value, onChange, placeholder = "Not set", type = "text",
+}: { label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string }) {
   return (
-    <div
-      className="rounded-lg p-3"
-      style={{ background: "#0C1020", border: "1px solid #1E2A42" }}
-    >
-      <div style={{ fontFamily: "Inter, sans-serif", fontSize: "10px", color: "#8B9BB8", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "4px" }}>
-        {label}
-      </div>
+    <div style={{ paddingBottom: "20px", borderBottom: "1px solid #1A1A1A" }}>
+      <div style={fieldLabelStyle}>{label}</div>
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        style={{
+          width: "100%", background: "#1A1A1A", border: "1px solid #2A2A2A",
+          borderRadius: "6px", padding: "9px 12px", outline: "none",
+          fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#FFFFFF",
+          boxSizing: "border-box",
+        }}
+        onFocus={(e) => (e.currentTarget.style.borderColor = "#F5C518")}
+        onBlur={(e) => (e.currentTarget.style.borderColor = "#2A2A2A")}
+      />
+    </div>
+  );
+}
+
+function EditTextAreaField({
+  label, value, onChange, placeholder = "Not set",
+}: { label: string; value: string; onChange: (v: string) => void; placeholder?: string }) {
+  return (
+    <div style={{ paddingBottom: "20px", borderBottom: "1px solid #1A1A1A" }}>
+      <div style={fieldLabelStyle}>{label}</div>
+      <textarea
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        rows={3}
+        style={{
+          width: "100%", background: "#1A1A1A", border: "1px solid #2A2A2A",
+          borderRadius: "6px", padding: "9px 12px", outline: "none",
+          fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#FFFFFF",
+          boxSizing: "border-box", resize: "vertical",
+        }}
+        onFocus={(e) => (e.currentTarget.style.borderColor = "#F5C518")}
+        onBlur={(e) => (e.currentTarget.style.borderColor = "#2A2A2A")}
+      />
+    </div>
+  );
+}
+
+function EditSelectField({
+  label, value, options, onChange, placeholder = "Not set",
+}: { label: string; value: string; options: string[]; onChange: (v: string) => void; placeholder?: string }) {
+  return (
+    <div style={{ paddingBottom: "20px", borderBottom: "1px solid #1A1A1A" }}>
+      <div style={fieldLabelStyle}>{label}</div>
       <select
         value={value || ""}
         onChange={(e) => onChange(e.target.value)}
         style={{
-          width: "100%",
-          background: "transparent",
-          border: "none",
-          outline: "none",
-          fontFamily: "Inter, sans-serif",
-          fontSize: "14px",
-          color: hasValue ? "#F0F4FF" : "#4A5570",
-          cursor: "pointer",
-          appearance: "none",
-          WebkitAppearance: "none",
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238B9BB8' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "right 2px center",
-          paddingRight: "20px",
+          width: "100%", background: "#1A1A1A", border: "1px solid #2A2A2A",
+          borderRadius: "6px", padding: "9px 12px", outline: "none",
+          fontFamily: "DM Sans, sans-serif", fontSize: "14px",
+          color: value ? "#FFFFFF" : "#555",
+          cursor: "pointer", appearance: "none", WebkitAppearance: "none",
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
+          backgroundRepeat: "no-repeat", backgroundPosition: "right 12px center",
+          paddingRight: "32px", boxSizing: "border-box",
         }}
+        onFocus={(e) => (e.currentTarget.style.borderColor = "#F5C518")}
+        onBlur={(e) => (e.currentTarget.style.borderColor = "#2A2A2A")}
       >
-        <option value="" style={{ background: "#0C1020", color: "#8B9BB8" }}>{placeholder}</option>
+        <option value="" style={{ background: "#1A1A1A", color: "#888" }}>{placeholder}</option>
         {options.map((opt) => (
-          <option key={opt} value={opt} style={{ background: "#0C1020", color: "#F0F4FF" }}>
-            {opt}
-          </option>
+          <option key={opt} value={opt} style={{ background: "#1A1A1A", color: "#FFF" }}>{opt}</option>
         ))}
       </select>
     </div>
   );
 }
 
-// Big stat select for HEIGHT / WEIGHT / POSITION blocks
-function BigStatSelectField({
-  label,
-  value,
-  options,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  options: string[];
-  onChange: (val: string) => void;
-}) {
+// ─────────────────────────────────────────────
+// SECTION HEADER (EDIT ↔ SAVE toggle)
+// ─────────────────────────────────────────────
+function SectionHeader({
+  title, editing, onEdit, onSave, saving,
+}: { title: string; editing: boolean; onEdit: () => void; onSave: () => void; saving: boolean }) {
   return (
-    <div
-      className="flex-1 rounded-lg p-4 text-center"
-      style={{ background: "#0C1020", border: "1px solid #1E2A42" }}
-    >
-      <select
-        value={value || ""}
-        onChange={(e) => onChange(e.target.value)}
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "28px" }}>
+      <span style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "18px", color: "#FFFFFF", letterSpacing: "1px" }}>
+        {title}
+      </span>
+      <button
+        onClick={editing ? onSave : onEdit}
         style={{
-          width: "100%",
-          background: "transparent",
-          border: "none",
-          outline: "none",
-          fontFamily: "Barlow Condensed, sans-serif",
-          fontSize: "28px",
-          color: value ? "#F5C518" : "#4A5570",
-          cursor: "pointer",
-          appearance: "none",
-          WebkitAppearance: "none",
-          textAlign: "center",
-          lineHeight: 1,
+          fontFamily: "DM Sans, sans-serif", fontSize: "10px",
+          color: editing ? "#F5C518" : "#888888",
+          background: "transparent", border: "none", cursor: "pointer",
+          letterSpacing: "0.5px",
         }}
       >
-        <option value="" style={{ background: "#0C1020", color: "#8B9BB8" }}>—</option>
-        {options.map((opt) => (
-          <option key={opt} value={opt} style={{ background: "#0C1020", color: "#F0F4FF", fontFamily: "Inter, sans-serif", fontSize: "14px" }}>
-            {opt}
-          </option>
-        ))}
-      </select>
-      <div style={{ fontFamily: "Inter, sans-serif", fontSize: "10px", color: "#8B9BB8", letterSpacing: "0.12em", marginTop: "4px" }}>{label}</div>
+        {editing ? (saving ? "Saving…" : "SAVE ✓") : "EDIT →"}
+      </button>
     </div>
   );
 }
 
 // ─────────────────────────────────────────────
-// TAB CONTENT COMPONENTS
+// CONTENT PANELS
 // ─────────────────────────────────────────────
-function PersonalInfoTab({
-  profileData,
-  onChange,
-  onSave,
-  saving,
+function PersonalPanel({
+  profile, editing, onEdit, onSave, saving, onChange,
 }: {
-  profileData: ProfileData;
-  onChange: (field: keyof ProfileData, val: string) => void;
-  onSave: () => void;
-  saving: boolean;
+  profile: ProfileData; editing: boolean; onEdit: () => void; onSave: () => void;
+  saving: boolean; onChange: (f: keyof ProfileData, v: string) => void;
 }) {
   return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-3">
-        <EditableField label="First Name" value={profileData.firstName} onChange={(v) => onChange("firstName", v)} />
-        <EditableField label="Last Name" value={profileData.lastName} onChange={(v) => onChange("lastName", v)} />
-        <SelectField label="Graduation Year" value={profileData.graduationYear} options={GRAD_YEARS} onChange={(v) => onChange("graduationYear", v)} />
-        <EditableField label="High School" value={profileData.highSchool} onChange={(v) => onChange("highSchool", v)} />
-        <EditableField label="City" value={profileData.city} onChange={(v) => onChange("city", v)} />
-        <SelectField label="State" value={profileData.state} options={US_STATES} onChange={(v) => onChange("state", v)} />
-        <EditableField label="Email" value={profileData.email} onChange={(v) => onChange("email", v)} type="email" />
-        <SelectField label="GPA" value={profileData.gpa} options={GPA_OPTIONS} onChange={(v) => onChange("gpa", v)} />
-        <SelectField label="SAT Score" value={profileData.satScore} options={SAT_OPTIONS} onChange={(v) => onChange("satScore", v)} />
-        <SelectField label="ACT Score" value={profileData.actScore} options={ACT_OPTIONS} onChange={(v) => onChange("actScore", v)} />
-        <div className="col-span-2">
-          <SelectField label="Intended Major" value={profileData.intendedMajor} options={MAJORS} onChange={(v) => onChange("intendedMajor", v)} />
-        </div>
-      </div>
-      <SaveButton onSave={onSave} saving={saving} />
-    </div>
-  );
-}
-
-function AthleticInfoTab({
-  profileData,
-  onChange,
-  onSave,
-  saving,
-}: {
-  profileData: ProfileData;
-  onChange: (field: keyof ProfileData, val: string) => void;
-  onSave: () => void;
-  saving: boolean;
-}) {
-  return (
-    <div className="space-y-4">
-      {/* Big stat display — controlled dropdowns */}
-      <div className="flex gap-3">
-        <BigStatSelectField
-          label="HEIGHT"
-          value={profileData.height}
-          options={HEIGHT_OPTIONS}
-          onChange={(v) => onChange("height", v)}
-        />
-        <BigStatSelectField
-          label="WEIGHT"
-          value={profileData.weight}
-          options={WEIGHT_OPTIONS}
-          onChange={(v) => onChange("weight", v)}
-        />
-        <BigStatSelectField
-          label="POSITION"
-          value={profileData.positions}
-          options={POSITIONS}
-          onChange={(v) => onChange("positions", v)}
-        />
-      </div>
-      <div className="grid grid-cols-2 gap-3">
-        <EditableField label="Club Team" value={profileData.clubTeam} onChange={(v) => onChange("clubTeam", v)} />
-        <EditableField label="Jersey Number" value={profileData.jerseyNumber} onChange={(v) => onChange("jerseyNumber", v)} />
-        <SelectField label="Vertical Jump" value={profileData.verticalJump} options={VERTICAL_OPTIONS} onChange={(v) => onChange("verticalJump", v)} />
-        <SelectField label="Approach Jump" value={profileData.approachJump} options={APPROACH_OPTIONS} onChange={(v) => onChange("approachJump", v)} />
-        <div className="col-span-2"><EditableField label="Key Stats & Achievements" value={profileData.keyStats} onChange={(v) => onChange("keyStats", v)} /></div>
-        <div className="col-span-2"><EditableField label="Athletic Awards" value={profileData.awards} onChange={(v) => onChange("awards", v)} /></div>
-      </div>
-      <SaveButton onSave={onSave} saving={saving} />
-    </div>
-  );
-}
-
-function BigStatField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
-  const [editing, setEditing] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (editing && inputRef.current) {
-      inputRef.current.focus();
-      inputRef.current.select();
-    }
-  }, [editing]);
-
-  return (
-    <div
-      className="flex-1 rounded-lg p-4 text-center cursor-pointer transition-colors duration-150"
-      style={{ background: "#0C1020", border: editing ? "1px solid #F5C518" : "1px solid #1E2A42" }}
-      onClick={() => !editing && setEditing(true)}
-    >
-      {editing ? (
-        <input
-          ref={inputRef}
-          type="text"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          onBlur={() => setEditing(false)}
-          onKeyDown={(e) => { if (e.key === "Enter" || e.key === "Escape") setEditing(false); }}
-          className="w-full bg-transparent outline-none text-center"
-          style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "32px", color: "#F5C518", lineHeight: 1 }}
-        />
-      ) : (
-        <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "32px", color: "#F5C518", lineHeight: 1 }}>
-          {value || "—"}
-        </div>
-      )}
-      <div style={{ fontFamily: "Inter, sans-serif", fontSize: "10px", color: "#8B9BB8", letterSpacing: "0.12em", marginTop: "4px" }}>{label}</div>
-    </div>
-  );
-}
-
-function MediaLinksTab({
-  profileData,
-  onChange,
-  onSave,
-  saving,
-}: {
-  profileData: ProfileData;
-  onChange: (field: keyof ProfileData, val: string) => void;
-  onSave: () => void;
-  saving: boolean;
-}) {
-  const links: { label: string; icon: string; field: keyof ProfileData; isHandle?: boolean }[] = [
-    { label: "Hudl", icon: "🎬", field: "hudlUrl" },
-    { label: "Instagram", icon: "📸", field: "instagramHandle", isHandle: true },
-    { label: "NCSA", icon: "🏆", field: "ncsaUrl" },
-    { label: "Highlight Film", icon: "🎥", field: "highlightFilmUrl" },
-    { label: "Twitter/X", icon: "🐦", field: "twitterHandle", isHandle: true },
-  ];
-
-  return (
-    <div className="space-y-3">
-      {links.map((link) => {
-        const rawValue = profileData[link.field] as string;
-        const displayValue = link.isHandle && rawValue && !rawValue.startsWith("@") ? `@${rawValue}` : rawValue;
-        return (
-          <MediaLinkField
-            key={link.field as string}
-            label={link.label}
-            icon={link.icon}
-            value={rawValue}
-            displayValue={displayValue}
-            isHandle={link.isHandle}
-            onChange={(v) => onChange(link.field, v)}
-          />
-        );
-      })}
-      <SaveButton onSave={onSave} saving={saving} />
-    </div>
-  );
-}
-
-function MediaLinkField({
-  label, icon, value, displayValue, isHandle, onChange,
-}: {
-  label: string; icon: string; value: string; displayValue: string; isHandle?: boolean; onChange: (v: string) => void;
-}) {
-  const [editing, setEditing] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (editing && inputRef.current) {
-      inputRef.current.focus();
-      inputRef.current.select();
-    }
-  }, [editing]);
-
-  return (
-    <div
-      className="flex items-center gap-3 rounded-lg p-3 cursor-pointer transition-colors duration-150"
-      style={{ background: "#0C1020", border: editing ? "1px solid #F5C518" : "1px solid #1E2A42" }}
-      onClick={() => !editing && setEditing(true)}
-    >
-      <span style={{ fontSize: "20px", width: "28px", textAlign: "center", flexShrink: 0 }}>{icon}</span>
-      <div className="flex-1 min-w-0">
-        <div style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#8B9BB8", letterSpacing: "0.1em", textTransform: "uppercase" }}>{label}</div>
+    <div style={{ padding: "clamp(16px, 4vw, 36px) clamp(16px, 4vw, 40px)", overflowY: "auto", flex: 1 }}>
+      <SectionHeader title="PERSONAL INFO" editing={editing} onEdit={onEdit} onSave={onSave} saving={saving} />
+      <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "0 32px" }}>
         {editing ? (
-          <input
-            ref={inputRef}
-            type="text"
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            onBlur={() => setEditing(false)}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === "Escape") setEditing(false); }}
-            className="w-full bg-transparent outline-none"
-            style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#F0F4FF", marginTop: "2px" }}
-            placeholder={isHandle ? "@handle" : "https://..."}
-          />
+          <>
+            <EditTextField label="First Name" value={profile.firstName} onChange={(v) => onChange("firstName", v)} />
+            <EditTextField label="Last Name" value={profile.lastName} onChange={(v) => onChange("lastName", v)} />
+            <EditSelectField label="Graduation Year" value={profile.graduationYear} options={GRAD_YEARS} onChange={(v) => onChange("graduationYear", v)} />
+            <EditTextField label="High School" value={profile.highSchool} onChange={(v) => onChange("highSchool", v)} />
+            <EditTextField label="City" value={profile.city} onChange={(v) => onChange("city", v)} />
+            <EditSelectField label="State" value={profile.state} options={US_STATES} onChange={(v) => onChange("state", v)} />
+            <EditSelectField label="GPA" value={profile.gpa} options={GPA_OPTIONS} onChange={(v) => onChange("gpa", v)} />
+            <EditSelectField label="SAT Score" value={profile.satScore} options={SAT_OPTIONS} onChange={(v) => onChange("satScore", v)} />
+            <EditSelectField label="ACT Score" value={profile.actScore} options={ACT_OPTIONS} onChange={(v) => onChange("actScore", v)} />
+            <EditSelectField label="Intended Major" value={profile.intendedMajor} options={MAJORS} onChange={(v) => onChange("intendedMajor", v)} />
+          </>
         ) : (
-          <div
-            className="truncate"
-            style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: value ? "#F0F4FF" : "#4A5570", marginTop: "2px" }}
-          >
-            {displayValue || "Not set"}
-          </div>
+          <>
+            <ReadField label="Full Name" value={[profile.firstName, profile.lastName].filter(Boolean).join(" ")} />
+            <ReadField label="Graduation Year" value={profile.graduationYear} />
+            <ReadField label="High School" value={profile.highSchool} />
+            <ReadField label="Location" value={[profile.city, profile.state].filter(Boolean).join(", ")} />
+            <ReadField label="GPA" value={profile.gpa} />
+            <ReadField label="SAT Score" value={profile.satScore} />
+            <ReadField label="ACT Score" value={profile.actScore} />
+            <ReadField label="Intended Major" value={profile.intendedMajor} />
+          </>
         )}
       </div>
-      {value && !editing && (
-        <a
-          href={value.startsWith("http") ? value : `https://${value}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs px-2 py-1 rounded transition-colors flex-shrink-0"
-          style={{ background: "#1E2A42", color: "#F5C518", fontFamily: "Inter, sans-serif", textDecoration: "none" }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          Open →
-        </a>
-      )}
     </div>
   );
 }
 
-function SaveButton({ onSave, saving }: { onSave: () => void; saving: boolean }) {
+// ─────────────────────────────────────────────
+// POSITION MULTI-SELECT PILLS
+// ─────────────────────────────────────────────
+function PositionMultiSelect({
+  value, onChange,
+}: { value: string; onChange: (v: string) => void }) {
+  // Parse current value (JSON array string or plain string)
+  const selected: string[] = (() => {
+    if (!value) return [];
+    try {
+      const parsed = JSON.parse(value);
+      if (Array.isArray(parsed)) return parsed;
+      return value ? [value] : [];
+    } catch {
+      return value ? [value] : [];
+    }
+  })();
+
+  const toggle = (pos: string) => {
+    const next = selected.includes(pos)
+      ? selected.filter((p) => p !== pos)
+      : [...selected, pos];
+    onChange(next.length > 0 ? JSON.stringify(next) : "");
+  };
+
   return (
-    <button
-      onClick={onSave}
-      disabled={saving}
-      className="w-full py-3 text-sm font-bold tracking-widest uppercase transition-all duration-150 mt-2"
-      style={{
-        background: saving ? "#B89000" : "#F5C518",
-        color: "#090D18",
-        fontFamily: "Barlow Condensed, sans-serif",
-        fontSize: "15px",
-        letterSpacing: "0.1em",
-        borderRadius: "10px",
-        boxShadow: saving ? "none" : "0 4px 20px rgba(245,197,24,0.32)",
-        cursor: saving ? "not-allowed" : "pointer",
-        opacity: saving ? 0.8 : 1,
-      }}
-    >
-      {saving ? "Saving…" : "Save ✓"}
-    </button>
+    <div style={{ paddingBottom: "20px", borderBottom: "1px solid #1A1A1A", gridColumn: "1 / -1" }}>
+      <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "10px", color: "#777", letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "10px" }}>Position</div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+        {POSITIONS.map((pos) => {
+          const isSelected = selected.includes(pos);
+          return (
+            <button
+              key={pos}
+              type="button"
+              onClick={() => toggle(pos)}
+              style={{
+                fontFamily: "DM Sans, sans-serif",
+                fontSize: "12px",
+                padding: "6px 12px",
+                borderRadius: "6px",
+                border: `1px solid ${isSelected ? "#F5C518" : "#2A2A2A"}`,
+                background: isSelected ? "#F5C518" : "#1A1A1A",
+                color: isSelected ? "#000" : "#888",
+                cursor: "pointer",
+                transition: "all 0.15s",
+                fontWeight: isSelected ? 600 : 400,
+              }}
+            >
+              {pos}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function AthleticPanel({
+  profile, editing, onEdit, onSave, saving, onChange,
+}: {
+  profile: ProfileData; editing: boolean; onEdit: () => void; onSave: () => void;
+  saving: boolean; onChange: (f: keyof ProfileData, v: string) => void;
+}) {
+  // Parse positions for read view
+  const positionsDisplay = (() => {
+    if (!profile.positions) return "";
+    try {
+      const parsed = JSON.parse(profile.positions);
+      if (Array.isArray(parsed)) return parsed.join(" · ");
+      return profile.positions;
+    } catch {
+      return profile.positions;
+    }
+  })();
+
+  return (
+    <div style={{ padding: "clamp(16px, 4vw, 36px) clamp(16px, 4vw, 40px)", overflowY: "auto", flex: 1 }}>
+      <SectionHeader title="ATHLETIC INFO" editing={editing} onEdit={onEdit} onSave={onSave} saving={saving} />
+      <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "0 32px" }}>
+        {editing ? (
+          <>
+            <PositionMultiSelect value={profile.positions} onChange={(v) => onChange("positions", v)} />
+            <EditSelectField label="Height" value={profile.height} options={HEIGHT_OPTIONS} onChange={(v) => onChange("height", v)} />
+            <EditSelectField label="Weight" value={profile.weight} options={WEIGHT_OPTIONS} onChange={(v) => onChange("weight", v)} />
+            <EditTextField label="Club Team" value={profile.clubTeam} onChange={(v) => onChange("clubTeam", v)} />
+            <EditTextField label="Jersey Number" value={profile.jerseyNumber} onChange={(v) => onChange("jerseyNumber", v)} />
+            <EditSelectField label="Vertical Jump" value={profile.verticalJump} options={VERTICAL_OPTIONS} onChange={(v) => onChange("verticalJump", v)} />
+            <EditSelectField label="Approach Jump" value={profile.approachJump} options={APPROACH_OPTIONS} onChange={(v) => onChange("approachJump", v)} />
+            <div style={{ gridColumn: "1 / -1" }}>
+              <EditTextAreaField label="Key Stats & Achievements" value={profile.keyStats} onChange={(v) => onChange("keyStats", v)} />
+            </div>
+            <div style={{ gridColumn: "1 / -1" }}>
+              <EditTextAreaField label="Athletic Awards" value={profile.awards} onChange={(v) => onChange("awards", v)} />
+            </div>
+          </>
+        ) : (
+          <>
+            <ReadField label="Position" value={positionsDisplay} />
+            <ReadField label="Height" value={profile.height} />
+            <ReadField label="Weight" value={profile.weight} />
+            <ReadField label="Club Team" value={profile.clubTeam} />
+            <ReadField label="Jersey Number" value={profile.jerseyNumber} />
+            <ReadField label="Vertical Jump" value={profile.verticalJump} />
+            <ReadField label="Approach Jump" value={profile.approachJump} />
+            <div style={{ gridColumn: "1 / -1" }}>
+              <ReadField label="Key Stats & Achievements" value={profile.keyStats} />
+            </div>
+            <div style={{ gridColumn: "1 / -1" }}>
+              <ReadField label="Athletic Awards" value={profile.awards} />
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+const MEDIA_LINKS: { field: keyof ProfileData; label: string; description: string; placeholder: string }[] = [
+  { field: "hudlUrl", label: "Hudl", description: "Game film & highlights", placeholder: "https://hudl.com/..." },
+  { field: "ncsaUrl", label: "NCSA", description: "Recruiting profile", placeholder: "https://ncsa..." },
+  { field: "highlightFilmUrl", label: "Highlight Film", description: "Best plays compilation", placeholder: "https://..." },
+  { field: "instagramHandle", label: "Instagram", description: "Social media", placeholder: "@handle" },
+  { field: "twitterHandle", label: "Twitter/X", description: "Social media", placeholder: "@handle" },
+];
+
+function MediaPanel({
+  profile, editing, onEdit, onSave, saving, onChange,
+}: {
+  profile: ProfileData; editing: boolean; onEdit: () => void; onSave: () => void;
+  saving: boolean; onChange: (f: keyof ProfileData, v: string) => void;
+}) {
+  // Per-row inline editing state: field key → draft value string, or null if not editing
+  const [rowEditing, setRowEditing] = useState<Partial<Record<keyof ProfileData, string>>>({})
+
+  const startRowEdit = (field: keyof ProfileData, currentVal: string) => {
+    setRowEditing((prev) => ({ ...prev, [field]: currentVal }));
+  };
+
+  const cancelRowEdit = (field: keyof ProfileData) => {
+    setRowEditing((prev) => {
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+  };
+
+  const saveRowEdit = (field: keyof ProfileData) => {
+    const draft = rowEditing[field];
+    if (draft !== undefined) {
+      onChange(field, draft);
+    }
+    cancelRowEdit(field);
+    onSave();
+  };
+
+  return (
+    <div style={{ padding: "clamp(16px, 4vw, 36px) clamp(16px, 4vw, 40px)", overflowY: "auto", flex: 1 }}>
+      <SectionHeader title="MEDIA & LINKS" editing={editing} onEdit={onEdit} onSave={onSave} saving={saving} />
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        {MEDIA_LINKS.map(({ field, label, description, placeholder }) => {
+          const rawVal = profile[field] as string;
+          const isHandle = field === "instagramHandle" || field === "twitterHandle";
+          const displayVal = isHandle && rawVal && !rawVal.startsWith("@") ? `@${rawVal}` : rawVal;
+          const isRowEditing = field in rowEditing;
+          const draftVal = rowEditing[field] ?? "";
+
+          return (
+            <div
+              key={field}
+              style={{
+                background: "#1A1A1A", borderRadius: "10px",
+                padding: "18px 24px", border: `1px solid ${isRowEditing ? "#2A2A2A" : "#1A1A1A"}`,
+                transition: "border-color 0.15s",
+              }}
+            >
+              {/* Top row: platform name + description + value/add-link */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px" }}>
+                {/* Left: platform name + description */}
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", color: "#FFFFFF", letterSpacing: "1px", marginBottom: "4px" }}>
+                    {label}
+                  </div>
+                  <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#555" }}>
+                    {description}
+                  </div>
+                </div>
+
+                {/* Right: value or "Add link →" button */}
+                {!isRowEditing && (
+                  rawVal ? (
+                    <a
+                      href={rawVal.startsWith("http") ? rawVal : `https://${rawVal}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#F5C518",
+                        textDecoration: "none", maxWidth: "240px",
+                        overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                        flexShrink: 0, cursor: "pointer",
+                      }}
+                      onClick={(e) => { e.preventDefault(); startRowEdit(field, rawVal); }}
+                    >
+                      {displayVal}
+                    </a>
+                  ) : (
+                    <button
+                      onClick={() => startRowEdit(field, "")}
+                      style={{
+                        fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#888888",
+                        background: "transparent", border: "none", cursor: "pointer", padding: 0,
+                        flexShrink: 0,
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = "#F5C518")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "#888888")}
+                    >
+                      Add link →
+                    </button>
+                  )
+                )}
+              </div>
+
+              {/* Inline edit row — shown only when this row is being edited */}
+              {isRowEditing && (
+                <div style={{ marginTop: "12px" }}>
+                  <input
+                    type="text"
+                    value={draftVal}
+                    autoFocus
+                    onChange={(e) => setRowEditing((prev) => ({ ...prev, [field]: e.target.value }))}
+                    placeholder={placeholder}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") saveRowEdit(field);
+                      if (e.key === "Escape") cancelRowEdit(field);
+                    }}
+                    style={{
+                      width: "100%", background: "#111", border: "1px solid #F5C518",
+                      borderRadius: "6px", padding: "9px 12px", outline: "none",
+                      fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#FFFFFF",
+                      boxSizing: "border-box", marginBottom: "10px",
+                    }}
+                  />
+                  <div style={{ display: "flex", gap: "8px" }}>
+                    <button
+                      onClick={() => saveRowEdit(field)}
+                      style={{
+                        fontFamily: "Bebas Neue, sans-serif", fontSize: "11px", letterSpacing: "1px",
+                        padding: "7px 16px", borderRadius: "6px",
+                        background: "#F5C518", color: "#000", border: "none", cursor: "pointer",
+                      }}
+                    >
+                      SAVE →
+                    </button>
+                    <button
+                      onClick={() => cancelRowEdit(field)}
+                      style={{
+                        fontFamily: "Bebas Neue, sans-serif", fontSize: "11px", letterSpacing: "1px",
+                        padding: "7px 16px", borderRadius: "6px",
+                        background: "transparent", border: "1px solid #2A2A2A",
+                        color: "#555", cursor: "pointer",
+                      }}
+                      onMouseEnter={(e) => { e.currentTarget.style.color = "#888"; e.currentTarget.style.borderColor = "#444"; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.color = "#555"; e.currentTarget.style.borderColor = "#2A2A2A"; }}
+                    >
+                      CANCEL
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+
+        {/* Tip card */}
+        <div
+          style={{
+            marginTop: "8px",
+            background: "#1A1A1A",
+            borderLeft: "2px solid #F5C518",
+            borderRadius: "6px",
+            padding: "14px 18px",
+          }}
+        >
+          <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#777", margin: 0, lineHeight: 1.6 }}>
+            Your Hudl link and NCSA profile are automatically included in every email you generate. Add them to improve your response rate.
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
 
 // ─────────────────────────────────────────────
-// PROFILE CARD MODAL
+// PROFILE MODAL
 // ─────────────────────────────────────────────
-interface ProfileCardModalProps {
+type NavSection = "personal" | "athletic" | "media";
+
+const NAV_ITEMS: { key: NavSection; label: string }[] = [
+  { key: "personal", label: "PERSONAL" },
+  { key: "athletic", label: "ATHLETIC" },
+  { key: "media", label: "MEDIA & LINKS" },
+];
+
+function ProfileModal({
+  profileData,
+  onClose,
+  onChange,
+  onSave,
+  saving,
+}: {
   profileData: ProfileData;
-  activeTab: ProfileTab;
-  onTabChange: (tab: ProfileTab) => void;
   onClose: () => void;
   onChange: (field: keyof ProfileData, val: string) => void;
-  onSave: (tab: ProfileTab) => void;
+  onSave: () => void;
   saving: boolean;
-}
+}) {
+  const [activeSection, setActiveSection] = useState<NavSection>("personal");
+  const [editingSection, setEditingSection] = useState<NavSection | null>(null);
 
-function ProfileCardModal({ profileData, activeTab, onTabChange, onClose, onChange, onSave, saving }: ProfileCardModalProps) {
   const fullName = [profileData.firstName, profileData.lastName].filter(Boolean).join(" ") || "YOUR NAME";
-  const nameParts = fullName.split(" ");
-  const firstName = nameParts[0] || "YOUR";
-  const lastName = nameParts.slice(1).join(" ") || "NAME";
   const initials = [profileData.firstName?.[0], profileData.lastName?.[0]].filter(Boolean).join("") || "YN";
+  const pct = calcStrength(profileData);
 
-  const TABS: { key: ProfileTab; label: string }[] = [
-    { key: "personal", label: "Personal Info" },
-    { key: "athletic", label: "Athletic Info" },
-    { key: "media", label: "Media & Links" },
-  ];
+  const handleNavClick = (key: NavSection) => {
+    setActiveSection(key);
+    setEditingSection(null);
+  };
+
+  const handleEdit = (section: NavSection) => setEditingSection(section);
+  const handleSaveSection = () => {
+    onSave();
+    setEditingSection(null);
+  };
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: "rgba(0,0,0,0.85)", backdropFilter: "blur(6px)" }}
+      className="fixed inset-0 z-50 flex md:items-center md:justify-center"
+      style={{ background: "rgba(0,0,0,0.85)", backdropFilter: "blur(8px)", padding: "clamp(0px, 2vw, 20px)" }}
       onClick={onClose}
     >
       <motion.div
-        initial={{ opacity: 0, scale: 0.96, y: 16 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.96, y: 16 }}
-        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-        className="relative w-full max-w-2xl rounded-xl overflow-hidden"
-        style={{ background: "#0C1020", border: "1px solid #1E2A42", maxHeight: "90vh", overflowY: "auto" }}
+        initial={{ opacity: 0, y: "100%" }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: "100%" }}
+        transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
+        className="profile-modal-container md:w-[min(96vw,1100px)] md:h-[min(96vh,90vh)] md:rounded-[20px]"
+        style={{
+          maxWidth: "1100px",
+          background: "#111111", border: "1px solid #2A2A2A",
+          display: "flex", flexDirection: "column",
+          overflow: "hidden",
+        }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-20 text-2xl leading-none transition-colors"
-          style={{ color: "#4A5570", fontFamily: "Inter, sans-serif" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#F5C518")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "#4A5570")}
-        >
-          ×
-        </button>
-
-        {/* Hero section — updates in real time */}
+        {/* Drag handle (mobile only) */}
+        <div className="flex justify-center pt-3 pb-1 md:hidden" style={{ flexShrink: 0 }}>
+          <div style={{ width: 36, height: 4, borderRadius: 2, background: "rgba(255,255,255,0.2)" }} />
+        </div>
+        {/* ── MOBILE COMPACT HEADER ── */}
         <div
-          className="relative p-6 pb-0"
-          style={{ background: "linear-gradient(135deg, #181E32 0%, #0C1020 100%)", borderBottom: "1px solid #1E2A42" }}
+          className="flex md:hidden items-center justify-between"
+          style={{
+            background: "#0A0A0A", borderBottom: "1px solid #1A1A1A",
+            padding: "0 16px", height: "56px", flexShrink: 0,
+          }}
         >
-          <div className="flex items-start gap-5 mb-5">
-            {/* Avatar */}
+          <span style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "16px", letterSpacing: "0.1em", color: "#F5C518" }}>RECRUITPATH</span>
+          <span style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "14px", letterSpacing: "0.08em", color: "#FFFFFF", position: "absolute", left: "50%", transform: "translateX(-50%)" }}>EDIT PROFILE</span>
+          <button
+            onClick={onClose}
+            style={{ background: "transparent", border: "none", cursor: "pointer", color: "#555", padding: "0", width: "44px", height: "44px", display: "flex", alignItems: "center", justifyContent: "center" }}
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* ── MODAL HEADER (desktop only) ── */}
+        <div
+          className="hidden md:flex"
+          style={{
+            background: "#0A0A0A", borderBottom: "1px solid #1A1A1A",
+            padding: "clamp(14px, 3vw, 24px) clamp(16px, 4vw, 36px)", flexShrink: 0,
+            alignItems: "center", justifyContent: "space-between",
+          }}
+        >
+          {/* Left: avatar + name + badges */}
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
             <div
-              className="flex-shrink-0 rounded-xl flex items-center justify-center overflow-hidden"
-              style={{ width: 80, height: 80, background: "#131829", border: "2px solid #1E2A42" }}
+              style={{
+                width: "72px", height: "72px", borderRadius: "50%",
+                background: "#1A1A1A", border: "2px solid #F5C518",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                flexShrink: 0,
+              }}
             >
               {profileData.profilePhoto ? (
-                <img src={profileData.profilePhoto} alt={fullName} className="w-full h-full object-cover" />
+                <img src={profileData.profilePhoto} alt={fullName} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
               ) : (
-                <span style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "28px", color: "#F5C518" }}>{initials}</span>
+                <span style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "24px", color: "#F5C518" }}>{initials}</span>
               )}
             </div>
-
-            {/* Name + badge */}
-            <div className="flex-1 min-w-0">
-              {profileData.positions && (
-                <span
-                  className="inline-block mb-2 px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider"
-                  style={{ background: "#F5C518", color: "#090D18", fontFamily: "Inter, sans-serif" }}
-                >
-                  {profileData.positions.split(",")[0].trim()}
-                </span>
-              )}
-              <h2 style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "42px", lineHeight: 1, letterSpacing: "0.04em" }}>
-                <span style={{ color: "#F0F4FF" }}>{firstName} </span>
-                <span style={{ color: "#F5C518" }}>{lastName}</span>
-              </h2>
-              <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#8B9BB8", marginTop: "4px" }}>
-                {[profileData.highSchool, profileData.graduationYear ? `Class of ${profileData.graduationYear}` : ""].filter(Boolean).join(" · ") || "Add your school & grad year"}
-              </p>
-            </div>
-          </div>
-
-          {/* Stat bar — live updates */}
-          <div className="flex gap-0 mb-0" style={{ borderTop: "1px solid #1E2A42" }}>
-            {[
-              { label: "HEIGHT", value: profileData.height || "—" },
-              { label: "GRAD YEAR", value: profileData.graduationYear || "—" },
-              { label: "GPA", value: profileData.gpa || "—" },
-              { label: "SCHOOLS", value: "8" },
-            ].map((stat, i, arr) => (
-              <div
-                key={stat.label}
-                className="flex-1 py-3 text-center"
-                style={{ borderRight: i < arr.length - 1 ? "1px solid #1E2A42" : "none" }}
-              >
-                <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "20px", color: "#F0F4FF", lineHeight: 1 }}>{stat.value}</div>
-                <div style={{ fontFamily: "Inter, sans-serif", fontSize: "10px", color: "#8B9BB8", letterSpacing: "0.1em", marginTop: "2px" }}>{stat.label}</div>
+            <div>
+              <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "26px", color: "#FFFFFF", lineHeight: 1.1, marginBottom: "8px" }}>
+                {fullName.toUpperCase()}
               </div>
-            ))}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                {(() => {
+                  // Parse positions into individual badges
+                  const positionBadges: string[] = [];
+                  if (profileData.positions) {
+                    try {
+                      const parsed = JSON.parse(profileData.positions);
+                      if (Array.isArray(parsed)) positionBadges.push(...parsed);
+                      else positionBadges.push(profileData.positions);
+                    } catch {
+                      positionBadges.push(profileData.positions);
+                    }
+                  }
+                  const badges = [
+                    profileData.graduationYear ? `CLASS OF ${profileData.graduationYear}` : null,
+                    ...positionBadges,
+                    profileData.highSchool || null,
+                    profileData.city ? `${profileData.city}${profileData.state ? `, ${profileData.state}` : ""}` : null,
+                  ].filter(Boolean) as string[];
+                  return badges.map((badge, i) => (
+                    <span
+                      key={i}
+                      style={{
+                        fontFamily: "DM Sans, sans-serif", fontSize: "10px",
+                        color: "#AAAAAA", background: "#1A1A1A",
+                        border: "1px solid #2A2A2A", borderRadius: "4px",
+                        padding: "3px 8px", letterSpacing: "0.5px",
+                      }}
+                    >
+                      {badge}
+                    </span>
+                  ));
+                })()}
+              </div>
+            </div>
           </div>
 
-          {/* Tabs */}
-          <div className="flex gap-0 -mb-px">
-            {TABS.map((tab) => (
+          {/* Right: profile strength + close */}
+          <div style={{ display: "flex", alignItems: "center", gap: "20px", flexShrink: 0 }}>
+            <div style={{ textAlign: "right" }}>
+              <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "10px", color: "#555", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "6px" }}>
+                Profile Strength
+              </div>
+              <div style={{ width: "160px", height: "4px", background: "#2A2A2A", borderRadius: "2px", marginBottom: "4px" }}>
+                <div style={{ width: `${pct}%`, height: "100%", background: "#F5C518", borderRadius: "2px", transition: "width 0.4s ease" }} />
+              </div>
+              <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", color: "#F5C518", letterSpacing: "1px" }}>
+                {pct}%
+              </div>
+            </div>
+            <button
+              onClick={onClose}
+              style={{ background: "transparent", border: "none", cursor: "pointer", color: "#555", padding: "0", width: "44px", height: "44px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#F5C518")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#555")}
+            >
+              <X size={20} />
+            </button>
+          </div>
+        </div>
+
+        {/* ── MOBILE TOP NAV TABS ── */}
+        <div
+          className="flex md:hidden"
+          style={{ borderBottom: "1px solid #1A1A1A", flexShrink: 0 }}
+        >
+          {NAV_ITEMS.map(({ key, label }) => {
+            const isActive = activeSection === key;
+            return (
               <button
-                key={tab.key}
-                onClick={() => onTabChange(tab.key)}
-                className="px-5 py-3 text-xs font-bold uppercase tracking-widest transition-colors"
+                key={key}
+                onClick={() => handleNavClick(key)}
                 style={{
-                  fontFamily: "Inter, sans-serif",
-                  color: activeTab === tab.key ? "#F5C518" : "#8B9BB8",
-                  borderBottom: activeTab === tab.key ? "2px solid #F5C518" : "2px solid transparent",
+                  flex: 1,
+                  height: "44px",
+                  fontFamily: "DM Sans, sans-serif",
+                  fontSize: "11px",
+                  letterSpacing: "1.5px",
+                  textTransform: "uppercase",
+                  color: isActive ? "#F5C518" : "#555",
                   background: "transparent",
+                  border: "none",
+                  borderBottom: isActive ? "2px solid #F5C518" : "2px solid transparent",
+                  cursor: "pointer",
+                  textAlign: "center",
                 }}
               >
-                {tab.label}
+                {label}
               </button>
-            ))}
+            );
+          })}
+        </div>
+
+        {/* ── MODAL BODY: LEFT NAV + CONTENT PANEL ── */}
+        <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+          {/* Left nav: hidden on mobile */}
+          <div
+            className="hidden md:flex"
+            style={{
+              width: "160px", flexShrink: 0,
+              background: "#0A0A0A", borderRight: "1px solid #1A1A1A",
+              flexDirection: "column",
+            }}
+          >
+            {/* Nav items */}
+            <div style={{ flex: 1 }}>
+              {NAV_ITEMS.map(({ key, label }) => {
+                const isActive = activeSection === key;
+                return (
+                  <button
+                    key={key}
+                    onClick={() => handleNavClick(key)}
+                    style={{
+                      display: "block", width: "100%", textAlign: "left",
+                      padding: "20px 20px",
+                      fontFamily: "Bebas Neue, sans-serif", fontSize: "12px", letterSpacing: "2px",
+                      color: isActive ? "#F5C518" : "#444",
+                      background: isActive ? "#141414" : "transparent",
+                      border: "none",
+                      borderLeft: isActive ? "3px solid #F5C518" : "3px solid transparent",
+                      cursor: "pointer",
+                      transition: "color 0.15s, background 0.15s",
+                    }}
+                    onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.color = "#888"; }}
+                    onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.color = "#444"; }}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Profile strength pinned at bottom of nav */}
+            <div style={{ padding: "16px 16px 20px", borderTop: "1px solid #1A1A1A" }}>
+              <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "20px", color: "#F5C518", lineHeight: 1, marginBottom: "4px" }}>
+                {pct}%
+              </div>
+              <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "9px", color: "#555", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "8px" }}>
+                COMPLETE
+              </div>
+              <div style={{ width: "100%", height: "3px", background: "#1A1A1A", borderRadius: "2px" }}>
+                <div style={{ width: `${pct}%`, height: "100%", background: "#F5C518", borderRadius: "2px", transition: "width 0.4s ease" }} />
+              </div>
+            </div>
+          </div>
+
+          {/* Content panel */}
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+            {activeSection === "personal" && (
+              <PersonalPanel
+                profile={profileData}
+                editing={editingSection === "personal"}
+                onEdit={() => handleEdit("personal")}
+                onSave={handleSaveSection}
+                saving={saving}
+                onChange={onChange}
+              />
+            )}
+            {activeSection === "athletic" && (
+              <AthleticPanel
+                profile={profileData}
+                editing={editingSection === "athletic"}
+                onEdit={() => handleEdit("athletic")}
+                onSave={handleSaveSection}
+                saving={saving}
+                onChange={onChange}
+              />
+            )}
+            {activeSection === "media" && (
+              <MediaPanel
+                profile={profileData}
+                editing={editingSection === "media"}
+                onEdit={() => handleEdit("media")}
+                onSave={handleSaveSection}
+                saving={saving}
+                onChange={onChange}
+              />
+            )}
           </div>
         </div>
 
-        {/* Tab content */}
-        <div className="p-6" style={{ background: "#131829" }}>
-          {activeTab === "personal" && (
-            <PersonalInfoTab profileData={profileData} onChange={onChange} onSave={() => onSave("personal")} saving={saving} />
-          )}
-          {activeTab === "athletic" && (
-            <AthleticInfoTab profileData={profileData} onChange={onChange} onSave={() => onSave("athletic")} saving={saving} />
-          )}
-          {activeTab === "media" && (
-            <MediaLinksTab profileData={profileData} onChange={onChange} onSave={() => onSave("media")} saving={saving} />
-          )}
+        {/* ── MODAL FOOTER ── */}
+        <div
+          className="flex flex-col md:flex-row md:justify-end"
+          style={{
+            borderTop: "1px solid #1A1A1A",
+            padding: "clamp(14px, 3vw, 18px) clamp(16px, 4vw, 36px)",
+            flexShrink: 0,
+            gap: "10px",
+          }}
+        >
+          {/* CLOSE button: desktop only */}
+          <button
+            onClick={onClose}
+            className="hidden md:block w-full md:w-auto"
+            style={{
+              fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", letterSpacing: "1.5px",
+              height: "44px", padding: "0 24px", borderRadius: "8px",
+              background: "transparent", border: "1px solid #2A2A2A",
+              color: "#555", cursor: "pointer",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#444"; e.currentTarget.style.color = "#888"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#2A2A2A"; e.currentTarget.style.color = "#555"; }}
+          >
+            CLOSE
+          </button>
+          {/* SAVE button: full-width gradient on mobile, normal on desktop */}
+          <button
+            onClick={() => { onSave(); setEditingSection(null); }}
+            disabled={saving}
+            className="w-full md:w-auto"
+            style={{
+              fontFamily: "Bebas Neue, sans-serif", fontSize: "16px", letterSpacing: "1.5px",
+              height: "50px", padding: "0 28px", borderRadius: "8px",
+              background: saving ? "#B89000" : "linear-gradient(90deg, #F5C518 0%, #FFD740 100%)",
+              color: "#0A0A0A", border: "none", cursor: saving ? "not-allowed" : "pointer",
+              opacity: saving ? 0.8 : 1,
+              boxShadow: "0 4px 20px rgba(245,197,24,0.3)",
+            }}
+          >
+            {saving ? "SAVING…" : "SAVE CHANGES →"}
+          </button>
         </div>
       </motion.div>
-    </motion.div>
-  );
-}
-
-// ─────────────────────────────────────────────
-// COLUMN PANEL (view-only, click opens modal)
-// ─────────────────────────────────────────────
-interface ColumnPanelProps {
-  columnKey: string;
-  title: string;
-  onClick: () => void;
-}
-
-function ColumnPanel({ columnKey, title, onClick }: ColumnPanelProps) {
-  return (
-    <motion.div
-      onClick={onClick}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className="relative cursor-pointer group overflow-hidden flex-1"
-      style={{
-        background: "#131829",
-        borderRight: "1px solid #1E2A42",
-        backgroundImage:
-          columnKey === "personal"
-            ? "url('https://d2xsxph8kpxj0f.cloudfront.net/310519663375439833/BnDiRFtcsvRMuQV7pTFbtY/MicahGoss_a9d9a0d1.webp')"
-            : columnKey === "athletic"
-            ? "url('https://d2xsxph8kpxj0f.cloudfront.net/310519663375439833/BnDiRFtcsvRMuQV7pTFbtY/CooperRobinson_63a2e2a8.jpg')"
-            : "url('https://d2xsxph8kpxj0f.cloudfront.net/310519663375439833/BnDiRFtcsvRMuQV7pTFbtY/HawaiiCoach_22bc1751.webp')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      <div
-        className="absolute inset-0 z-0 transition-opacity duration-300 group-hover:opacity-60"
-        style={{ background: "rgba(0, 0, 0, 0.4)" }}
-      />
-      <div className="relative z-20 h-full flex flex-col p-8">
-        <h2
-          style={{
-            fontFamily: "Barlow Condensed, sans-serif",
-            fontSize: "36px",
-            fontWeight: 700,
-            color: "#FFFFFF",
-            letterSpacing: "-0.02em",
-            transition: "color 200ms",
-          }}
-          className="group-hover:text-[#F5C518]"
-        >
-          {title}
-        </h2>
-        <div
-          className="absolute bottom-8 left-0 right-0 text-center group-hover:text-[#F5C518] transition-colors z-20"
-          style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#8B9BB8" }}
-        >
-          Click to view & edit →
-        </div>
-      </div>
     </motion.div>
   );
 }
@@ -673,18 +876,13 @@ function ColumnPanel({ columnKey, title, onClick }: ColumnPanelProps) {
 // ─────────────────────────────────────────────
 export default function Profile() {
   const [profileModalOpen, setProfileModalOpen] = useState(false);
-  const [profileTab, setProfileTab] = useState<ProfileTab>("personal");
   const [saving, setSaving] = useState(false);
 
   const { profile: profileData, updateProfile, setField } = useAthleteProfile();
   const { openModal, closeModal } = useModal();
 
-  // Load profile from DB on mount (if authenticated)
-  const { data: dbProfile } = trpc.athleteProfile.get.useQuery(undefined, {
-    retry: false,
-  });
+  const { data: dbProfile } = trpc.athleteProfile.get.useQuery(undefined, { retry: false });
 
-  // Merge DB data into local state when it loads (DB is source of truth)
   const mergedRef = useRef(false);
   useEffect(() => {
     if (dbProfile && !mergedRef.current) {
@@ -708,8 +906,7 @@ export default function Profile() {
     setField(field, val);
   };
 
-  const handleSave = async (_tab: ProfileTab) => {
-    // Validate email if provided
+  const handleSave = async () => {
     if (profileData.email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(profileData.email)) {
@@ -719,7 +916,6 @@ export default function Profile() {
     }
     setSaving(true);
     try {
-      // Build a clean payload — convert empty strings to undefined so DB stores null
       const payload: Record<string, string | null | undefined> = {};
       const keys = Object.keys(profileData) as (keyof typeof profileData)[];
       for (const key of keys) {
@@ -728,97 +924,109 @@ export default function Profile() {
       }
       await saveMutation.mutateAsync(payload as any);
       toast.success("Saved ✓");
-    } catch (err) {
+    } catch {
       toast.error("Failed to save. Please try again.");
     } finally {
       setSaving(false);
     }
   };
 
-  const openModalOnTab = (tab: ProfileTab) => {
-    setProfileTab(tab);
+  const handleOpenModal = () => {
     setProfileModalOpen(true);
-    openModal(); 
+    openModal();
   };
 
   const handleCloseModal = () => {
     setProfileModalOpen(false);
-    closeModal(); 
+    closeModal();
   };
 
   return (
     <>
-    <AppTopNav />
-    <div style={{ background: "#090D18", paddingTop: "56px", paddingBottom: "32px" }}>
-      {/* ── HERO SECTION (unchanged) ── */}
-      <div
-        className="min-h-screen flex items-center justify-center relative overflow-hidden"
-        style={{
-          background: "#090D18",
-          backgroundImage: "url('https://d2xsxph8kpxj0f.cloudfront.net/310519663375439833/BnDiRFtcsvRMuQV7pTFbtY/UCLAgym_d9b2f0ed.webp')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed",
-        }}
-      >
-        <div className="absolute inset-0" style={{ background: "rgba(0, 0, 0, 0.65)" }} />
+      <div className="profile-page-wrapper" style={{ background: "#0A0A0A" }}>
+        {/* ── HERO SECTION ── */}
         <div
-          className="absolute inset-0"
+          className="profile-hero min-h-[40vh] md:min-h-screen flex items-center justify-center relative overflow-hidden"
           style={{
-            backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px)",
-            backgroundSize: "32px 32px",
+            background: "#0A0E1A",
+            backgroundImage: "url('https://d2xsxph8kpxj0f.cloudfront.net/310519663375439833/BnDiRFtcsvRMuQV7pTFbtY/UCLAgym_d9b2f0ed.webp')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundAttachment: "fixed",
           }}
-        />
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="relative z-10 text-center"
         >
-          <h1
+          <div className="absolute inset-0" style={{ background: "rgba(0, 0, 0, 0.65)" }} />
+          <div
+            className="absolute inset-0"
             style={{
-              fontFamily: "Barlow Condensed, sans-serif",
-              fontSize: "120px",
-              fontWeight: 800,
-              letterSpacing: "-0.03em",
-              color: "#FFFFFF",
-              lineHeight: 1,
+              backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px)",
+              backgroundSize: "32px 32px",
             }}
+          />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="profile-hero-content relative z-10 text-center"
           >
-            PROFILE
-          </h1>
-          <p
-            style={{
-              fontFamily: "Barlow Condensed, sans-serif",
-              fontSize: "24px",
-              fontWeight: 700,
-              color: "#F5C518",
-              marginTop: "16px",
-              letterSpacing: "-0.01em",
-              textTransform: "uppercase",
-            }}
-          >
-            THIS IS WHAT COACHES SEE. MAKE IT COUNT.
-          </p>
-        </motion.div>
-      </div>
+            <h1
+              className="profile-headline text-[36px] md:text-[120px]"
+              style={{
+                fontFamily: "Bebas Neue, sans-serif",
+                fontWeight: 800,
+                letterSpacing: "-0.03em",
+                color: "#FFFFFF",
+                lineHeight: 1,
+              }}
+            >
+              PROFILE
+            </h1>
+            <p
+              className="text-[12px] md:text-[24px]"
+              style={{
+                fontFamily: "Bebas Neue, sans-serif",
+                fontWeight: 700,
+                color: "#F5B800",
+                marginTop: "16px",
+                letterSpacing: "-0.01em",
+                textTransform: "uppercase",
+              }}
+            >
+              THIS IS WHAT COACHES SEE. MAKE IT COUNT.
+            </p>
+            <div style={{ marginTop: "36px" }}>
+              <button
+                onClick={handleOpenModal}
+                style={{
+                  fontFamily: "Bebas Neue, sans-serif",
+                  fontSize: "13px",
+                  letterSpacing: "1.5px",
+                  padding: "14px 32px",
+                  borderRadius: "8px",
+                  background: "#F5C518",
+                  color: "#000000",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "#FFD740")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "#F5C518")}
+              >
+                VIEW &amp; EDIT PROFILE →
+              </button>
+            </div>
+          </motion.div>
+        </div>
 
-      {/* ── THREE-PANEL COLUMNS SECTION ── */}
-      <div className="relative min-h-screen" style={{ background: "#090D18" }}>
-        <div className="flex h-screen">
-          <ColumnPanel columnKey="personal" title="PERSONAL INFO" onClick={() => openModalOnTab("personal")} />
-          <ColumnPanel columnKey="athletic" title="ATHLETIC INFO" onClick={() => openModalOnTab("athletic")} />
-          <ColumnPanel columnKey="media" title="MEDIA & LINKS" onClick={() => openModalOnTab("media")} />
+        <div className="md:pb-0 pb-24">
+          <AppFooter />
         </div>
       </div>
 
-      {/* ── PROFILE CARD MODAL ── */}
+      {/* ── PROFILE MODAL ── */}
       <AnimatePresence>
         {profileModalOpen && (
-          <ProfileCardModal
+          <ProfileModal
             profileData={profileData}
-            activeTab={profileTab}
-            onTabChange={setProfileTab}
             onClose={handleCloseModal}
             onChange={handleChange}
             onSave={handleSave}
@@ -826,9 +1034,6 @@ export default function Profile() {
           />
         )}
       </AnimatePresence>
-
-      <AppFooter />
-    </div>
     </>
   );
 }

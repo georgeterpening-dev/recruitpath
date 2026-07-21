@@ -23,7 +23,7 @@ import { ENV } from "./_core/env";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
-const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || "https://recruitpath.manus.space/api/auth/google/callback";
+const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || "https://www.myrecruitpath.com/api/auth/google/callback";
 
 // Return the configured redirect URI (from env or default to custom domain)
 function getSignInRedirectUri(): string {
@@ -183,6 +183,8 @@ export function registerGoogleAuthRoutes(app: Express) {
         });
 
         console.log(`[Google Auth] New user created: ${googleUser.email}`);
+        // New users always go to onboarding regardless of returnPath
+        returnPath = "/onboarding";
       }
 
       // Issue the same JWT session cookie as Manus OAuth
@@ -194,7 +196,7 @@ export function registerGoogleAuthRoutes(app: Express) {
       const cookieOptions = getSessionCookieOptions(req);
       res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
 
-      // Redirect to dashboard (welcome overlay will handle hasSeenWelcome check)
+      // Redirect: new users go to /onboarding, returning users go to returnPath
       res.redirect(302, returnPath);
     } catch (err) {
       console.error("[Google Auth] Callback failed:", err);

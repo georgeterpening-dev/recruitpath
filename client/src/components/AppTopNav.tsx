@@ -1,5 +1,10 @@
 /**
- * AppTopNav — Fixed top navigation bar for authenticated pages.
+ * AppTopNav — Fixed top navigation bar for all authenticated pages.
+ * - 56px height, #0A0A0A bg with backdrop blur
+ * - Left: RECRUITPATH logo → / (home page)
+ * - Center: DASHBOARD, SCHOOLS, PROFILE, PRICING, SETTINGS links
+ * - Right: user avatar (initials) + first name → dropdown (View Profile, Sign Out)
+ * - Mobile (<768px): hide center links, show hamburger → full-width dropdown panel
  */
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
@@ -42,6 +47,7 @@ export default function AppTopNav() {
     },
   });
 
+  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -52,11 +58,13 @@ export default function AppTopNav() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Close mobile menu on route change
   useEffect(() => {
     setMobileMenuOpen(false);
     setDropdownOpen(false);
   }, [location]);
 
+  // Handle scroll effect
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 0);
     window.addEventListener("scroll", onScroll);
@@ -68,81 +76,73 @@ export default function AppTopNav() {
 
   return (
     <>
+      {/* Fixed top bar */}
       <motion.nav
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6"
         style={{
           height: "56px",
-          background: scrolled ? "rgba(9,13,24,0.94)" : "rgba(9,13,24,0.80)",
-          backdropFilter: "blur(20px) saturate(160%)",
-          WebkitBackdropFilter: "blur(20px) saturate(160%)",
-          borderBottom: scrolled ? "1px solid rgba(30,42,66,0.7)" : "1px solid rgba(30,42,66,0.4)",
-          boxShadow: scrolled ? "0 1px 0 rgba(245,197,24,0.04), 0 4px 24px rgba(0,0,0,0.3)" : "none",
-          transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+          background: scrolled ? "rgba(10,14,26,0.95)" : "transparent",
+          backdropFilter: scrolled ? "blur(12px)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
+          borderBottom: scrolled ? "1px solid rgba(30,41,59,0.6)" : "none",
+          transition: "all 0.3s ease",
         }}
       >
         {/* Left: Logo */}
         <Link href="/">
-          <span
-            className="cursor-pointer"
-            style={{
-              fontFamily: "Barlow Condensed, sans-serif",
-              fontWeight: 800,
-              fontSize: "22px",
-              letterSpacing: "-0.02em",
-              background: "linear-gradient(135deg, #F5C518 0%, #FFD640 100%)",
-              WebkitBackgroundClip: "text",
-              backgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            RECRUITPATH
-          </span>
+          <img src="/logos/logo-wordmark-yellow.svg" alt="RecruitPath" height="24" style={{ display: "block" }} />
         </Link>
 
-        {/* Center: Nav links (desktop) */}
-        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-6">
+        {/* Center: Nav links (desktop only) - centered */}
+        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8">
           {NAV_LINKS.map(({ label, href }) => {
             const isActive = location === href || (href !== "/dashboard" && location.startsWith(href));
             return (
               <Link key={href} href={href}>
                 <span
-                  className="relative cursor-pointer"
-                  style={{
-                    fontFamily: "Barlow Condensed, sans-serif",
-                    fontWeight: 600,
-                    fontSize: "13px",
-                    letterSpacing: "0.12em",
-                    color: isActive ? "#F0F4FF" : "#8B9BB8",
-                    transition: "color 150ms ease",
-                  }}
-                  onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.color = "#C8D4E8"; }}
-                  onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.color = "#8B9BB8"; }}
+                  className={`text-xs font-semibold tracking-widest transition-colors duration-150 cursor-pointer relative ${
+                    isActive ? "text-[#F8FAFC]" : "text-[#94A3B8] hover:text-[#F8FAFC]"
+                  }`}
+                  style={{ fontFamily: "Inter, sans-serif" }}
                 >
                   {label}
-                  {isActive && <span className="nav-active-indicator" />}
+                  {isActive && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: "-8px",
+                        left: 0,
+                        right: 0,
+                        height: "2px",
+                        background: "#F5C518",
+                      }}
+                    />
+                  )}
                 </span>
               </Link>
             );
           })}
         </div>
 
-        {/* Right: Avatar + hamburger */}
+        {/* Right: Avatar + name + hamburger */}
         <div className="flex items-center gap-3">
+          {/* Avatar dropdown (desktop) */}
           <div className="relative" ref={dropdownRef}>
             <button
               className="flex items-center gap-2 cursor-pointer select-none"
               onClick={() => setDropdownOpen(v => !v)}
               style={{ background: "none", border: "none", padding: 0 }}
             >
+              {/* Avatar circle */}
               <div
                 className="flex items-center justify-center rounded-full flex-shrink-0"
                 style={{
                   width: "32px",
                   height: "32px",
-                  background: "linear-gradient(135deg, #1A2035 0%, #131829 100%)",
-                  border: "1.5px solid rgba(245,197,24,0.35)",
-                  fontFamily: "Barlow Condensed, sans-serif",
-                  fontSize: "13px",
+                  background: "#1A1A1A",
+                  border: "1px solid #2A2A2A",
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: "12px",
                   fontWeight: 700,
                   color: "#F5C518",
                   letterSpacing: "0.5px",
@@ -150,65 +150,78 @@ export default function AppTopNav() {
               >
                 {initials}
               </div>
+              {/* First name (desktop only) */}
               <span
                 className="hidden md:block"
-                style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#C8D4E8", fontWeight: 500 }}
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: "13px",
+                  color: "#FFFFFF",
+                  fontWeight: 500,
+                }}
               >
                 {firstName}
               </span>
             </button>
 
+            {/* Dropdown menu */}
             {dropdownOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -6, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute right-0 mt-2 z-50"
+              <div
+                className="absolute right-0 mt-2 py-1 z-50"
                 style={{
                   top: "100%",
-                  background: "#131829",
-                  border: "1px solid #1E2A42",
-                  borderRadius: "12px",
-                  minWidth: "168px",
-                  boxShadow: "0 8px 32px rgba(0,0,0,0.6)",
-                  overflow: "hidden",
-                  padding: "4px",
+                  background: "#1A1A1A",
+                  border: "1px solid #2A2A2A",
+                  borderRadius: "8px",
+                  minWidth: "160px",
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
                 }}
               >
                 <Link href="/profile">
                   <div
-                    className="px-3 py-2.5 cursor-pointer rounded-[8px]"
-                    style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#F0F4FF", transition: "background 120ms ease" }}
-                    onMouseEnter={e => (e.currentTarget.style.background = "#1A2240")}
+                    className="px-4 py-2.5 cursor-pointer transition-colors duration-100"
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: "13px",
+                      color: "#FFFFFF",
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.background = "#2A2A2A")}
                     onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                     onClick={() => setDropdownOpen(false)}
                   >
                     View Profile
                   </div>
                 </Link>
-                <div style={{ height: "1px", background: "#1E2A42", margin: "2px 0" }} />
                 <div
-                  className="px-3 py-2.5 cursor-pointer rounded-[8px]"
-                  style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#8B9BB8", transition: "background 120ms ease, color 120ms ease" }}
+                  className="px-4 py-2.5 cursor-pointer transition-colors duration-100"
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: "13px",
+                    color: "#888888",
+                  }}
                   onMouseEnter={e => {
-                    (e.currentTarget.style.background = "#1A2240");
-                    (e.currentTarget.style.color = "#F0F4FF");
+                    (e.currentTarget.style.background = "#2A2A2A");
+                    (e.currentTarget.style.color = "#FFFFFF");
                   }}
                   onMouseLeave={e => {
                     (e.currentTarget.style.background = "transparent");
-                    (e.currentTarget.style.color = "#8B9BB8");
+                    (e.currentTarget.style.color = "#888888");
                   }}
-                  onClick={() => { setDropdownOpen(false); logoutMutation.mutate(); }}
+                  onClick={() => {
+                    setDropdownOpen(false);
+                    logoutMutation.mutate();
+                  }}
                 >
                   Sign Out
                 </div>
-              </motion.div>
+              </div>
             )}
           </div>
 
+          {/* Hamburger (mobile only) */}
           <button
             className="flex md:hidden items-center justify-center cursor-pointer"
-            style={{ background: "none", border: "none", padding: "4px", color: "#8B9BB8" }}
+            style={{ background: "none", border: "none", padding: "4px", color: "#888888" }}
             onClick={() => setMobileMenuOpen(v => !v)}
             aria-label="Toggle menu"
           >
@@ -217,18 +230,14 @@ export default function AppTopNav() {
         </div>
       </motion.nav>
 
-      {/* Mobile dropdown */}
+      {/* Mobile dropdown panel */}
       {mobileMenuOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        <div
           className="fixed left-0 right-0 z-40 md:hidden"
           style={{
             top: "56px",
-            background: "rgba(9,13,24,0.97)",
-            borderBottom: "1px solid #1E2A42",
-            backdropFilter: "blur(20px)",
+            background: "rgba(10,10,10,0.97)",
+            borderBottom: "1px solid #1A1A1A",
           }}
         >
           {NAV_LINKS.map(({ label, href }) => {
@@ -236,7 +245,17 @@ export default function AppTopNav() {
             return (
               <Link key={href} href={href}>
                 <div
-                  className={`mobile-nav-item ${isActive ? "active" : ""}`}
+                  className="flex items-center px-6 cursor-pointer"
+                  style={{
+                    height: "48px",
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: "16px",
+                    fontWeight: 600,
+                    letterSpacing: "1.5px",
+                    color: isActive ? "#FFFFFF" : "#888888",
+                    borderLeft: isActive ? "3px solid #F5C518" : "3px solid transparent",
+                    background: isActive ? "rgba(245,197,24,0.06)" : "transparent",
+                  }}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {label}
@@ -244,7 +263,7 @@ export default function AppTopNav() {
               </Link>
             );
           })}
-        </motion.div>
+        </div>
       )}
     </>
   );

@@ -5,20 +5,157 @@
  */
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useMemo } from "react";
-import { Search, X, ExternalLink, Plus, Check, Lock } from "lucide-react";
+import { useIsMobile } from "@/hooks/useMobile";
+import { Search, X, ExternalLink, Plus, Check, Lock, SlidersHorizontal } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
+import { useModal } from "@/contexts/ModalContext";
 import SchoolLogoImg from "@/components/SchoolLogo";
+import SchoolDetailModal from "@/components/SchoolDetailModal";
+import ProGate from "@/components/ProGate";
 import AppFooter from "@/components/AppFooter";
-import AppTopNav from "@/components/AppTopNav";
-import { useIntersectionAnimation } from "@/hooks/useIntersectionAnimation";
+
 const ATHLETE_STORAGE_KEY = "recruitpath_athlete_profile";
 
-const STADIUM_BG = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663375439833/QSDwGxzAotjQMGLA.jpg";
-const DIVISIONS = ["D1", "D2", "D3", "NAIA", "JUCO"];
+const STADIUM_BG = "/manus-storage/pasted_file_N6sbJH_image_0302cfa5.png";
+const DIVISIONS = ["D1", "D2", "D3", "NAIA", "CC"];
 const STATES = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"];
+
+const OPENING_POSITIONS = ["OH", "MB", "OPP", "S", "L", "DS"] as const;
+const OPENING_POSITION_LABELS: Record<string, string> = {
+  OH: "Outside Hitter",
+  MB: "Middle Blocker",
+  OPP: "Opposite",
+  S: "Setter",
+  L: "Libero",
+  DS: "Defensive Specialist",
+};
+const OPENING_YEARS = ["2026", "2027", "2028", "2029"] as const;
+
+function normalizeOpeningPosition(value: string): string | null {
+  const token = value.trim().toLowerCase();
+  if (!token) return null;
+  if (["oh", "outside hitter", "outside", "pin", "wing"].includes(token)) return "OH";
+  if (["mb", "middle blocker", "middle", "mh"].includes(token)) return "MB";
+  if (["opp", "opposite", "rs", "right side"].includes(token)) return "OPP";
+  if (["s", "setter", "set"].includes(token)) return "S";
+  if (["l", "libero", "lib"].includes(token)) return "L";
+  if (["ds", "defensive specialist", "def specialist", "defensive"].includes(token)) return "DS";
+  return null;
+}
+
+function loadOpeningDefaults() {
+  try {
+    const raw = localStorage.getItem(ATHLETE_STORAGE_KEY);
+    const profile = raw ? JSON.parse(raw) : {};
+    const tokens = String(profile.positions || "")
+      .split(/[,/&]|\band\b/gi)
+      .map((token: string) => normalizeOpeningPosition(token))
+      .filter(Boolean) as string[];
+    return {
+      positions: Array.from(new Set(tokens)),
+      gradYear: String(profile.graduationYear || "2027").trim() || "2027",
+    };
+  } catch {
+    return { positions: [], gradYear: "2027" };
+  }
+}
+
+// ── FIND MY OPENING filter sheet (extracted component to satisfy React hooks rules) ──
+const OPENING_DIVISIONS_CONST = ["D1", "D2", "D3", "NAIA", "CC"] as const;
+function OpeningFilterSheet({
+  initialSort,
+  initialDivisions,
+  onApply,
+  onClose,
+}: {
+  initialSort: "most" | "least" | "az";
+  initialDivisions: string[];
+  onApply: (sort: "most" | "least" | "az", divisions: string[]) => void;
+  onClose: () => void;
+}) {
+  const [draftSort, setDraftSort] = useState<"most" | "least" | "az">(initialSort);
+  const [draftDivisions, setDraftDivisions] = useState<string[]>(initialDivisions);
+  const toggleDiv = (d: string) => setDraftDivisions(prev => prev.includes(d) ? prev.filter(x => x !== d) : [...prev, d]);
+  return (
+    <motion.div
+      key="opening-filter-overlay"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[80]"
+      style={{ background: "rgba(0,0,0,0.6)" }}
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ y: "100%" }}
+        animate={{ y: 0 }}
+        exit={{ y: "100%" }}
+        transition={{ type: "spring", stiffness: 320, damping: 32 }}
+        className="absolute bottom-0 left-0 right-0"
+        style={{ background: "rgba(12,16,26,0.97)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderRadius: "20px 20px 0 0", padding: "20px 24px 40px", maxHeight: "80vh", overflowY: "auto" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Drag handle */}
+        <div className="flex justify-center mb-5">
+          <div style={{ width: 36, height: 4, borderRadius: 999, background: "rgba(255,255,255,0.18)" }} />
+        </div>
+        <div className="flex items-center justify-between mb-6">
+          <h3 style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "20px", letterSpacing: "0.06em", color: "#FFFFFF" }}>FILTER RESULTS</h3>
+          <button onClick={onClose} style={{ color: "#6B6B6B", background: "none", border: "none", cursor: "pointer" }}><X size={18} /></button>
+        </div>
+        {/* Sort by */}
+        <div className="mb-6">
+          <p style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", letterSpacing: "0.1em", color: "#F5C518", marginBottom: "12px" }}>SORT BY</p>
+          <div className="flex flex-col gap-2">
+            {(["most", "least", "az"] as const).map((opt) => {
+              const labels = { most: "Most openings first", least: "Least openings first", az: "A–Z by school name" };
+              return (
+                <button key={opt} onClick={() => setDraftSort(opt)} className="flex items-center gap-3 cursor-pointer" style={{ padding: "12px 16px", borderRadius: "10px", border: draftSort === opt ? "1px solid #F5C518" : "1px solid rgba(255,255,255,0.08)", background: draftSort === opt ? "rgba(245,197,24,0.1)" : "rgba(255,255,255,0.03)", textAlign: "left" }}>
+                  <div style={{ width: 16, height: 16, borderRadius: "50%", border: draftSort === opt ? "2px solid #F5C518" : "2px solid #555", background: draftSort === opt ? "#F5C518" : "transparent", flexShrink: 0 }} />
+                  <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: draftSort === opt ? "#FFFFFF" : "#A3A3A3" }}>{labels[opt]}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        {/* Division */}
+        <div className="mb-8">
+          <p style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", letterSpacing: "0.1em", color: "#F5C518", marginBottom: "12px" }}>DIVISION</p>
+          <div className="flex flex-col gap-2">
+            {OPENING_DIVISIONS_CONST.map((div) => (
+              <button key={div} onClick={() => toggleDiv(div)} className="flex items-center gap-3 cursor-pointer" style={{ padding: "12px 16px", borderRadius: "10px", border: draftDivisions.includes(div) ? "1px solid #F5C518" : "1px solid rgba(255,255,255,0.08)", background: draftDivisions.includes(div) ? "rgba(245,197,24,0.1)" : "rgba(255,255,255,0.03)", textAlign: "left" }}>
+                <div className="flex items-center justify-center" style={{ width: 16, height: 16, borderRadius: "3px", border: draftDivisions.includes(div) ? "none" : "2px solid #555", background: draftDivisions.includes(div) ? "#F5C518" : "transparent", flexShrink: 0 }}>
+                  {draftDivisions.includes(div) && <Check size={10} style={{ color: "#0A0A0A" }} />}
+                </div>
+                <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: draftDivisions.includes(div) ? "#FFFFFF" : "#A3A3A3" }}>{div}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        {/* Apply / Clear */}
+        <div className="flex gap-3">
+          <button
+            onClick={() => { onApply(draftSort, draftDivisions); onClose(); }}
+            className="flex-1 cursor-pointer"
+            style={{ height: "48px", background: "#F5C518", color: "#0A0A0A", border: "none", borderRadius: "10px", fontFamily: "Bebas Neue, sans-serif", fontSize: "16px", letterSpacing: "0.08em" }}
+          >
+            APPLY
+          </button>
+          <button
+            onClick={() => { setDraftSort("most"); setDraftDivisions(["D1", "D2", "D3", "NAIA", "CC"]); }}
+            className="cursor-pointer"
+            style={{ height: "48px", padding: "0 20px", background: "transparent", color: "#A3A3A3", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "10px", fontFamily: "DM Sans, sans-serif", fontSize: "14px", fontWeight: 600 }}
+          >
+            CLEAR
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
 
 type DBSchool = {
   id: string;
@@ -34,6 +171,8 @@ type DBSchool = {
   coachTitle: string | null;
   coachEmail: string | null;
   logoUrl: string | null;
+  logoBackgroundColor?: string | null;
+  logoMixBlendMode?: string | null;
   /** Dev-only flag — true for the owner-only TEST SCHOOL entry */
   isTestSchool: boolean;
   createdAt: Date;
@@ -58,7 +197,8 @@ function SchoolCard({
   isLocked,
   onLockedClick,
   isPending,
-  staggerIndex = 0,
+  isFlipped,
+  onFlip,
 }: {
   school: DBSchool;
   isAdded: boolean;
@@ -66,35 +206,28 @@ function SchoolCard({
   isLocked: boolean;
   onLockedClick: () => void;
   isPending: boolean;
+  isFlipped: boolean;
+  onFlip: () => void;
   staggerIndex?: number;
 }) {
-  const [flipped, setFlipped] = useState(false);
-  const animationRef = useIntersectionAnimation({
-    threshold: 0.1,
-    staggerIndex,
-    staggerDelay: 60,
-  });
-
+  const isMobile = useIsMobile();
   const handleCardClick = () => {
     if (isLocked && !isAdded) {
       onLockedClick();
       return;
     }
-    setFlipped((f) => !f);
+    onFlip();
   };
-
   return (
     <div
-      ref={animationRef}
-      className="h-56"
+      className="school-card h-56"
       style={{
         perspective: "800px",
         opacity: isLocked && !isAdded ? 0.4 : 1,
         cursor: isLocked && !isAdded ? "not-allowed" : "pointer",
-        transition: "opacity 300ms ease",
       }}
-      onMouseEnter={() => !isLocked && setFlipped(true)}
-      onMouseLeave={() => setFlipped(false)}
+      onMouseEnter={() => { if (!isMobile && !isLocked) onFlip(); }}
+      onMouseLeave={() => { if (!isMobile && !isLocked && isFlipped) onFlip(); }}
       onClick={handleCardClick}
     >
       <div
@@ -104,7 +237,7 @@ function SchoolCard({
           height: "100%",
           transformStyle: "preserve-3d",
           transition: "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
-          transform: flipped && !isLocked ? "rotateY(180deg)" : "rotateY(0deg)",
+          transform: isFlipped && !isLocked ? "rotateY(180deg)" : "rotateY(0deg)",
         }}
       >
         {/* Front */}
@@ -113,9 +246,9 @@ function SchoolCard({
             position: "absolute",
             inset: 0,
             backfaceVisibility: "hidden",
-            background: isAdded ? "rgba(245,197,24,0.05)" : "#131829",
-            border: isAdded ? "2px solid #F5C518" : "1px solid #1E2A42",
-            borderRadius: "12px",
+            background: isAdded ? "rgba(245,197,24,0.05)" : "#141414",
+            border: isAdded ? "2px solid #F5C518" : "1px solid #2A2A2A",
+            borderRadius: "4px",
             padding: "20px",
             display: "flex",
             flexDirection: "column",
@@ -127,9 +260,9 @@ function SchoolCard({
             <div
               className="absolute top-3 left-3"
               style={{
-                background: "#F5C518",
-                color: "#090D18",
-                fontFamily: "Barlow Condensed, sans-serif",
+                background: "#F5B800",
+                color: "#0A0A0A",
+                fontFamily: "Bebas Neue, sans-serif",
                 fontSize: "10px",
                 letterSpacing: "0.12em",
                 fontWeight: 700,
@@ -146,12 +279,12 @@ function SchoolCard({
               className="absolute top-3 right-3 w-5 h-5 rounded-full flex items-center justify-center"
               style={{ background: "#F5C518" }}
             >
-              <Check size={12} style={{ color: "#090D18" }} />
+              <Check size={12} style={{ color: "#0A0A0A" }} />
             </div>
           )}
           {!school.hasRosterData && !isAdded && (
             <div className="absolute top-3 right-3">
-              <Lock size={14} style={{ color: "#8B9BB8" }} />
+              <Lock size={14} style={{ color: "#6B6B6B" }} />
             </div>
           )}
           <div>
@@ -160,26 +293,26 @@ function SchoolCard({
                 <SchoolLogo domain={school.athleticsDomain} brandColor={school.brandColor} size={48} name={school.name} logoUrl={school.logoUrl} />
                 <span
                   style={{
-                    fontFamily: "Barlow Condensed, sans-serif",
+                    fontFamily: "Bebas Neue, sans-serif",
                     fontSize: "11px",
                     letterSpacing: "0.1em",
-                    color: "#8B9BB8",
+                    color: "#6B6B6B",
                     padding: "2px 8px",
-                    background: "#181E32",
-                    border: "1px solid #1E2A42",
-                    borderRadius: "6px",
+                    background: "#1A1A1A",
+                    border: "1px solid #2A2A2A",
+                    borderRadius: "2px",
                   }}
                 >
                   {school.division || "—"}
                 </span>
               </div>
-              <span style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#8B9BB8" }}>
+              <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B" }}>
                 {school.city}, {school.state}
               </span>
             </div>
             <h3
               style={{
-                fontFamily: "Barlow Condensed, sans-serif",
+                fontFamily: "Bebas Neue, sans-serif",
                 fontSize: "20px",
                 fontWeight: 700,
                 color: "#FFFFFF",
@@ -189,14 +322,14 @@ function SchoolCard({
             >
               {school.name.toUpperCase()}
             </h3>
-            <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#8B9BB8" }}>
+            <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B" }}>
               {school.conference || "—"}
             </p>
           </div>
           <div>
             <p
               style={{
-                fontFamily: "Barlow Condensed, sans-serif",
+                fontFamily: "Bebas Neue, sans-serif",
                 fontSize: "12px",
                 letterSpacing: "0.1em",
                 color: "#F5C518",
@@ -205,10 +338,10 @@ function SchoolCard({
             >
               MEN'S VOLLEYBALL
             </p>
-            <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#FFFFFF" }}>
+            <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#FFFFFF" }}>
               {school.coachName || "Coach TBD"}
             </p>
-            <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#8B9BB8" }}>
+            <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B" }}>
               {school.coachTitle || "Head Coach"}
             </p>
           </div>
@@ -221,9 +354,9 @@ function SchoolCard({
             inset: 0,
             backfaceVisibility: "hidden",
             transform: "rotateY(180deg)",
-            background: "#131829",
+            background: "#141414",
             border: "1px solid #F5C518",
-            borderRadius: "12px",
+            borderRadius: "4px",
             padding: "20px",
             display: "flex",
             flexDirection: "column",
@@ -236,7 +369,7 @@ function SchoolCard({
               <div>
                 <h3
                   style={{
-                    fontFamily: "Barlow Condensed, sans-serif",
+                    fontFamily: "Bebas Neue, sans-serif",
                     fontSize: "18px",
                     fontWeight: 700,
                     color: "#FFFFFF",
@@ -245,16 +378,16 @@ function SchoolCard({
                 >
                   {(school.coachName || "Coach TBD").toUpperCase()}
                 </h3>
-                <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#8B9BB8" }}>
+                <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B" }}>
                   {school.coachTitle || "Head Coach"} · {school.name}
                 </p>
               </div>
             </div>
             <div className="mt-2">
-              <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#8B9BB8", marginBottom: "2px" }}>
+              <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", marginBottom: "2px" }}>
                 {school.conference} · {school.division}
               </p>
-              <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#8B9BB8" }}>
+              <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B" }}>
                 {school.city}, {school.state}
               </p>
             </div>
@@ -266,10 +399,10 @@ function SchoolCard({
               className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-bold tracking-wider uppercase"
               style={{
                 background: isAdded ? "transparent" : "#F5C518",
-                color: isAdded ? "#F5C518" : "#090D18",
+                color: isAdded ? "#F5C518" : "#0A0A0A",
                 border: isAdded ? "1px solid #F5C518" : "none",
-                borderRadius: "8px",
-                fontFamily: "Barlow Condensed, sans-serif",
+                borderRadius: "0px",
+                fontFamily: "Bebas Neue, sans-serif",
                 letterSpacing: "0.1em",
                 cursor: isPending ? "wait" : "pointer",
                 opacity: isPending ? 0.6 : 1,
@@ -285,9 +418,9 @@ function SchoolCard({
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
                 className="flex items-center justify-center w-9"
-                style={{ border: "1px solid #1E2A42", borderRadius: "0px" }}
+                style={{ border: "1px solid #2A2A2A", borderRadius: "0px" }}
               >
-                <ExternalLink size={14} style={{ color: "#8B9BB8" }} />
+                <ExternalLink size={14} style={{ color: "#6B6B6B" }} />
               </a>
             )}
           </div>
@@ -298,12 +431,26 @@ function SchoolCard({
 }
 
 export default function Schools() {
+  const openingDefaults = loadOpeningDefaults();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDivisions, setSelectedDivisions] = useState<string[]>([]);
   const [selectedState, setSelectedState] = useState("");
   const [showTargetList, setShowTargetList] = useState(false);
-   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [flippedId, setFlippedId] = useState<string | null>(null);
+  const [showFindOpeningsModal, setShowFindOpeningsModal] = useState(false);
+  const [selectedOpeningPositions, setSelectedOpeningPositions] = useState<string[]>(openingDefaults.positions);
+  const [selectedOpeningGradYear, setSelectedOpeningGradYear] = useState<string>(openingDefaults.gradYear);
+  const [hasSearchedOpenings, setHasSearchedOpenings] = useState(false);
+  const [selectedOpeningSchool, setSelectedOpeningSchool] = useState<DBSchool | null>(null);
+  // FIND MY OPENING filter state
+  const [showOpeningFilterSheet, setShowOpeningFilterSheet] = useState(false);
+  const [openingSortBy, setOpeningSortBy] = useState<"most" | "least" | "az">("most");
+  const [openingDivisionFilter, setOpeningDivisionFilter] = useState<string[]>(["D1", "D2", "D3", "NAIA", "CC"]);
+  const OPENING_DIVISIONS = ["D1", "D2", "D3", "NAIA", "CC"];
+  const isOpeningFilterActive = openingSortBy !== "most" || openingDivisionFilter.length !== OPENING_DIVISIONS.length;
   const { isAuthenticated } = useAuth();
+  const { openModal, closeModal } = useModal();
   const [, navigate] = useLocation();
 
   // ── Profile completeness check ────────────────────────────────────────────
@@ -332,6 +479,12 @@ export default function Schools() {
   const { data: subStatus } = trpc.subscription.status.useQuery(undefined, {
     enabled: isAuthenticated,
   });
+
+  // Roster openings query — only fires after user clicks FIND MY OPENINGS
+  const { data: rosterOpeningResults = [], isFetching: rosterOpeningsLoading } = trpc.volleyball.rosterOpenings.useQuery(
+    { positions: selectedOpeningPositions, gradYear: selectedOpeningGradYear },
+    { enabled: hasSearchedOpenings && selectedOpeningPositions.length > 0, staleTime: 60_000 }
+  );
 
   // Outreach list from API
   const { data: outreachData } = trpc.outreach.list.useQuery(undefined, {
@@ -376,6 +529,20 @@ export default function Schools() {
     setSelectedDivisions((prev) =>
       prev.includes(div) ? prev.filter((d) => d !== div) : [...prev, div]
     );
+  };
+
+  const toggleOpeningPosition = (position: string) => {
+    setSelectedOpeningPositions((prev) =>
+      prev.includes(position) ? prev.filter((p) => p !== position) : [...prev, position]
+    );
+  };
+
+  const handleFindOpenings = () => {
+    if (selectedOpeningPositions.length === 0) {
+      toast.error("Select at least one position.");
+      return;
+    }
+    setHasSearchedOpenings(true);
   };
 
   const handleToggleSchool = (school: DBSchool) => {
@@ -427,8 +594,7 @@ export default function Schools() {
 
   return (
     <>
-    <AppTopNav />
-    <div className="min-h-screen pb-8" style={{ background: "#090D18", paddingTop: "56px" }}>
+    <div className="min-h-screen pb-8" style={{ background: "#0A0E1A" }}>
       {/* ── Profile Lock Screen ── */}
       <AnimatePresence>
         {isAuthenticated && missingProfileFields.length > 0 && (
@@ -466,7 +632,7 @@ export default function Schools() {
               {/* Headline */}
               <h2
                 style={{
-                  fontFamily: "Barlow Condensed, sans-serif",
+                  fontFamily: "Bebas Neue, sans-serif",
                   fontSize: "clamp(32px, 6vw, 48px)",
                   color: "#FFFFFF",
                   letterSpacing: "0.02em",
@@ -480,9 +646,9 @@ export default function Schools() {
               {/* Body */}
               <p
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "DM Sans, sans-serif",
                   fontSize: "15px",
-                  color: "#8B9BB8",
+                  color: "#94A3B8",
                   lineHeight: 1.65,
                   marginBottom: "28px",
                 }}
@@ -496,7 +662,7 @@ export default function Schools() {
                   <span
                     key={field}
                     style={{
-                      fontFamily: "Inter, sans-serif",
+                      fontFamily: "DM Sans, sans-serif",
                       fontSize: "11px",
                       fontWeight: 600,
                       letterSpacing: "0.08em",
@@ -519,10 +685,10 @@ export default function Schools() {
                 whileTap={{ scale: 0.97 }}
                 onClick={() => navigate("/profile")}
                 style={{
-                  fontFamily: "Barlow Condensed, sans-serif",
+                  fontFamily: "Bebas Neue, sans-serif",
                   fontSize: "18px",
                   letterSpacing: "0.1em",
-                  color: "#090D18",
+                  color: "#0A0A0A",
                   background: "#F5C518",
                   border: "none",
                   borderRadius: "6px",
@@ -543,33 +709,39 @@ export default function Schools() {
             initial={{ y: -60, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -60, opacity: 0 }}
-            className="sticky top-0 z-30 px-6 py-3"
-            style={{ background: "#090D18" }}
+            className="sticky top-0 z-30 px-4 md:px-6 py-3"
+            style={{ background: "#0A0E1A" }}
           >
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-3">
               <span
+                className="hidden md:block text-[14px] md:text-[18px]"
                 style={{
-                  fontFamily: "Barlow Condensed, sans-serif",
-                  fontSize: "18px",
+                  fontFamily: "Bebas Neue, sans-serif",
                   color: "#F5C518",
                   letterSpacing: "0.05em",
+                  lineHeight: 1.3,
                 }}
               >
-                YOU'VE REACHED THE FREE LIMIT — GET FULL ACCESS FOR UNLIMITED SCHOOLS →
+                <span className="hidden md:inline">YOU'VE REACHED THE FREE LIMIT — UPGRADE TO PRO FOR UNLIMITED SCHOOLS →</span>
+                <span className="md:hidden">FREE LIMIT REACHED — UPGRADE TO PRO →</span>
               </span>
               <Link href="/pricing">
                 <button
-                  className="px-5 py-2 text-sm font-bold tracking-widest uppercase cursor-pointer"
+                  className="shrink-0 hidden md:block font-bold tracking-widest uppercase cursor-pointer"
                   style={{
                     background: "#F5C518",
-                    color: "#090D18",
-                    fontFamily: "Barlow Condensed, sans-serif",
+                    color: "#0A0A0A",
+                    fontFamily: "Bebas Neue, sans-serif",
                     letterSpacing: "0.1em",
                     border: "none",
-                    borderRadius: "6px",
+                    borderRadius: "0px",
+                    height: "36px",
+                    padding: "0 12px",
+                    fontSize: "12px",
+                    whiteSpace: "nowrap",
                   }}
                 >
-                  SEE PLANS →
+                  SEE PLANS
                 </button>
               </Link>
             </div>
@@ -583,36 +755,39 @@ export default function Schools() {
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${STADIUM_BG})` }}
         />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(9,13,24,0.95) 0%, rgba(9,13,24,0.5) 100%)" }} />
+        <div className="absolute inset-0" style={{ background: "rgba(10,14,26,0.75)" }} />
         <div className="relative z-10 h-full flex flex-col justify-end px-6 pb-6">
           <div className="flex items-center justify-between">
             <div>
               <span
+                className="hidden md:block"
                 style={{
-                  fontFamily: "Barlow Condensed, sans-serif",
+                  fontFamily: "Bebas Neue, sans-serif",
                   fontSize: "13px",
                   letterSpacing: "0.15em",
-                  color: "#8B9BB8",
+                  color: "#6B6B6B",
                 }}
               >
                 MEN'S VOLLEYBALL — COACH DIRECTORY
               </span>
               <h1
                 style={{
-                  fontFamily: "Barlow Condensed, sans-serif",
-                  fontSize: "clamp(28px, 5vw, 48px)",
+                  fontFamily: "Bebas Neue, sans-serif",
+                  fontSize: "clamp(22px, 5vw, 48px)",
                   fontWeight: 700,
                   color: "#FFFFFF",
                   lineHeight: 1,
                 }}
               >
-                FIND YOUR COACHES
+                <span className="md:hidden">SCHOOLS</span>
+                <span className="hidden md:inline">FIND YOUR COACHES</span>
               </h1>
             </div>
             <div className="flex items-center gap-3">
               <span
+                className="hidden md:block"
                 style={{
-                  fontFamily: "Barlow Condensed, sans-serif",
+                  fontFamily: "Bebas Neue, sans-serif",
                   fontSize: "18px",
                   color: isAtLimit ? "#FF4444" : "#F5C518",
                   letterSpacing: "0.05em",
@@ -627,10 +802,10 @@ export default function Schools() {
                 className="flex items-center gap-2 px-4 py-2 text-xs font-bold tracking-wider uppercase cursor-pointer"
                 style={{
                   background: schoolsUsed > 0 ? "#F5C518" : "transparent",
-                  color: schoolsUsed > 0 ? "#090D18" : "#FFFFFF",
-                  border: schoolsUsed > 0 ? "none" : "1px solid #1E2A42",
-                  borderRadius: "8px",
-                  fontFamily: "Barlow Condensed, sans-serif",
+                  color: schoolsUsed > 0 ? "#0A0A0A" : "#FFFFFF",
+                  border: schoolsUsed > 0 ? "none" : "1px solid #2A2A2A",
+                  borderRadius: "0px",
+                  fontFamily: "Bebas Neue, sans-serif",
                   letterSpacing: "0.1em",
                 }}
               >
@@ -641,10 +816,67 @@ export default function Schools() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-6">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 pb-24 md:pb-6">
+        {/* FIND MY OPENING card */}
+        <button
+          onClick={() => setShowFindOpeningsModal(true)}
+          className="w-full mb-6 text-left cursor-pointer"
+          style={{
+            background: "linear-gradient(135deg, rgba(245,197,24,0.1), rgba(245,197,24,0.04))",
+            border: "1px solid rgba(245,197,24,0.35)",
+            borderRadius: "8px",
+            padding: "18px 20px",
+          }}
+        >
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <div
+                style={{
+                  fontFamily: "Bebas Neue, sans-serif",
+                  fontSize: "clamp(22px, 3vw, 28px)",
+                  letterSpacing: "0.05em",
+                  color: "#F5C518",
+                  lineHeight: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                }}
+              >
+                <span>FIND MY OPENING →</span>
+                {!hasPaidAccess && <Lock size={16} style={{ color: "#F5C518" }} />}
+              </div>
+              <p
+                style={{
+                  marginTop: "8px",
+                  fontFamily: "DM Sans, sans-serif",
+                  fontSize: "14px",
+                  color: "#A3A3A3",
+                  lineHeight: 1.5,
+                }}
+              >
+                Match your position and class year with real roster turnover across every program.
+              </p>
+            </div>
+            <div
+              className="hidden md:flex items-center justify-center flex-shrink-0"
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: 999,
+                background: "rgba(245,197,24,0.12)",
+                border: "1px solid rgba(245,197,24,0.2)",
+                color: "#F5C518",
+                fontFamily: "Bebas Neue, sans-serif",
+                fontSize: "18px",
+              }}
+            >
+              GO
+            </div>
+          </div>
+        </button>
         {/* Search bar */}
         <div className="relative mb-6">
-          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: "#8B9BB8" }} />
+          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: "#6B6B6B" }} />
           <input
             type="text"
             value={searchQuery}
@@ -652,10 +884,10 @@ export default function Schools() {
             placeholder="Search by school, coach, or city..."
             className="w-full pl-10 pr-4 py-3"
             style={{
-              background: "#181E32",
-              border: "1px solid #1E2A42",
-              borderRadius: "9px",
-              fontFamily: "Inter, sans-serif",
+              background: "#1A1A1A",
+              border: "1px solid #2A2A2A",
+              borderRadius: "4px",
+              fontFamily: "DM Sans, sans-serif",
               fontSize: "15px",
               color: "#FFFFFF",
               outline: "none",
@@ -663,21 +895,47 @@ export default function Schools() {
           />
         </div>
 
+        {/* Mobile filter row: horizontally scrollable division chips */}
+        <div className="flex lg:hidden overflow-x-auto gap-2 pb-3 -mx-4 px-4 mb-4" style={{ scrollbarWidth: 'none' }}>
+          {availableDivisions.map((div) => (
+            <button
+              key={div}
+              onClick={() => toggleDivision(div)}
+              style={{
+                flexShrink: 0,
+                padding: '6px 14px',
+                borderRadius: '20px',
+                fontFamily: 'DM Sans, sans-serif',
+                fontSize: '12px',
+                fontWeight: 600,
+                letterSpacing: '0.5px',
+                cursor: 'pointer',
+                background: selectedDivisions.includes(div) ? '#F5C518' : '#1A1A1A',
+                color: selectedDivisions.includes(div) ? '#0A0A0A' : '#A3A3A3',
+                border: selectedDivisions.includes(div) ? 'none' : '1px solid #2A2A2A',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {div}
+            </button>
+          ))}
+        </div>
+
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* Filter sidebar */}
-          <aside className="lg:w-56 flex-shrink-0">
+          {/* Filter sidebar: hidden on mobile, visible on desktop */}
+          <aside className="hidden lg:block lg:w-56 flex-shrink-0">
             <div
               style={{
-                background: "#131829",
-                border: "1px solid #1E2A42",
-                borderRadius: "12px",
+                background: "#141414",
+                border: "1px solid #2A2A2A",
+                borderRadius: "4px",
                 padding: "20px",
               }}
             >
               <div className="flex items-center justify-between mb-4">
                 <h3
                   style={{
-                    fontFamily: "Barlow Condensed, sans-serif",
+                    fontFamily: "Bebas Neue, sans-serif",
                     fontSize: "13px",
                     letterSpacing: "0.15em",
                     color: "#FFFFFF",
@@ -689,7 +947,7 @@ export default function Schools() {
                   <button
                     onClick={() => { setSelectedDivisions([]); setSelectedState(""); }}
                     style={{
-                      fontFamily: "Inter, sans-serif",
+                      fontFamily: "DM Sans, sans-serif",
                       fontSize: "12px",
                       color: "#F5C518",
                       background: "none",
@@ -706,10 +964,10 @@ export default function Schools() {
               <div className="mb-5">
                 <p
                   style={{
-                    fontFamily: "Barlow Condensed, sans-serif",
+                    fontFamily: "Bebas Neue, sans-serif",
                     fontSize: "13px",
                     letterSpacing: "0.15em",
-                    color: "#8B9BB8",
+                    color: "#6B6B6B",
                     marginBottom: "12px",
                   }}
                 >
@@ -723,18 +981,18 @@ export default function Schools() {
                         className="w-4 h-4 flex items-center justify-center flex-shrink-0"
                         style={{
                           background: selectedDivisions.includes(div) ? "#F5C518" : "transparent",
-                          border: selectedDivisions.includes(div) ? "none" : "1px solid #1E2A42",
-                          borderRadius: "4px",
+                          border: selectedDivisions.includes(div) ? "none" : "1px solid #2A2A2A",
+                          borderRadius: "2px",
                           cursor: "pointer",
                         }}
                       >
-                        {selectedDivisions.includes(div) && <Check size={10} style={{ color: "#090D18" }} />}
+                        {selectedDivisions.includes(div) && <Check size={10} style={{ color: "#0A0A0A" }} />}
                       </div>
                       <span
                         style={{
-                          fontFamily: "Inter, sans-serif",
+                          fontFamily: "DM Sans, sans-serif",
                           fontSize: "14px",
-                          color: selectedDivisions.includes(div) ? "#FFFFFF" : "#8B9BB8",
+                          color: selectedDivisions.includes(div) ? "#FFFFFF" : "#A3A3A3",
                         }}
                       >
                         {div}
@@ -748,10 +1006,10 @@ export default function Schools() {
               <div>
                 <p
                   style={{
-                    fontFamily: "Barlow Condensed, sans-serif",
+                    fontFamily: "Bebas Neue, sans-serif",
                     fontSize: "13px",
                     letterSpacing: "0.15em",
-                    color: "#8B9BB8",
+                    color: "#6B6B6B",
                     marginBottom: "12px",
                   }}
                 >
@@ -763,12 +1021,12 @@ export default function Schools() {
                   style={{
                     width: "100%",
                     padding: "8px 12px",
-                    background: "#181E32",
-                    border: "1px solid #1E2A42",
+                    background: "#1A1A1A",
+                    border: "1px solid #2A2A2A",
                     borderRadius: "4px",
-                    fontFamily: "Inter, sans-serif",
+                    fontFamily: "DM Sans, sans-serif",
                     fontSize: "14px",
-                    color: selectedState ? "#FFFFFF" : "#8B9BB8",
+                    color: selectedState ? "#FFFFFF" : "#6B6B6B",
                     outline: "none",
                   }}
                 >
@@ -781,8 +1039,8 @@ export default function Schools() {
 
           {/* School card grid */}
           <main className="flex-1 min-w-0">
-            <div className="flex items-center justify-between mb-4">
-              <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#8B9BB8" }}>
+            <div className="hidden md:flex items-center justify-between mb-4">
+              <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#6B6B6B" }}>
                 Showing <span style={{ color: "#FFFFFF", fontWeight: 500 }}>{filteredSchools.filter(s => !s.isTestSchool).length}</span> programs
                 {" · "}
                 <span style={{ color: "#F5C518" }}>Men's Volleyball</span>
@@ -795,16 +1053,16 @@ export default function Schools() {
                   <div
                     key={i}
                     className="h-56 animate-pulse"
-                    style={{ background: "#131829", border: "1px solid #1E2A42", borderRadius: "12px" }}
+                    style={{ background: "#141414", border: "1px solid #2A2A2A", borderRadius: "4px" }}
                   />
                 ))}
               </div>
             ) : filteredSchools.length === 0 ? (
               <div
                 className="p-12 text-center"
-                style={{ background: "#131829", border: "1px solid #1E2A42", borderRadius: "12px" }}
+                style={{ background: "#141414", border: "1px solid #2A2A2A", borderRadius: "4px" }}
               >
-                <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#8B9BB8" }}>
+                <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#6B6B6B" }}>
                   No programs match your filters. Try adjusting your search.
                 </p>
               </div>
@@ -819,7 +1077,8 @@ export default function Schools() {
                     isLocked={isAtLimit && !addedSchoolIds.has(school.id)}
                     onLockedClick={() => setShowUpgradeModal(true)}
                     isPending={addToOutreach.isPending || removeFromOutreach.isPending}
-                    staggerIndex={i}
+                    isFlipped={flippedId === school.id}
+                    onFlip={() => setFlippedId((prev) => prev === school.id ? null : school.id)}
                   />
                 ))}
               </div>
@@ -838,15 +1097,15 @@ export default function Schools() {
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="fixed right-0 top-0 bottom-0 w-80 z-40 flex flex-col"
             style={{
-              background: "#131829",
-              borderLeft: "1px solid #1E2A42",
+              background: "#141414",
+              borderLeft: "1px solid #2A2A2A",
               boxShadow: "-8px 0 32px rgba(0,0,0,0.5)",
             }}
           >
-            <div className="flex items-center justify-between p-5" style={{ borderBottom: "1px solid #1E2A42" }}>
+            <div className="flex items-center justify-between p-5" style={{ borderBottom: "1px solid #2A2A2A" }}>
               <h2
                 style={{
-                  fontFamily: "Barlow Condensed, sans-serif",
+                  fontFamily: "Bebas Neue, sans-serif",
                   fontSize: "24px",
                   fontWeight: 700,
                   color: "#FFFFFF",
@@ -856,7 +1115,7 @@ export default function Schools() {
               </h2>
               <button
                 onClick={() => setShowTargetList(false)}
-                style={{ color: "#8B9BB8", background: "none", border: "none", cursor: "pointer" }}
+                style={{ color: "#6B6B6B", background: "none", border: "none", cursor: "pointer" }}
               >
                 <X size={20} />
               </button>
@@ -864,7 +1123,7 @@ export default function Schools() {
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
               {!outreachData || outreachData.length === 0 ? (
                 <div className="text-center py-12">
-                  <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#8B9BB8" }}>
+                  <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#6B6B6B" }}>
                     No schools added yet. Hover a card and click "Add to List".
                   </p>
                 </div>
@@ -875,29 +1134,29 @@ export default function Schools() {
                     <div
                       key={item.schoolId}
                       className="flex items-start justify-between p-3"
-                      style={{ background: "#090D18", border: "1px solid #1E2A42", borderRadius: "10px" }}
+                      style={{ background: "#0A0A0A", border: "1px solid #2A2A2A", borderRadius: "4px" }}
                     >
                       <div className="flex items-start gap-3">
                         {dbEntry && (
                           <SchoolLogo domain={dbEntry.athleticsDomain} brandColor={dbEntry.brandColor} size={40} name={dbEntry.name} logoUrl={dbEntry.logoUrl} />
                         )}
                         <div>
-                          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#FFFFFF", fontWeight: 500 }}>
+                          <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#FFFFFF", fontWeight: 500 }}>
                             {item.schoolName || dbEntry?.name || "Unknown School"}
                           </p>
-                          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#8B9BB8" }}>
+                          <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B" }}>
                             {item.coachName || dbEntry?.coachName || ""} · Men's Volleyball
                           </p>
                           <span
                             style={{
-                              fontFamily: "Barlow Condensed, sans-serif",
+                              fontFamily: "Bebas Neue, sans-serif",
                               fontSize: "11px",
                               letterSpacing: "0.1em",
-                              color: "#8B9BB8",
+                              color: "#6B6B6B",
                               padding: "1px 6px",
-                              background: "#181E32",
-                              border: "1px solid #1E2A42",
-                              borderRadius: "6px",
+                              background: "#1A1A1A",
+                              border: "1px solid #2A2A2A",
+                              borderRadius: "2px",
                               display: "inline-block",
                               marginTop: "4px",
                             }}
@@ -908,7 +1167,7 @@ export default function Schools() {
                       </div>
                       <button
                         onClick={() => removeFromOutreach.mutate({ schoolId: item.schoolId })}
-                        style={{ color: "#8B9BB8", background: "none", border: "none", cursor: "pointer", marginTop: "2px" }}
+                        style={{ color: "#6B6B6B", background: "none", border: "none", cursor: "pointer", marginTop: "2px" }}
                       >
                         <X size={14} />
                       </button>
@@ -918,16 +1177,16 @@ export default function Schools() {
               )}
             </div>
             {outreachData && outreachData.length > 0 && (
-              <div className="p-4" style={{ borderTop: "1px solid #1E2A42" }}>
+              <div className="p-4" style={{ borderTop: "1px solid #2A2A2A" }}>
                 <button
                   className="w-full py-3 text-sm font-bold tracking-widest uppercase cursor-pointer"
                   style={{
                     background: "#F5C518",
-                    color: "#090D18",
-                    fontFamily: "Barlow Condensed, sans-serif",
+                    color: "#0A0A0A",
+                    fontFamily: "Bebas Neue, sans-serif",
                     letterSpacing: "0.1em",
                     border: "none",
-                    borderRadius: "8px",
+                    borderRadius: "0px",
                   }}
                   onClick={() => window.location.href = "/dashboard"}
                 >
@@ -956,9 +1215,9 @@ export default function Schools() {
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
               style={{
-                background: "#131829",
+                background: "#141414",
                 border: "2px solid #F5C518",
-                borderRadius: "14px",
+                borderRadius: "4px",
                 padding: "32px",
                 maxWidth: "480px",
                 width: "100%",
@@ -967,7 +1226,7 @@ export default function Schools() {
               <div className="flex items-start justify-between mb-6">
                 <h3
                   style={{
-                    fontFamily: "Barlow Condensed, sans-serif",
+                    fontFamily: "Bebas Neue, sans-serif",
                     fontSize: "36px",
                     fontWeight: 700,
                     color: "#FFFFFF",
@@ -978,27 +1237,27 @@ export default function Schools() {
                 <button
                   onClick={() => setShowUpgradeModal(false)}
                   className="text-2xl cursor-pointer"
-                  style={{ color: "#8B9BB8", background: "none", border: "none" }}
+                  style={{ color: "#6B6B6B", background: "none", border: "none" }}
                 >
                   ×
                 </button>
               </div>
               <p
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "DM Sans, sans-serif",
                   fontSize: "15px",
-                  color: "#8B9BB8",
+                  color: "#A3A3A3",
                   marginBottom: "24px",
                   lineHeight: 1.6,
                 }}
               >
-                You've reached the 5 school limit for free accounts. Unlock full access for $49.99 to add unlimited schools.
+                You've reached the 5 school limit for free accounts. Upgrade to Pro from $25/month to add unlimited schools.
               </p>
               <p
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: "DM Sans, sans-serif",
                   fontSize: "12px",
-                  color: "#8B9BB8",
+                  color: "#6B6B6B",
                   marginBottom: "20px",
                   fontStyle: "italic",
                 }}
@@ -1011,11 +1270,11 @@ export default function Schools() {
                     className="w-full py-3 text-sm font-bold tracking-widest uppercase cursor-pointer"
                     style={{
                       background: "#F5C518",
-                      color: "#090D18",
-                      fontFamily: "Barlow Condensed, sans-serif",
+                      color: "#0A0A0A",
+                      fontFamily: "Bebas Neue, sans-serif",
                       letterSpacing: "0.1em",
                       border: "none",
-                      borderRadius: "8px",
+                      borderRadius: "0px",
                     }}
                   >
                     SEE PRICING →
@@ -1027,10 +1286,10 @@ export default function Schools() {
                   style={{
                     background: "transparent",
                     color: "#FFFFFF",
-                    fontFamily: "Barlow Condensed, sans-serif",
+                    fontFamily: "Bebas Neue, sans-serif",
                     letterSpacing: "0.1em",
                     border: "1px solid #FFFFFF",
-                    borderRadius: "8px",
+                    borderRadius: "0px",
                   }}
                 >
                   DISMISS
@@ -1040,6 +1299,206 @@ export default function Schools() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* FIND MY OPENING Modal */}
+      <AnimatePresence>
+        {showFindOpeningsModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[70] flex items-end md:items-center justify-center"
+            style={{ background: "rgba(0,0,0,0.72)" }}
+            onClick={() => setShowFindOpeningsModal(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 24, scale: 0.98 }}
+              transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full md:max-w-4xl max-h-[90vh] overflow-y-auto"
+              style={{
+                background: "#10131D",
+                border: "1px solid rgba(255,255,255,0.08)",
+                borderRadius: "20px 20px 0 0",
+                padding: "24px",
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Drag handle */}
+              <div className="flex justify-center mb-4 md:hidden">
+                <div style={{ width: 40, height: 4, borderRadius: 999, background: "rgba(255,255,255,0.15)" }} />
+              </div>
+              <div className="flex items-start justify-between gap-4 mb-6">
+                <div>
+                  <h2 style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "22px", letterSpacing: "0.05em", color: "#FFFFFF" }}>
+                    FIND YOUR ROSTER OPENING
+                  </h2>
+                  <p style={{ marginTop: "8px", fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#94A3B8", lineHeight: 1.6, maxWidth: "640px" }}>
+                    Tell us your position and graduation year &mdash; we&apos;ll find every program with a real opening for you.
+                  </p>
+                </div>
+                <button onClick={() => setShowFindOpeningsModal(false)} className="cursor-pointer flex-shrink-0" style={{ color: "#FFFFFF", background: "none", border: "none" }} aria-label="Close">
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="mb-5">
+                <p style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", letterSpacing: "0.08em", color: "#F5C518", marginBottom: "12px" }}>POSITION</p>
+                <div className="flex flex-wrap gap-2">
+                  {OPENING_POSITIONS.map((position) => {
+                    const active = selectedOpeningPositions.includes(position);
+                    return (
+                      <button key={position} onClick={() => toggleOpeningPosition(position)} className="cursor-pointer" style={{ padding: "10px 14px", borderRadius: 999, border: active ? "1px solid #F5C518" : "1px solid #2A2A2A", background: active ? "#F5C518" : "#141414", color: active ? "#0A0A0A" : "#FFFFFF", fontFamily: "DM Sans, sans-serif", fontSize: "13px", fontWeight: 600 }}>
+                        {position} &middot; {OPENING_POSITION_LABELS[position]}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <p style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", letterSpacing: "0.08em", color: "#F5C518", marginBottom: "12px" }}>GRADUATION YEAR</p>
+                <div className="flex flex-wrap gap-2">
+                  {OPENING_YEARS.map((year) => {
+                    const active = selectedOpeningGradYear === year;
+                    return (
+                      <button key={year} onClick={() => setSelectedOpeningGradYear(year)} className="cursor-pointer" style={{ padding: "10px 16px", borderRadius: 999, border: active ? "1px solid #F5C518" : "1px solid #2A2A2A", background: active ? "#F5C518" : "#141414", color: active ? "#0A0A0A" : "#FFFFFF", fontFamily: "DM Sans, sans-serif", fontSize: "13px", fontWeight: 600 }}>
+                        {year}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <button onClick={handleFindOpenings} className="w-full cursor-pointer" style={{ height: "48px", background: "#F5C518", color: "#0A0A0A", borderRadius: "8px", border: "none", fontFamily: "Bebas Neue, sans-serif", fontSize: "16px", letterSpacing: "0.08em" }}>
+                FIND MY OPENINGS →
+              </button>
+
+              {hasSearchedOpenings && (
+                <div className="relative mt-6">
+                  {/* Filter button row */}
+                  {!rosterOpeningsLoading && rosterOpeningResults.length > 0 && (
+                    <div className="flex items-center justify-between mb-4">
+                      <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#94A3B8" }}>
+                        {(() => {
+                          const filtered = rosterOpeningResults
+                            .filter(r => openingDivisionFilter.length === 0 || openingDivisionFilter.includes(r.division || ""))
+                            .sort((a, b) => openingSortBy === "most" ? b.positionOpenings - a.positionOpenings : openingSortBy === "least" ? a.positionOpenings - b.positionOpenings : (a.schoolName || "").localeCompare(b.schoolName || ""));
+                          return `${filtered.length} program${filtered.length !== 1 ? "s" : ""} found`;
+                        })()}
+                      </p>
+                      <button
+                        onClick={() => setShowOpeningFilterSheet(true)}
+                        className="flex items-center gap-1.5 cursor-pointer relative"
+                        style={{ padding: "7px 14px", borderRadius: 999, border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.05)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", fontFamily: "DM Sans, sans-serif", fontSize: "12px", fontWeight: 600, color: "#FFFFFF", letterSpacing: "0.04em" }}
+                      >
+                        <SlidersHorizontal size={13} />
+                        FILTER
+                        {isOpeningFilterActive && (
+                          <span style={{ position: "absolute", top: 5, right: 5, width: 7, height: 7, borderRadius: "50%", background: "#F5C518", border: "1.5px solid #10131D" }} />
+                        )}
+                      </button>
+                    </div>
+                  )}
+                  <div style={{ filter: !hasPaidAccess ? "blur(10px)" : "none", opacity: !hasPaidAccess ? 0.55 : 1, transition: "filter 0.2s ease, opacity 0.2s ease" }}>
+                    {rosterOpeningsLoading ? (
+                      <div style={{ padding: "24px 0", fontFamily: "DM Sans, sans-serif", color: "#94A3B8" }}>Finding roster openings...</div>
+                    ) : rosterOpeningResults.length === 0 ? (
+                      <div style={{ marginTop: "8px", background: "#141414", border: "1px solid #2A2A2A", borderRadius: "12px", padding: "20px", fontFamily: "DM Sans, sans-serif", color: "#CBD5E1" }}>
+                        No openings found for your criteria. Try a different position or year.
+                      </div>
+                    ) : (() => {
+                      const displayResults = rosterOpeningResults
+                        .filter(r => openingDivisionFilter.length === 0 || openingDivisionFilter.includes(r.division || ""))
+                        .sort((a, b) => openingSortBy === "most" ? b.positionOpenings - a.positionOpenings : openingSortBy === "least" ? a.positionOpenings - b.positionOpenings : (a.schoolName || "").localeCompare(b.schoolName || ""));
+                      return displayResults.length === 0 ? (
+                        <div style={{ marginTop: "8px", background: "#141414", border: "1px solid #2A2A2A", borderRadius: "12px", padding: "20px", fontFamily: "DM Sans, sans-serif", color: "#CBD5E1" }}>
+                          No programs match your current filters.
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                          {displayResults.map((result) => {
+                            const school = schoolsData?.find((entry) => entry.id === result.schoolId);
+                            if (!school) return null;
+                            return (
+                              <div key={result.schoolId} style={{ background: "#141414", border: "1px solid #2A2A2A", borderRadius: "12px", padding: "18px" }}>
+                                <div className="flex items-start justify-between gap-4 mb-4">
+                                  <div className="flex items-center gap-3 min-w-0">
+                                    <SchoolLogo domain={school.athleticsDomain} brandColor={school.brandColor} size={44} name={school.name} logoUrl={school.logoUrl} />
+                                    <div className="min-w-0">
+                                      <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "20px", color: "#FFFFFF", lineHeight: 1 }}>{school.name}</div>
+                                      <div style={{ marginTop: "4px", fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#94A3B8" }}>{school.division || "—"}</div>
+                                    </div>
+                                  </div>
+                                  <div style={{ minWidth: "80px", textAlign: "center", background: "rgba(245,197,24,0.12)", border: "1px solid rgba(245,197,24,0.24)", borderRadius: "999px", padding: "8px 10px" }}>
+                                    <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "18px", color: "#F5C518", lineHeight: 1 }}>{result.positionOpenings}</div>
+                                    <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "10px", color: "#F5C518", marginTop: "2px" }}>OPENINGS</div>
+                                  </div>
+                                </div>
+                                <button
+                                  onClick={() => { setSelectedOpeningSchool(school); setShowFindOpeningsModal(false); openModal(); }}
+                                  className="w-full cursor-pointer"
+                                  style={{ height: "42px", borderRadius: "8px", background: "transparent", border: "1px solid #F5C518", color: "#F5C518", fontFamily: "Bebas Neue, sans-serif", fontSize: "14px", letterSpacing: "0.08em" }}
+                                >
+                                  VIEW SCHOOL →
+                                </button>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })()}
+                  </div>
+                  {!hasPaidAccess && (
+                    <div className="absolute inset-0 flex items-center justify-center p-4">
+                      <ProGate headline="UPGRADE TO PRO TO SEE YOUR OPENINGS" subtext="Free users can run the search, but Pro unlocks the ranked roster-opening results for every program." />
+                    </div>
+                  )}
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* FIND MY OPENING — Filter Sheet */}
+      <AnimatePresence>
+        {showOpeningFilterSheet && (
+          <OpeningFilterSheet
+            initialSort={openingSortBy}
+            initialDivisions={openingDivisionFilter}
+            onApply={(sort, divisions) => { setOpeningSortBy(sort); setOpeningDivisionFilter(divisions); }}
+            onClose={() => setShowOpeningFilterSheet(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* School Detail Modal opened from FIND MY OPENING results */}
+      {selectedOpeningSchool && (
+        <SchoolDetailModal
+          school={{
+            id: selectedOpeningSchool.id,
+            school: selectedOpeningSchool.name,
+            city: selectedOpeningSchool.city || "",
+            state: selectedOpeningSchool.state || "",
+            division: selectedOpeningSchool.division || "",
+            conference: selectedOpeningSchool.conference || "",
+            sport: "Men's Volleyball",
+            coachName: selectedOpeningSchool.coachName || "TBD",
+            coachTitle: selectedOpeningSchool.coachTitle || "Head Coach",
+            coachEmail: selectedOpeningSchool.coachEmail || "",
+            athleticsDomain: selectedOpeningSchool.athleticsDomain || "",
+            brandColor: selectedOpeningSchool.brandColor || "#F5C518",
+            hasRosterData: !!selectedOpeningSchool.hasRosterData,
+            logoUrl: selectedOpeningSchool.logoUrl || null,
+          }}
+          onClose={() => { setSelectedOpeningSchool(null); closeModal(); }}
+          isInOutreachList={addedSchoolIds.has(selectedOpeningSchool.id)}
+          onToggleOutreach={() => handleToggleSchool(selectedOpeningSchool)}
+          initialTab="school"
+        />
+      )}
 
       <AppFooter />
     </div>

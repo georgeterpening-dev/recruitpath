@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Upload, FileText, X, Check, AlertTriangle, Database, Clock, ChevronDown } from "lucide-react";
 import { Link } from "wouter";
+import { trpc } from "@/lib/trpc";
 
 // Mock admin check — in production, verify against ADMIN_EMAIL env var via backend
 const MOCK_IS_ADMIN = true;
@@ -114,7 +115,7 @@ export default function Admin() {
         <div className="flex items-center gap-4">
           <Link href="/">
             <span
-              className="text-[#F5C518] text-xl cursor-pointer"
+              className="text-[#F5B800] text-xl cursor-pointer"
               style={{ fontFamily: "Barlow Condensed, sans-serif", fontWeight: 800, letterSpacing: "-0.02em" }}
             >
               RECRUITPATH
@@ -122,12 +123,12 @@ export default function Admin() {
           </Link>
           <span
             className="px-2 py-0.5 text-xs font-semibold rounded"
-            style={{ background: "rgba(245,184,0,0.15)", color: "#F5C518", border: "1px solid rgba(245,184,0,0.3)", fontFamily: "Inter, sans-serif" }}
+            style={{ background: "rgba(245,184,0,0.15)", color: "#F5B800", border: "1px solid rgba(245,184,0,0.3)", fontFamily: "Inter, sans-serif" }}
           >
             ADMIN
           </span>
         </div>
-        <span className="text-[#8B9BB8] text-xs" style={{ fontFamily: "Inter, sans-serif" }}>
+        <span className="text-[#94A3B8] text-xs" style={{ fontFamily: "Inter, sans-serif" }}>
           admin@recruitpath.com
         </span>
       </div>
@@ -143,8 +144,8 @@ export default function Admin() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="rp-card p-5">
               <div className="flex items-center gap-2 mb-2">
-                <Database size={14} className="text-[#F5C518]" />
-                <span className="text-xs text-[#8B9BB8] font-semibold tracking-wider uppercase" style={{ fontFamily: "Inter, sans-serif" }}>Total Coaches</span>
+                <Database size={14} className="text-[#F5B800]" />
+                <span className="text-xs text-[#94A3B8] font-semibold tracking-wider uppercase" style={{ fontFamily: "Inter, sans-serif" }}>Total Coaches</span>
               </div>
               <div className="font-display text-white" style={{ fontSize: "40px" }}>
                 <CountUpNumber target={MOCK_STATS.total} />
@@ -166,7 +167,7 @@ export default function Admin() {
               </div>
             ))}
           </div>
-          <div className="mt-3 flex items-center gap-2 text-xs text-[#8B9BB8]" style={{ fontFamily: "Inter, sans-serif" }}>
+          <div className="mt-3 flex items-center gap-2 text-xs text-[#94A3B8]" style={{ fontFamily: "Inter, sans-serif" }}>
             <Clock size={12} />
             Last upload: {formatDate(MOCK_STATS.lastUpload)}
           </div>
@@ -185,8 +186,8 @@ export default function Admin() {
             className="mb-4 p-4 rounded-xl text-xs"
             style={{ background: "rgba(245,184,0,0.05)", border: "1px solid rgba(245,184,0,0.15)", fontFamily: "Inter, sans-serif" }}
           >
-            <p className="text-[#F5C518] font-semibold mb-2">Required CSV Columns:</p>
-            <p className="text-[#8B9BB8]">{REQUIRED_COLUMNS.join(", ")}</p>
+            <p className="text-[#F5B800] font-semibold mb-2">Required CSV Columns:</p>
+            <p className="text-[#94A3B8]">{REQUIRED_COLUMNS.join(", ")}</p>
           </div>
 
           {/* Drop zone */}
@@ -197,7 +198,7 @@ export default function Admin() {
             onClick={() => fileInputRef.current?.click()}
             className="rounded-xl p-12 text-center cursor-pointer transition-all duration-200"
             style={{
-              border: `2px ${isDragOver ? "solid" : "dashed"} ${isDragOver ? "#F5C518" : "rgba(245,184,0,0.3)"}`,
+              border: `2px ${isDragOver ? "solid" : "dashed"} ${isDragOver ? "#F5B800" : "rgba(245,184,0,0.3)"}`,
               background: isDragOver ? "rgba(245,184,0,0.05)" : "transparent",
               transform: isDragOver ? "scale(1.01)" : "scale(1)",
             }}
@@ -209,11 +210,11 @@ export default function Admin() {
               className="hidden"
               onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
             />
-            <Upload size={32} className="mx-auto mb-3 text-[#F5C518]" />
+            <Upload size={32} className="mx-auto mb-3 text-[#F5B800]" />
             <p className="text-[#F8FAFC] text-sm font-medium mb-1" style={{ fontFamily: "Inter, sans-serif" }}>
               {isDragOver ? "Drop your CSV file here" : "Drag & drop a CSV file, or click to browse"}
             </p>
-            <p className="text-[#8B9BB8] text-xs" style={{ fontFamily: "Inter, sans-serif" }}>
+            <p className="text-[#94A3B8] text-xs" style={{ fontFamily: "Inter, sans-serif" }}>
               .csv files only
             </p>
           </div>
@@ -229,17 +230,17 @@ export default function Admin() {
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <FileText size={16} className="text-[#F5C518]" />
+                    <FileText size={16} className="text-[#F5B800]" />
                     <span className="text-sm text-[#F8FAFC] font-medium" style={{ fontFamily: "Inter, sans-serif" }}>
                       {selectedFile.name}
                     </span>
-                    <span className="text-xs text-[#8B9BB8]" style={{ fontFamily: "Inter, sans-serif" }}>
+                    <span className="text-xs text-[#94A3B8]" style={{ fontFamily: "Inter, sans-serif" }}>
                       ({(selectedFile.size / 1024).toFixed(1)} KB)
                     </span>
                   </div>
                   <button
                     onClick={() => { setSelectedFile(null); setPreviewData([]); setPreviewHeaders([]); setUploadResult(null); }}
-                    className="text-[#8B9BB8] hover:text-[#EF4444] transition-colors"
+                    className="text-[#94A3B8] hover:text-[#EF4444] transition-colors"
                   >
                     <X size={16} />
                   </button>
@@ -248,7 +249,7 @@ export default function Admin() {
                 {/* Preview table */}
                 {previewData.length > 0 && (
                   <div className="rp-card overflow-hidden mb-4">
-                    <div className="p-3 text-xs text-[#8B9BB8]" style={{ borderBottom: "1px solid #1E293B", fontFamily: "Inter, sans-serif" }}>
+                    <div className="p-3 text-xs text-[#94A3B8]" style={{ borderBottom: "1px solid #1E293B", fontFamily: "Inter, sans-serif" }}>
                       Preview — first {previewData.length} rows
                     </div>
                     <div className="overflow-x-auto">
@@ -256,7 +257,7 @@ export default function Admin() {
                         <thead>
                           <tr style={{ borderBottom: "1px solid #1E293B" }}>
                             {previewHeaders.map((h) => (
-                              <th key={h} className="text-left px-3 py-2 text-[#F5C518] font-semibold tracking-wider uppercase whitespace-nowrap">
+                              <th key={h} className="text-left px-3 py-2 text-[#F5B800] font-semibold tracking-wider uppercase whitespace-nowrap">
                                 {h}
                               </th>
                             ))}
@@ -266,7 +267,7 @@ export default function Admin() {
                           {previewData.map((row, i) => (
                             <tr key={i} style={{ borderBottom: "1px solid rgba(30,41,59,0.5)" }}>
                               {row.map((cell, j) => (
-                                <td key={j} className="px-3 py-2 text-[#8B9BB8] whitespace-nowrap max-w-32 truncate">
+                                <td key={j} className="px-3 py-2 text-[#94A3B8] whitespace-nowrap max-w-32 truncate">
                                   {cell}
                                 </td>
                               ))}
@@ -287,7 +288,7 @@ export default function Admin() {
                     disabled={isUploading}
                     className="flex items-center gap-2 px-6 py-3 text-sm font-semibold tracking-wider uppercase rounded-lg"
                     style={{
-                      background: isUploading ? "rgba(245,184,0,0.5)" : "#F5C518",
+                      background: isUploading ? "rgba(245,184,0,0.5)" : "#F5B800",
                       color: "#0A0E1A",
                       fontFamily: "Inter, sans-serif",
                     }}
@@ -322,15 +323,15 @@ export default function Admin() {
                       <div className="grid grid-cols-3 gap-4 mb-4">
                         <div className="text-center p-3 rounded-lg" style={{ background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.2)" }}>
                           <div className="font-display text-[#22C55E] text-3xl">{uploadResult.inserted}</div>
-                          <div className="text-xs text-[#8B9BB8] mt-1" style={{ fontFamily: "Inter, sans-serif" }}>Inserted</div>
+                          <div className="text-xs text-[#94A3B8] mt-1" style={{ fontFamily: "Inter, sans-serif" }}>Inserted</div>
                         </div>
                         <div className="text-center p-3 rounded-lg" style={{ background: "rgba(245,184,0,0.1)", border: "1px solid rgba(245,184,0,0.2)" }}>
-                          <div className="font-display text-[#F5C518] text-3xl">{uploadResult.updated}</div>
-                          <div className="text-xs text-[#8B9BB8] mt-1" style={{ fontFamily: "Inter, sans-serif" }}>Updated</div>
+                          <div className="font-display text-[#F5B800] text-3xl">{uploadResult.updated}</div>
+                          <div className="text-xs text-[#94A3B8] mt-1" style={{ fontFamily: "Inter, sans-serif" }}>Updated</div>
                         </div>
                         <div className="text-center p-3 rounded-lg" style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)" }}>
                           <div className="font-display text-[#EF4444] text-3xl">{uploadResult.skipped}</div>
-                          <div className="text-xs text-[#8B9BB8] mt-1" style={{ fontFamily: "Inter, sans-serif" }}>Skipped</div>
+                          <div className="text-xs text-[#94A3B8] mt-1" style={{ fontFamily: "Inter, sans-serif" }}>Skipped</div>
                         </div>
                       </div>
                       {uploadResult.errors.length > 0 && (
@@ -339,7 +340,7 @@ export default function Admin() {
                             Skipped Rows:
                           </p>
                           {uploadResult.errors.map((err, i) => (
-                            <p key={i} className="text-xs text-[#8B9BB8]" style={{ fontFamily: "Inter, sans-serif" }}>
+                            <p key={i} className="text-xs text-[#94A3B8]" style={{ fontFamily: "Inter, sans-serif" }}>
                               {err}
                             </p>
                           ))}
@@ -374,7 +375,7 @@ export default function Admin() {
           {flaggedRecords.length === 0 ? (
             <div className="rp-card p-8 text-center">
               <Check size={24} className="mx-auto mb-2 text-[#22C55E]" />
-              <p className="text-[#8B9BB8] text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
+              <p className="text-[#94A3B8] text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
                 All records reviewed. No flags pending.
               </p>
             </div>
@@ -396,7 +397,7 @@ export default function Admin() {
                       <p className="text-[#F8FAFC] text-sm font-medium" style={{ fontFamily: "Inter, sans-serif" }}>
                         {record.school} — {record.coach}
                       </p>
-                      <p className="text-[#8B9BB8] text-xs mt-0.5" style={{ fontFamily: "Inter, sans-serif" }}>
+                      <p className="text-[#94A3B8] text-xs mt-0.5" style={{ fontFamily: "Inter, sans-serif" }}>
                         {record.sport} · Flagged {record.flaggedAt}
                       </p>
                       <p className="text-[#EF4444] text-xs mt-1" style={{ fontFamily: "Inter, sans-serif" }}>
@@ -424,7 +425,96 @@ export default function Admin() {
             </div>
           )}
         </motion.section>
+
+        {/* ── Waitlist ─────────────────────────────────────────────────────── */}
+        <WaitlistSection />
       </div>
     </div>
+  );
+}
+
+function WaitlistSection() {
+  const { data: entries, isLoading } = trpc.waitlist.list.useQuery();
+
+  const downloadCSV = () => {
+    if (!entries || entries.length === 0) return;
+    const header = "email,source,joined";
+    const rows = [...entries]
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .map(e => `${e.email},${e.source ?? "landing_page"},${new Date(e.createdAt).toISOString()}`);
+    const csv = [header, ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `waitlist-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const sorted = entries ? [...entries].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) : [];
+
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: 0.3 }}
+      className="rounded-2xl p-6"
+      style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}
+    >
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "22px", letterSpacing: "0.06em", color: "#F5B800", marginBottom: "2px" }}>WAITLIST</h2>
+          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#64748B" }}>
+            {isLoading ? "Loading..." : `${sorted.length} total signup${sorted.length !== 1 ? "s" : ""}`}
+          </p>
+        </div>
+        <button
+          onClick={downloadCSV}
+          disabled={!entries || entries.length === 0}
+          style={{
+            padding: "8px 16px",
+            borderRadius: "8px",
+            border: "1px solid rgba(245,184,0,0.4)",
+            background: "rgba(245,184,0,0.08)",
+            color: "#F5B800",
+            fontFamily: "Inter, sans-serif",
+            fontSize: "12px",
+            fontWeight: 600,
+            cursor: entries && entries.length > 0 ? "pointer" : "not-allowed",
+            opacity: entries && entries.length > 0 ? 1 : 0.4,
+          }}
+        >
+          Export CSV
+        </button>
+      </div>
+
+      {isLoading ? (
+        <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#64748B", textAlign: "center", padding: "24px 0" }}>Loading...</p>
+      ) : sorted.length === 0 ? (
+        <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#64748B", textAlign: "center", padding: "24px 0" }}>No signups yet.</p>
+      ) : (
+        <div style={{ overflowX: "auto" }}>
+          <table className="w-full" style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", borderCollapse: "collapse" }}>
+            <thead>
+              <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+                <th style={{ textAlign: "left", padding: "8px 12px", color: "#64748B", fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase" }}>Email</th>
+                <th style={{ textAlign: "left", padding: "8px 12px", color: "#64748B", fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase" }}>Source</th>
+                <th style={{ textAlign: "left", padding: "8px 12px", color: "#64748B", fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase" }}>Joined</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sorted.map((entry, i) => (
+                <tr key={entry.id} style={{ borderBottom: "1px solid rgba(255,255,255,0.04)", background: i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.015)" }}>
+                  <td style={{ padding: "10px 12px", color: "#F8FAFC" }}>{entry.email}</td>
+                  <td style={{ padding: "10px 12px", color: "#94A3B8" }}>{entry.source ?? "landing_page"}</td>
+                  <td style={{ padding: "10px 12px", color: "#94A3B8" }}>{new Date(entry.createdAt).toLocaleDateString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </motion.section>
   );
 }

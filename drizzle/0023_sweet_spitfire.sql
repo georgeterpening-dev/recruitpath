@@ -1,0 +1,1 @@
+ALTER TABLE `users` MODIFY COLUMN `subscriptionStatus` enum('active','cancelling','cancelled','past_due');

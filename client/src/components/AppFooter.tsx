@@ -1,67 +1,57 @@
 import { Link } from "wouter";
 
+/**
+ * AppFooter — consistent footer shown on every page.
+ * Dark bg (#0A0A0A), muted gray text, DM Sans 12px.
+ */
 export default function AppFooter() {
   return (
     <footer
       style={{
-        background: "#070B16",
-        borderTop: "1px solid #1E2A42",
-        fontFamily: "Inter, sans-serif",
+        background: "#0A0A0A",
+        borderTop: "1px solid #3A3A3A",
+        fontFamily: "DM Sans, sans-serif",
         fontSize: "12px",
-        color: "#4A5570",
+        color: "#888888",
       }}
     >
-      <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-        {/* Left: brand + copyright */}
-        <div className="flex items-center gap-3">
-          <span
-            style={{
-              fontFamily: "Barlow Condensed, sans-serif",
-              fontWeight: 800,
-              fontSize: "14px",
-              letterSpacing: "-0.01em",
-              background: "linear-gradient(135deg, #F5C518 0%, #FFD640 100%)",
-              WebkitBackgroundClip: "text",
-              backgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            RECRUITPATH
-          </span>
-          <span style={{ color: "#2A3550" }}>·</span>
-          <span>© 2026 All rights reserved.</span>
-        </div>
+      <div
+        className="max-w-7xl mx-auto px-6 py-5 pb-[100px] md:pb-5 flex flex-col items-center md:flex-row md:justify-between gap-3 text-center md:text-left"
+      >
+        {/* Left: copyright */}
+        <span>© 2026 RecruitPath. All rights reserved.</span>
 
         {/* Center: legal links */}
         <div className="flex items-center gap-6">
           <Link href="/terms">
             <span
-              className="cursor-pointer"
-              style={{ color: "#4A5570", transition: "color 150ms ease" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#8B9BB8")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#4A5570")}
+              className="cursor-pointer transition-colors duration-150"
+              style={{ color: "#888888" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#cccccc")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#888888")}
             >
               Terms of Service
             </span>
           </Link>
           <Link href="/privacy">
             <span
-              className="cursor-pointer"
-              style={{ color: "#4A5570", transition: "color 150ms ease" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#8B9BB8")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#4A5570")}
+              className="cursor-pointer transition-colors duration-150"
+              style={{ color: "#888888" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#cccccc")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#888888")}
             >
               Privacy Policy
             </span>
           </Link>
         </div>
 
-        {/* Right: contact */}
+        {/* Right: contact email */}
         <a
           href="mailto:contact.recruitpath@gmail.com"
-          style={{ color: "#4A5570", transition: "color 150ms ease" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#F5C518")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "#4A5570")}
+          style={{ color: "#888888" }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#cccccc")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "#888888")}
+          className="transition-colors duration-150"
         >
           contact.recruitpath@gmail.com
         </a>

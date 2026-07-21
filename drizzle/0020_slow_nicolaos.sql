@@ -1,0 +1,1 @@
+ALTER TABLE `outreach_list` ADD `starred` boolean DEFAULT false NOT NULL;

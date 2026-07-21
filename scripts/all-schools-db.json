@@ -1,0 +1,2602 @@
+[
+  {
+    "id": "mvb-adrian",
+    "name": "Adrian College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Adrian",
+    "state": "MI"
+  },
+  {
+    "id": "mvb-alvernia",
+    "name": "Alvernia University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Reading",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-american-international",
+    "name": "American International College",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "Springfield",
+    "state": "MA"
+  },
+  {
+    "id": "mvb-antelope-valley",
+    "name": "Antelope Valley College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Lancaster",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-aquinas-michigan",
+    "name": "Aquinas College - Michigan",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Grand Rapids",
+    "state": "MI"
+  },
+  {
+    "id": "mvb-arcadia",
+    "name": "Arcadia University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Glenside",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-arizona-christian",
+    "name": "Arizona Christian University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Phoenix",
+    "state": "AZ"
+  },
+  {
+    "id": "mvb-atlantic-cape-community",
+    "name": "Atlantic Cape Community College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Mays Landing",
+    "state": "NJ"
+  },
+  {
+    "id": "mvb-augustana-illinois",
+    "name": "Augustana College - Illinois",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Rock Island",
+    "state": "IL"
+  },
+  {
+    "id": "mvb-aurora",
+    "name": "Aurora University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-averett",
+    "name": "Averett University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Danville",
+    "state": "VA"
+  },
+  {
+    "id": "mvb-avila",
+    "name": "Avila University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Kansas City",
+    "state": "MO"
+  },
+  {
+    "id": "mvb-byu",
+    "name": "BYU",
+    "division": "D1",
+    "conference": "MPSF",
+    "city": "Provo",
+    "state": "UT"
+  },
+  {
+    "id": "mvb-baldwin-wallace",
+    "name": "Baldwin Wallace University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Berea",
+    "state": "OH"
+  },
+  {
+    "id": "mvb-ballstate",
+    "name": "Ball State",
+    "division": "D1",
+    "conference": "MIVA",
+    "city": "Muncie",
+    "state": "IN"
+  },
+  {
+    "id": "mvb-bard",
+    "name": "Bard College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Annandale-on-Hudson",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-barry",
+    "name": "Barry University",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-bartoncollege",
+    "name": "Barton College",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-baruch",
+    "name": "Baruch College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "New York",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-belmontabbeycollege",
+    "name": "Belmont Abbey College",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-benedict",
+    "name": "Benedict College",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-benedictine",
+    "name": "Benedictine University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-benedictine-mesa",
+    "name": "Benedictine University - Mesa",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Mesa",
+    "state": "AZ"
+  },
+  {
+    "id": "mvb-bethany-west-virginia",
+    "name": "Bethany College - West Virginia",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Bethany",
+    "state": "WV"
+  },
+  {
+    "id": "mvb-bethel-indiana",
+    "name": "Bethel University - Indiana",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Mishawaka",
+    "state": "IN"
+  },
+  {
+    "id": "mvb-bluefield",
+    "name": "Bluefield University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Bluefield",
+    "state": "VA"
+  },
+  {
+    "id": "mvb-borough-manhattan-community",
+    "name": "Borough of Manhattan Community College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "New York",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-brescia",
+    "name": "Brescia University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Owensboro",
+    "state": "KY"
+  },
+  {
+    "id": "mvb-bridgewater",
+    "name": "Bridgewater College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Bridgewater",
+    "state": "VA"
+  },
+  {
+    "id": "mvb-brighamyounguniversity",
+    "name": "Brigham Young University",
+    "division": "D1",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-brookdale-community",
+    "name": "Brookdale Community College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Lincroft",
+    "state": "NJ"
+  },
+  {
+    "id": "mvb-brooklyn",
+    "name": "Brooklyn College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Brooklyn",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-bryant-stratton-wisconsin",
+    "name": "Bryant & Stratton College - Wisconsin",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Milwaukee",
+    "state": "WI"
+  },
+  {
+    "id": "mvb-bryn-athyn",
+    "name": "Bryn Athyn College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Bryn Athyn",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-cairn",
+    "name": "Cairn University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Langhorne",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-calluth",
+    "name": "Cal Lutheran",
+    "division": "D3",
+    "conference": "SCIAC",
+    "city": "Thousand Oaks",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-californialutheranuniversity",
+    "name": "California Lutheran University",
+    "division": "D3",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-californiastateuniversitynorth",
+    "name": "California State University - Northridge",
+    "division": "D1",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-calumet-st-joseph",
+    "name": "Calumet College of St. Joseph",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Whiting",
+    "state": "IN"
+  },
+  {
+    "id": "mvb-calvin",
+    "name": "Calvin College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Grand Rapids",
+    "state": "MI"
+  },
+  {
+    "id": "mvb-campbellsville",
+    "name": "Campbellsville University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Campbellsville",
+    "state": "KY"
+  },
+  {
+    "id": "mvb-carlow",
+    "name": "Carlow University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Pittsburgh",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-carolina",
+    "name": "Carolina University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Winston-Salem",
+    "state": "NC"
+  },
+  {
+    "id": "mvb-carthage",
+    "name": "Carthage College",
+    "division": "D3",
+    "conference": "CCIW",
+    "city": "Kenosha",
+    "state": "WI"
+  },
+  {
+    "id": "mvb-catawba",
+    "name": "Catawba College",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-central-christian-kansas",
+    "name": "Central Christian College of Kansas",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "McPherson",
+    "state": "KS"
+  },
+  {
+    "id": "mvb-centralstateuniversity",
+    "name": "Central State University",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-chatham",
+    "name": "Chatham University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Pittsburgh",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-clarke",
+    "name": "Clarke University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Dubuque",
+    "state": "IA"
+  },
+  {
+    "id": "mvb-dupage",
+    "name": "College of DuPage",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Glen Ellyn",
+    "state": "IL"
+  },
+  {
+    "id": "mvb-concordia-chicago",
+    "name": "Concordia University - Chicago",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Chicago",
+    "state": "IL"
+  },
+  {
+    "id": "mvb-concordiauniversityirvine",
+    "name": "Concordia University - Irvine",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-concordia-wisconsin",
+    "name": "Concordia University - Wisconsin",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Mequon",
+    "state": "WI"
+  },
+  {
+    "id": "mvb-cornerstone",
+    "name": "Cornerstone University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Grand Rapids",
+    "state": "MI"
+  },
+  {
+    "id": "mvb-culverstockton",
+    "name": "Culver-Stockton College",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Canton",
+    "state": "MO"
+  },
+  {
+    "id": "mvb-cumberland",
+    "name": "Cumberland University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Lebanon",
+    "state": "TN"
+  },
+  {
+    "id": "mvb-curry",
+    "name": "Curry College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-dyouvilleuniversity",
+    "name": "D'Youville University",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-daemenuniversity",
+    "name": "Daemen University",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-davenport",
+    "name": "Davenport University",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-dean",
+    "name": "Dean College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-defiance",
+    "name": "Defiance College",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Defiance",
+    "state": "OH"
+  },
+  {
+    "id": "mvb-dominican-illinois",
+    "name": "Dominican University - Illinois",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "River Forest",
+    "state": "IL"
+  },
+  {
+    "id": "mvb-dominican-new-york",
+    "name": "Dominican University New York",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-dordt",
+    "name": "Dordt University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Sioux Center",
+    "state": "IA"
+  },
+  {
+    "id": "mvb-douglas-new-westminster",
+    "name": "Douglas College (New Westminster)",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "New Westminster",
+    "state": "BC"
+  },
+  {
+    "id": "mvb-drew",
+    "name": "Drew University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Madison",
+    "state": "NJ"
+  },
+  {
+    "id": "mvb-eastern-mennonite",
+    "name": "Eastern Mennonite University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Harrisonburg",
+    "state": "VA"
+  },
+  {
+    "id": "mvb-eastern",
+    "name": "Eastern University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "St. Davids",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-edgewood",
+    "name": "Edgewood College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Madison",
+    "state": "WI"
+  },
+  {
+    "id": "mvb-edwardwaterscollege",
+    "name": "Edward Waters College",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-el-camino",
+    "name": "El Camino College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Torrance",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-elizabethtown",
+    "name": "Elizabethtown College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Elizabethtown",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-elmira",
+    "name": "Elmira College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Elmira",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-elms",
+    "name": "Elms College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-emerson",
+    "name": "Emerson College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-emmanuel-massachusetts",
+    "name": "Emmanuel College - Massachusetts",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-emmanueluniversity",
+    "name": "Emmanuel University",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-endicott",
+    "name": "Endicott College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-erskinecollege",
+    "name": "Erskine College",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-eureka",
+    "name": "Eureka College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-fairleighdickinsonuniversity",
+    "name": "Fairleigh Dickinson University",
+    "division": "D1",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-finger-lakes-community",
+    "name": "Finger Lakes Community College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Canandaigua",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-fisher",
+    "name": "Fisher College",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Boston",
+    "state": "MA"
+  },
+  {
+    "id": "mvb-fortvalleystateuniversity",
+    "name": "Fort Valley State University",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-franciscan-steubenville",
+    "name": "Franciscan University of Steubenville",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Steubenville",
+    "state": "OH"
+  },
+  {
+    "id": "mvb-franklin",
+    "name": "Franklin College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-fullerton",
+    "name": "Fullerton College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Fullerton",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-gallaudet",
+    "name": "Gallaudet University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-geneva",
+    "name": "Geneva College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Beaver Falls",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-georgemason",
+    "name": "George Mason",
+    "division": "D1",
+    "conference": "EIVA",
+    "city": "Fairfax",
+    "state": "VA"
+  },
+  {
+    "id": "mvb-georgetown",
+    "name": "Georgetown College",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Georgetown",
+    "state": "KY"
+  },
+  {
+    "id": "mvb-golden-west",
+    "name": "Golden West College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Huntington Beach",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-goshen",
+    "name": "Goshen College",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Goshen",
+    "state": "IN"
+  },
+  {
+    "id": "mvb-governors-state",
+    "name": "Governors State University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "University Park",
+    "state": "IL"
+  },
+  {
+    "id": "mvb-graceland",
+    "name": "Graceland University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Lamoni",
+    "state": "IA"
+  },
+  {
+    "id": "mvb-grand-view",
+    "name": "Grand View University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Des Moines",
+    "state": "IA"
+  },
+  {
+    "id": "mvb-greenville",
+    "name": "Greenville University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-grossmont",
+    "name": "Grossmont College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "El Cajon",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-grove-city",
+    "name": "Grove City College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Grove City",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-gwynedd-mercy",
+    "name": "Gwynedd Mercy University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Gwynedd Valley",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-harcum",
+    "name": "Harcum College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Bryn Mawr",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-hartwick",
+    "name": "Hartwick College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Oneonta",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-harvard",
+    "name": "Harvard",
+    "division": "D1",
+    "conference": "EIVA",
+    "city": "Cambridge",
+    "state": "MA"
+  },
+  {
+    "id": "mvb-hastings",
+    "name": "Hastings College",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Hastings",
+    "state": "NE"
+  },
+  {
+    "id": "mvb-hawaii",
+    "name": "Hawaii",
+    "division": "D1",
+    "conference": "Big West",
+    "city": "Honolulu",
+    "state": "HI"
+  },
+  {
+    "id": "mvb-hilbert",
+    "name": "Hilbert College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Hamburg",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-hiram",
+    "name": "Hiram College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Hiram",
+    "state": "OH"
+  },
+  {
+    "id": "mvb-hobart-william-smith-colleges",
+    "name": "Hobart & William Smith Colleges",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Geneva",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-hood",
+    "name": "Hood College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-hope-international",
+    "name": "Hope International University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Fullerton",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-hostos-community",
+    "name": "Hostos Community College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Bronx",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-houghton",
+    "name": "Houghton College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Houghton",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-hunter",
+    "name": "Hunter College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "New York",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-huntington",
+    "name": "Huntington University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Huntington",
+    "state": "IN"
+  },
+  {
+    "id": "mvb-illinois-institute-technology",
+    "name": "Illinois Institute of Technology",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-illinois-wesleyan",
+    "name": "Illinois Wesleyan University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-immaculata",
+    "name": "Immaculata University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Immaculata",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-indiana-institute-technology",
+    "name": "Indiana Institute of Technology",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Fort Wayne",
+    "state": "IN"
+  },
+  {
+    "id": "mvb-indiana-east",
+    "name": "Indiana University - East",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Richmond",
+    "state": "IN"
+  },
+  {
+    "id": "mvb-indiana-wesleyan",
+    "name": "Indiana Wesleyan University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Marion",
+    "state": "IN"
+  },
+  {
+    "id": "mvb-irvine-valley",
+    "name": "Irvine Valley College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Irvine",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-jessup",
+    "name": "Jessup University",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-john-jay-criminial-justice",
+    "name": "John Jay College of Criminial Justice",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "New York",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-judson",
+    "name": "Judson University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Elgin",
+    "state": "IL"
+  },
+  {
+    "id": "mvb-juniata",
+    "name": "Juniata College",
+    "division": "D3",
+    "conference": "Landmark",
+    "city": "Huntingdon",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-kansas-wesleyan",
+    "name": "Kansas Wesleyan University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Salina",
+    "state": "KS"
+  },
+  {
+    "id": "mvb-kean",
+    "name": "Kean University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Union",
+    "state": "NJ"
+  },
+  {
+    "id": "mvb-kentucky-state",
+    "name": "Kentucky State University",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-kinguniversitytennessee",
+    "name": "King University - Tennessee",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-kings-pennsylvania",
+    "name": "King's College - Pennsylvania",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Wilkes-Barre",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-la-sierra",
+    "name": "La Sierra University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Riverside",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-lake-forest",
+    "name": "Lake Forest College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-lakeland",
+    "name": "Lakeland University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Plymouth",
+    "state": "WI"
+  },
+  {
+    "id": "mvb-lancaster-bible",
+    "name": "Lancaster Bible College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Lancaster",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-lasell",
+    "name": "Lasell University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Newton",
+    "state": "MA"
+  },
+  {
+    "id": "mvb-lawrence-technological",
+    "name": "Lawrence Technological University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Southfield",
+    "state": "MI"
+  },
+  {
+    "id": "mvb-lawrence",
+    "name": "Lawrence University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Appleton",
+    "state": "WI"
+  },
+  {
+    "id": "mvb-lemoyneowen",
+    "name": "LeMoyne-Owen College",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-leesmcraecollege",
+    "name": "Lees-McRae College",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-lehman",
+    "name": "Lehman College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Bronx",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-lewis",
+    "name": "Lewis University",
+    "division": "D1",
+    "conference": "MIVA",
+    "city": "Romeoville",
+    "state": "IL"
+  },
+  {
+    "id": "mvb-life",
+    "name": "Life University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Marietta",
+    "state": "GA"
+  },
+  {
+    "id": "mvb-lincolnmemorialuniversity",
+    "name": "Lincoln Memorial University",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-lindenwood",
+    "name": "Lindenwood University",
+    "division": "D1",
+    "conference": "MIVA",
+    "city": "St. Charles",
+    "state": "MO"
+  },
+  {
+    "id": "mvb-long-beach-city",
+    "name": "Long Beach City College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Long Beach",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-lbsu",
+    "name": "Long Beach State",
+    "division": "D1",
+    "conference": "Big West",
+    "city": "Long Beach",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-longislanduniversity",
+    "name": "Long Island University",
+    "division": "D1",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-loras",
+    "name": "Loras College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Dubuque",
+    "state": "IA"
+  },
+  {
+    "id": "mvb-lourdes",
+    "name": "Lourdes University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Sylvania",
+    "state": "OH"
+  },
+  {
+    "id": "mvb-loyola",
+    "name": "Loyola Chicago",
+    "division": "D1",
+    "conference": "MIVA",
+    "city": "Chicago",
+    "state": "IL"
+  },
+  {
+    "id": "mvb-lycoming",
+    "name": "Lycoming College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Williamsport",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-manhattan",
+    "name": "Manhattan College",
+    "division": "D1",
+    "conference": "Independent",
+    "city": "Riverdale",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-manhattanville",
+    "name": "Manhattanville College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Purchase",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-maranatha-baptist",
+    "name": "Maranatha Baptist University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Watertown",
+    "state": "WI"
+  },
+  {
+    "id": "mvb-marian-wisconsin",
+    "name": "Marian University - Wisconsin",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Fond du Lac",
+    "state": "WI"
+  },
+  {
+    "id": "mvb-marymount-va",
+    "name": "Marymount University (VA)",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Arlington",
+    "state": "VA"
+  },
+  {
+    "id": "mvb-maryvilleuniversity",
+    "name": "Maryville University",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-massachusetts-institute-technology-mit",
+    "name": "Massachusetts Institute of Technology - MIT",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Cambridge",
+    "state": "MA"
+  },
+  {
+    "id": "mvb-mckendree",
+    "name": "McKendree University",
+    "division": "D1",
+    "conference": "MIVA",
+    "city": "Lebanon",
+    "state": "IL"
+  },
+  {
+    "id": "mvb-menlo",
+    "name": "Menlo College",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "Atherton",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-merrimackcollege",
+    "name": "Merrimack College",
+    "division": "D1",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-messiah",
+    "name": "Messiah University",
+    "division": "D3",
+    "conference": "MAC",
+    "city": "Mechanicsburg",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-middlesex",
+    "name": "Middlesex College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Edison",
+    "state": "NJ"
+  },
+  {
+    "id": "mvb-midway",
+    "name": "Midway University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Midway",
+    "state": "KY"
+  },
+  {
+    "id": "mvb-milligan",
+    "name": "Milligan University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Elizabethton",
+    "state": "TN"
+  },
+  {
+    "id": "mvb-milwaukee-school-engineering",
+    "name": "Milwaukee School of Engineering",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Milwaukee",
+    "state": "WI"
+  },
+  {
+    "id": "mvb-misericordia",
+    "name": "Misericordia University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Dallas",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-mission",
+    "name": "Mission University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Kansas City",
+    "state": "MO"
+  },
+  {
+    "id": "mvb-missouri-baptist",
+    "name": "Missouri Baptist University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "St. Louis",
+    "state": "MO"
+  },
+  {
+    "id": "mvb-missouriuniversityofsciencetec",
+    "name": "Missouri University of Science & Technology",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-missouri-valley",
+    "name": "Missouri Valley College",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Marshall",
+    "state": "MO"
+  },
+  {
+    "id": "mvb-monroe-bronx",
+    "name": "Monroe University - Bronx",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Bronx",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-monroe-new-rochelle",
+    "name": "Monroe University - New Rochelle",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "New Rochelle",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-moorpark",
+    "name": "Moorpark College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Moorpark",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-morningside",
+    "name": "Morningside College",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Sioux City",
+    "state": "IA"
+  },
+  {
+    "id": "mvb-mount-aloysius",
+    "name": "Mount Aloysius College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Cresson",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-mount-mercy",
+    "name": "Mount Mercy University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Cedar Rapids",
+    "state": "IA"
+  },
+  {
+    "id": "mvb-mount-st-joseph",
+    "name": "Mount St. Joseph University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Cincinnati",
+    "state": "OH"
+  },
+  {
+    "id": "mvb-mount-vernon-nazarene",
+    "name": "Mount Vernon Nazarene University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Mount Vernon",
+    "state": "OH"
+  },
+  {
+    "id": "mvb-nyu",
+    "name": "NYU",
+    "division": "D3",
+    "conference": "UAA",
+    "city": "New York",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-nassau-community",
+    "name": "Nassau Community College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Garden City",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-nazareth",
+    "name": "Nazareth University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Rochester",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-neumann",
+    "name": "Neumann University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Aston",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-new-jersey-city",
+    "name": "New Jersey City University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Jersey City",
+    "state": "NJ"
+  },
+  {
+    "id": "mvb-newjerseyinstituteoftechnology",
+    "name": "New Jersey Institute of Technology",
+    "division": "D1",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-nichols",
+    "name": "Nichols College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Dudley",
+    "state": "MA"
+  },
+  {
+    "id": "mvb-north-central",
+    "name": "North Central College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Naperville",
+    "state": "IL"
+  },
+  {
+    "id": "mvb-northgreenvilleuniversity",
+    "name": "North Greenville University",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-north-park",
+    "name": "North Park University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Chicago",
+    "state": "IL"
+  },
+  {
+    "id": "mvb-northampton-county-area-community",
+    "name": "Northampton County Area Community College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Bethlehem",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-northern-kentucky",
+    "name": "Northern Kentucky University",
+    "division": "D1",
+    "conference": "Independent",
+    "city": "Highland Heights",
+    "state": "KY"
+  },
+  {
+    "id": "mvb-oakland-city",
+    "name": "Oakland City University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Oakland City",
+    "state": "IN"
+  },
+  {
+    "id": "mvb-ocean-county",
+    "name": "Ocean County College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Toms River",
+    "state": "NJ"
+  },
+  {
+    "id": "mvb-ohiostate",
+    "name": "Ohio State",
+    "division": "D1",
+    "conference": "MIVA",
+    "city": "Columbus",
+    "state": "OH"
+  },
+  {
+    "id": "mvb-oklahoma-wesleyan",
+    "name": "Oklahoma Wesleyan University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Bartlesville",
+    "state": "OK"
+  },
+  {
+    "id": "mvb-olivet-nazarene",
+    "name": "Olivet Nazarene University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Bourbonnais",
+    "state": "IL"
+  },
+  {
+    "id": "mvb-orange-coast",
+    "name": "Orange Coast College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Costa Mesa",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-ottawa",
+    "name": "Ottawa University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Ottawa",
+    "state": "KS"
+  },
+  {
+    "id": "mvb-ottawa-surprise",
+    "name": "Ottawa University-Surprise",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Surprise",
+    "state": "AZ"
+  },
+  {
+    "id": "mvb-pacific-union",
+    "name": "Pacific Union College",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Angwin",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-palomar",
+    "name": "Palomar College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "San Marcos",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-park",
+    "name": "Park University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Parkville",
+    "state": "MO"
+  },
+  {
+    "id": "mvb-park-gilbert",
+    "name": "Park University Gilbert",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Gilbert",
+    "state": "AZ"
+  },
+  {
+    "id": "mvb-passaic-county-community",
+    "name": "Passaic County Community College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Paterson",
+    "state": "NJ"
+  },
+  {
+    "id": "mvb-pennstate",
+    "name": "Penn State",
+    "division": "D1",
+    "conference": "EIVA",
+    "city": "University Park",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-penn-state-altoona",
+    "name": "Penn State Altoona",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Altoona",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-penn-state-erie-behrend",
+    "name": "Penn State Erie - The Behrend College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Erie",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-penn-state-schuylkill",
+    "name": "Penn State Schuylkill",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Schuylkill Haven",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-pepperdine",
+    "name": "Pepperdine",
+    "division": "D1",
+    "conference": "MPSF",
+    "city": "Malibu",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-pierce-los-angeles",
+    "name": "Pierce College - Los Angeles",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Woodland Hills",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-pratt-institute",
+    "name": "Pratt Institute",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Brooklyn",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-princetonuniversity",
+    "name": "Princeton University",
+    "division": "D1",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-purdueuniversityfortwayne",
+    "name": "Purdue University - Fort Wayne",
+    "division": "D1",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-queensuniversityofcharlotte",
+    "name": "Queens University of Charlotte",
+    "division": "D1",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-quincyuniversity",
+    "name": "Quincy University",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-ramapo-new-jersey",
+    "name": "Ramapo College of New Jersey",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Mahwah",
+    "state": "NJ"
+  },
+  {
+    "id": "mvb-randolph",
+    "name": "Randolph College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Lynchburg",
+    "state": "VA"
+  },
+  {
+    "id": "mvb-randolphmacon",
+    "name": "Randolph-Macon College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Ashland",
+    "state": "VA"
+  },
+  {
+    "id": "mvb-regent",
+    "name": "Regent University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Virginia Beach",
+    "state": "VA"
+  },
+  {
+    "id": "mvb-regis",
+    "name": "Regis College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Weston",
+    "state": "MA"
+  },
+  {
+    "id": "mvb-reinhardt",
+    "name": "Reinhardt University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Waleska",
+    "state": "GA"
+  },
+  {
+    "id": "mvb-rivier",
+    "name": "Rivier University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Nashua",
+    "state": "NH"
+  },
+  {
+    "id": "mvb-roanoke",
+    "name": "Roanoke College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Salem",
+    "state": "VA"
+  },
+  {
+    "id": "mvb-roberts-wesleyan",
+    "name": "Roberts Wesleyan University",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "Rochester",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-rochester-christian",
+    "name": "Rochester Christian University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Rochester Hills",
+    "state": "MI"
+  },
+  {
+    "id": "mvb-rockford",
+    "name": "Rockford University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Rockford",
+    "state": "IL"
+  },
+  {
+    "id": "mvb-rockhurst",
+    "name": "Rockhurst University",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "Kansas City",
+    "state": "MO"
+  },
+  {
+    "id": "mvb-roosevelt",
+    "name": "Roosevelt University",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "Chicago",
+    "state": "IL"
+  },
+  {
+    "id": "mvb-russell-sage",
+    "name": "Russell Sage College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Troy",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-rutgers-newark",
+    "name": "Rutgers University - Newark",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Newark",
+    "state": "NJ"
+  },
+  {
+    "id": "mvb-suny-buffalo-state",
+    "name": "SUNY Buffalo State College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Buffalo",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-suny-old-westbury",
+    "name": "SUNY College at Old Westbury",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Old Westbury",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-suny-new-paltz",
+    "name": "SUNY New Paltz",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "New Paltz",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-suny-polytechnic-institute",
+    "name": "SUNY Polytechnic Institute",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Utica",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-suny-potsdam",
+    "name": "SUNY Potsdam",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Potsdam",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-suny-purchase",
+    "name": "SUNY Purchase College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Purchase",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-sacredheart",
+    "name": "Sacred Heart",
+    "division": "D1",
+    "conference": "EIVA",
+    "city": "Fairfield",
+    "state": "CT"
+  },
+  {
+    "id": "mvb-saint-elizabeth",
+    "name": "Saint Elizabeth University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Morristown",
+    "state": "NJ"
+  },
+  {
+    "id": "mvb-saint-francis",
+    "name": "Saint Francis University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Loretto",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-saint-marywoods",
+    "name": "Saint Mary-of-the-Woods College",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Saint Mary-of-the-Woods",
+    "state": "IN"
+  },
+  {
+    "id": "mvb-saint-vincent-pennsylvania",
+    "name": "Saint Vincent College - Pennsylvania",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Latrobe",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-saint-xavier",
+    "name": "Saint Xavier University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Chicago",
+    "state": "IL"
+  },
+  {
+    "id": "mvb-san-diego-mesa",
+    "name": "San Diego Mesa College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "San Diego",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-san-diego-miramar",
+    "name": "San Diego Miramar College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "San Diego",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-santa-barbara-city",
+    "name": "Santa Barbara City College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Santa Barbara",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-santa-monica",
+    "name": "Santa Monica College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Santa Monica",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-santiago-canyon",
+    "name": "Santiago Canyon College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Orange",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-sarah-lawrence",
+    "name": "Sarah Lawrence College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Bronxville",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-shenandoah",
+    "name": "Shenandoah University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Winchester",
+    "state": "VA"
+  },
+  {
+    "id": "mvb-siena-heights",
+    "name": "Siena Heights University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Adrian",
+    "state": "MI"
+  },
+  {
+    "id": "mvb-simpson",
+    "name": "Simpson College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Indianola",
+    "state": "IA"
+  },
+  {
+    "id": "mvb-soka-america",
+    "name": "Soka University of America",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Aliso Viejo",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-svu",
+    "name": "Southern Virginia University",
+    "division": "D3",
+    "conference": "USA South",
+    "city": "Buena Vista",
+    "state": "VA"
+  },
+  {
+    "id": "mvb-southwest-baptist",
+    "name": "Southwest Baptist University",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "Bolivar",
+    "state": "MO"
+  },
+  {
+    "id": "mvb-spalding",
+    "name": "Spalding University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Louisville",
+    "state": "KY"
+  },
+  {
+    "id": "mvb-spartanburg-methodist",
+    "name": "Spartanburg Methodist College",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-springfield",
+    "name": "Springfield College",
+    "division": "D3",
+    "conference": "NEWMAC",
+    "city": "Springfield",
+    "state": "MA"
+  },
+  {
+    "id": "mvb-st-ambrose",
+    "name": "St. Ambrose University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Davenport",
+    "state": "IA"
+  },
+  {
+    "id": "mvb-st-john-fisher",
+    "name": "St. John Fisher College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Rochester",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-st-josephs-brooklyn",
+    "name": "St. Joseph's College - Brooklyn",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Brooklyn",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-stjosephs",
+    "name": "St. Joseph's University LI",
+    "division": "D3",
+    "conference": "Skyline",
+    "city": "Patchogue",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-st-norbert",
+    "name": "St. Norbert College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "De Pere",
+    "state": "WI"
+  },
+  {
+    "id": "mvb-st-thomas-aquinas",
+    "name": "St. Thomas Aquinas College",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "Sparkill",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-st-thomas-florida",
+    "name": "St. Thomas University - Florida",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Miami Gardens",
+    "state": "FL"
+  },
+  {
+    "id": "mvb-stanford",
+    "name": "Stanford",
+    "division": "D1",
+    "conference": "MPSF",
+    "city": "Stanford",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-stevens",
+    "name": "Stevens Institute of Technology",
+    "division": "D3",
+    "conference": "MAC",
+    "city": "Hoboken",
+    "state": "NJ"
+  },
+  {
+    "id": "mvb-stevenson",
+    "name": "Stevenson University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Owings Mills",
+    "state": "MD"
+  },
+  {
+    "id": "test-school-dev",
+    "name": "TEST SCHOOL",
+    "division": "D1",
+    "conference": "TEST",
+    "city": "San Francisco",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-city-new-york",
+    "name": "The City College of New York",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "New York",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-masters",
+    "name": "The Master's University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Santa Clarita",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-thiel",
+    "name": "Thiel College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Greenville",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-thomas-more",
+    "name": "Thomas More University",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "Crestview Hills",
+    "state": "KY"
+  },
+  {
+    "id": "mvb-trine",
+    "name": "Trine University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Angola",
+    "state": "IN"
+  },
+  {
+    "id": "mvb-trinity-christian",
+    "name": "Trinity Christian College",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Palos Heights",
+    "state": "IL"
+  },
+  {
+    "id": "mvb-truettmcconnell",
+    "name": "Truett-McConnell University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Cleveland",
+    "state": "GA"
+  },
+  {
+    "id": "mvb-tusculumuniversity",
+    "name": "Tusculum University",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-uci",
+    "name": "UC Irvine",
+    "division": "D1",
+    "conference": "Big West",
+    "city": "Irvine",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-ucsd",
+    "name": "UC San Diego",
+    "division": "D1",
+    "conference": "Big West",
+    "city": "La Jolla",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-ucsb",
+    "name": "UC Santa Barbara",
+    "division": "D1",
+    "conference": "Big West",
+    "city": "Santa Barbara",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-ucla",
+    "name": "UCLA",
+    "division": "D1",
+    "conference": "MPSF",
+    "city": "Los Angeles",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-usc",
+    "name": "USC",
+    "division": "D1",
+    "conference": "MPSF",
+    "city": "Los Angeles",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-union-county",
+    "name": "Union County College",
+    "division": "CC",
+    "conference": "Community College",
+    "city": "Cranford",
+    "state": "NJ"
+  },
+  {
+    "id": "mvb-british-columbia",
+    "name": "University of British Columbia",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Vancouver",
+    "state": "BC"
+  },
+  {
+    "id": "mvb-universityofcaliforniairvine",
+    "name": "University of California - Irvine",
+    "division": "D1",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-universityofcalifornialosangel",
+    "name": "University of California - Los Angeles - UCLA",
+    "division": "D1",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-california-merced",
+    "name": "University of California - Merced",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "Merced",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-california-santa-cruz",
+    "name": "University of California - Santa Cruz",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Santa Cruz",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-universityofcharleston",
+    "name": "University of Charleston",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-universityofhawaiiatmanoa",
+    "name": "University of Hawaii at Manoa",
+    "division": "D1",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-health-sciences-pharmacy-in-st-louis",
+    "name": "University of Health Sciences and Pharmacy in St. Louis",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "St. Louis",
+    "state": "MO"
+  },
+  {
+    "id": "mvb-jamestown",
+    "name": "University of Jamestown",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "Jamestown",
+    "state": "ND"
+  },
+  {
+    "id": "mvb-lynchburg",
+    "name": "University of Lynchburg",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Lynchburg",
+    "state": "VA"
+  },
+  {
+    "id": "mvb-maryland-eastern-shore",
+    "name": "University of Maryland Eastern Shore",
+    "division": "D1",
+    "conference": "Independent",
+    "city": "Princess Anne",
+    "state": "MD"
+  },
+  {
+    "id": "mvb-universityofmountolive",
+    "name": "University of Mount Olive",
+    "division": "D2",
+    "conference": null,
+    "city": null,
+    "state": null
+  },
+  {
+    "id": "mvb-mount-saint-vincent",
+    "name": "University of Mount Saint Vincent",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Bronx",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-mount-union",
+    "name": "University of Mount Union",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Alliance",
+    "state": "OH"
+  },
+  {
+    "id": "mvb-olivet",
+    "name": "University of Olivet",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Olivet",
+    "state": "MI"
+  },
+  {
+    "id": "mvb-rio-grande",
+    "name": "University of Rio Grande",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Rio Grande",
+    "state": "OH"
+  },
+  {
+    "id": "mvb-valley-forge",
+    "name": "University of Valley Forge",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Phoenixville",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-wisconsin-stevens-point",
+    "name": "University of Wisconsin - Stevens Point",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Stevens Point",
+    "state": "WI"
+  },
+  {
+    "id": "mvb-pacific",
+    "name": "University of the Pacific",
+    "division": "D1",
+    "conference": "Independent",
+    "city": "Stockton",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-vanguard-southern-california",
+    "name": "Vanguard University of Southern California",
+    "division": "D2",
+    "conference": "Independent",
+    "city": "",
+    "state": ""
+  },
+  {
+    "id": "mvb-vassar",
+    "name": "Vassar College",
+    "division": "D3",
+    "conference": "Liberty League",
+    "city": "Poughkeepsie",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-vermont-state-johnson",
+    "name": "Vermont State University - Johnson",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Johnson",
+    "state": "VT"
+  },
+  {
+    "id": "mvb-virginia-wesleyan",
+    "name": "Virginia Wesleyan University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Norfolk",
+    "state": "VA"
+  },
+  {
+    "id": "mvb-viterbo",
+    "name": "Viterbo University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "La Crosse",
+    "state": "WI"
+  },
+  {
+    "id": "mvb-wabash",
+    "name": "Wabash College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Crawfordsville",
+    "state": "IN"
+  },
+  {
+    "id": "mvb-warner",
+    "name": "Warner University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Lake Wales",
+    "state": "FL"
+  },
+  {
+    "id": "mvb-warren-wilson",
+    "name": "Warren Wilson College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Swannanoa",
+    "state": "NC"
+  },
+  {
+    "id": "mvb-washington-jefferson",
+    "name": "Washington & Jefferson College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Washington",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-webber-international",
+    "name": "Webber International University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Babson Park",
+    "state": "FL"
+  },
+  {
+    "id": "mvb-wentworth-institute-technology",
+    "name": "Wentworth Institute of Technology",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Boston",
+    "state": "MA"
+  },
+  {
+    "id": "mvb-westcliff",
+    "name": "Westcliff University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Irvine",
+    "state": "CA"
+  },
+  {
+    "id": "mvb-westminster-missouri",
+    "name": "Westminster College - Missouri",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Fulton",
+    "state": "MO"
+  },
+  {
+    "id": "mvb-wheaton-massachusetts",
+    "name": "Wheaton College - Massachusetts",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Norton",
+    "state": "MA"
+  },
+  {
+    "id": "mvb-widener",
+    "name": "Widener University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Chester",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-wilkes",
+    "name": "Wilkes University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Wilkes-Barre",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-william-peace",
+    "name": "William Peace University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Raleigh",
+    "state": "NC"
+  },
+  {
+    "id": "mvb-william-penn",
+    "name": "William Penn University",
+    "division": "NAIA",
+    "conference": "NAIA",
+    "city": "Oskaloosa",
+    "state": "IA"
+  },
+  {
+    "id": "mvb-wilson",
+    "name": "Wilson College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Chambersburg",
+    "state": "PA"
+  },
+  {
+    "id": "mvb-wisconsin-lutheran",
+    "name": "Wisconsin Lutheran College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Milwaukee",
+    "state": "WI"
+  },
+  {
+    "id": "mvb-wittenberg",
+    "name": "Wittenberg University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Springfield",
+    "state": "OH"
+  },
+  {
+    "id": "mvb-yeshiva",
+    "name": "Yeshiva University",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "New York",
+    "state": "NY"
+  },
+  {
+    "id": "mvb-york",
+    "name": "York College",
+    "division": "D3",
+    "conference": "Independent",
+    "city": "Jamaica",
+    "state": "NY"
+  }
+]

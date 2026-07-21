@@ -1,6 +1,7 @@
-import { eq, and, sql, asc } from "drizzle-orm";
+import { eq, and, sql, asc, inArray } from "drizzle-orm";
+import { calculateRosterGap, normalizePositionMulti } from "../shared/rosterGapCalculator";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, outreachList, InsertOutreachEntry, schools, players, athleteProfiles, type InsertAthleteProfile, coaches, sentEmails, type InsertSentEmail } from "../drizzle/schema";
+import { InsertUser, users, outreachList, InsertOutreachEntry, schools, players, athleteProfiles, type InsertAthleteProfile, coaches, sentEmails, type InsertSentEmail, commits, waitlist } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -132,6 +133,28 @@ export async function getUserOutreachList(userId: number) {
     .orderBy(outreachList.createdAt);
 }
 
+export async function toggleOutreachStarred(userId: number, schoolId: string): Promise<boolean> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  // Get current starred state
+  const existing = await db
+    .select({ starred: outreachList.starred })
+    .from(outreachList)
+    .where(and(eq(outreachList.userId, userId), eq(outreachList.schoolId, schoolId)))
+    .limit(1);
+
+  if (existing.length === 0) throw new Error("School not in outreach list");
+
+  const newStarred = !existing[0].starred;
+  await db
+    .update(outreachList)
+    .set({ starred: newStarred })
+    .where(and(eq(outreachList.userId, userId), eq(outreachList.schoolId, schoolId)));
+
+  return newStarred;
+}
+
 export async function addToOutreachList(entry: InsertOutreachEntry) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
@@ -215,6 +238,8 @@ export async function getAllSchools(callerEmail?: string | null) {
       brandColor: schools.brandColor,
       athleticsDomain: schools.athleticsDomain,
       logoUrl: schools.logoUrl,
+      logoBackgroundColor: schools.logoBackgroundColor,
+      logoMixBlendMode: schools.logoMixBlendMode,
       coachTitle: schools.coachTitle,
       coachEmail: schools.coachEmail,
       sortOrder: schools.sortOrder,
@@ -259,24 +284,212 @@ export async function getPlayersForSchool(schoolId: string) {
     .orderBy(players.graduationYear, players.name);
 }
 
-/** Returns a map of schoolId → number of graduating players (graduationYear <= 2026) for all schools */
-export async function getOpeningCountsForAllSchools(): Promise<Record<string, number>> {
+/**
+ * POSITION NORMALIZATION — maps all raw DB position strings to standard codes
+ */
+export function normalizePosition(raw: string | null | undefined): string {
+  if (!raw) return "";
+  const p = raw.trim().toLowerCase();
+  if (["oh","outside hitter","outside","pin","wing"].includes(p)) return "OH";
+  if (["mb","middle blocker","middle","mh"].includes(p)) return "MB";
+  if (["opp","opposite","right side","rs"].includes(p)) return "OPP";
+  if (["s","setter","set"].includes(p)) return "S";
+  if (["l","libero","lib"].includes(p)) return "L";
+  if (["ds","defensive specialist","def specialist"].includes(p)) return "DS";
+  return raw.trim().toUpperCase();
+}
+
+/** Split combined positions like "OH/OPP" or "S/DS" into an array of normalized codes */
+export function splitPositions(raw: string | null | undefined): string[] {
+  if (!raw) return [];
+  return raw.split(/[\/,]/).map(p => normalizePosition(p.trim())).filter(Boolean);
+}
+
+/**
+ * Parse the athlete's positions from their profile.
+ * The positions field may be stored as:
+ * - JSON array string: '["OH","S"]'
+ * - Comma separated: "OH,S"
+ * - Single value: "OH"
+ * Returns an array of normalized position codes.
+ */
+export function parseAthletePositions(raw: string | null | undefined): string[] {
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return parsed.map(normalizePosition).filter(Boolean);
+  } catch {}
+  return raw.split(",").map(s => normalizePosition(s.trim())).filter(Boolean);
+}
+
+/**
+ * Get unique graduating players for a school in a given grad year.
+ * DEDUPLICATES by player name — if a player has multiple position rows
+ * they only count as ONE graduating player.
+ * Returns: { total, atPositions, playerNames, positionPlayerNames }
+ */
+export async function getGraduatingPlayersForSchool(
+  schoolId: string,
+  gradYear: number,
+  athletePositions: string[] = []
+): Promise<{
+  total: number;
+  atPositions: number;
+  playerNames: string[];
+  positionPlayerNames: string[];
+}> {
+  const db = await getDb();
+  if (!db) return { total: 0, atPositions: 0, playerNames: [], positionPlayerNames: [] };
+
+  // Get ALL players for this school graduating in the target year
+  const rows = await db
+    .select()
+    .from(players)
+    .where(
+      and(
+        eq(players.schoolId, schoolId),
+        eq(players.graduationYear, gradYear)
+      )
+    );
+
+  // Deduplicate by player name — one player can have multiple position rows
+  const uniqueNames = new Set<string>();
+  const positionNames = new Set<string>();
+
+  for (const row of rows) {
+    const name = row.name?.trim();
+    if (!name) continue;
+    uniqueNames.add(name);
+
+    // Check if this player's position matches any of the athlete's positions
+    if (athletePositions.length > 0) {
+      const normalizedRowPos = normalizePosition(row.position);
+      if (athletePositions.includes(normalizedRowPos)) {
+        positionNames.add(name);
+      }
+    }
+  }
+
+  return {
+    total: uniqueNames.size,
+    atPositions: athletePositions.length > 0 ? positionNames.size : uniqueNames.size,
+    playerNames: Array.from(uniqueNames),
+    positionPlayerNames: Array.from(positionNames),
+  };
+}
+
+/**
+ * Get opening counts for ALL schools at once, for a specific athlete.
+ * Used on the dashboard and schools page to show opening badges.
+ * DEDUPLICATES players by name before counting.
+ */
+export async function getOpeningCountsForAthlete(
+  gradYear: number,
+  athletePositions: string[]
+): Promise<Record<string, { total: number; atPositions: number }>> {
   const db = await getDb();
   if (!db) return {};
+
+  // Get all players graduating in the athlete's year
   const rows = await db
+    .select()
+    .from(players)
+    .where(eq(players.graduationYear, gradYear));
+
+  // Group by school, deduplicate by name within each school
+  const schoolMap: Record<string, { allNames: Set<string>; positionNames: Set<string> }> = {};
+
+  for (const row of rows) {
+    const schoolId = row.schoolId;
+    const name = row.name?.trim();
+    if (!schoolId || !name) continue;
+
+    if (!schoolMap[schoolId]) {
+      schoolMap[schoolId] = { allNames: new Set(), positionNames: new Set() };
+    }
+
+    schoolMap[schoolId].allNames.add(name);
+
+    if (athletePositions.length > 0) {
+      const normalizedPos = normalizePosition(row.position);
+      if (athletePositions.includes(normalizedPos)) {
+        schoolMap[schoolId].positionNames.add(name);
+      }
+    }
+  }
+
+  const result: Record<string, { total: number; atPositions: number }> = {};
+  for (const [schoolId, data] of Object.entries(schoolMap)) {
+    result[schoolId] = {
+      total: data.allNames.size,
+      atPositions: athletePositions.length > 0 ? data.positionNames.size : data.allNames.size,
+    };
+  }
+  return result;
+}
+
+/**
+ * Single source of truth for roster gap calculations on the server.
+ * Fetches all players for all schools in one query, then delegates all math
+ * to calculateRosterGap from shared/rosterGapCalculator.ts.
+ *
+ * @param userGradYear - The user's graduation year (e.g. "2027"). If empty/invalid, defaults to 2026.
+ * @param userPositions - Array of position strings (full names or abbreviations). Empty = no position filter.
+ */
+export async function getSchoolOpeningsBatch(
+  userGradYear: string | number | null | undefined,
+  userPositions: string[] = []
+): Promise<Record<string, { graduating: number; positionGraduating: number; commits: number; openings: number; positionOpenings: number }>> {
+  const db = await getDb();
+  if (!db) return {};
+
+  const gradYear = parseInt(String(userGradYear || "2026"), 10);
+  const resolvedGradYear = isNaN(gradYear) ? 2026 : gradYear;
+
+  // Fetch ALL players (all schools) in one query
+  const allRows = await db
     .select({
       schoolId: players.schoolId,
-      count: sql<number>`COUNT(*)`,
+      position: players.position,
+      graduationYear: players.graduationYear,
+      name: players.name,
     })
-    .from(players)
-    .where(sql`${players.graduationYear} <= 2026`)
-    .groupBy(players.schoolId);
-  const map: Record<string, number> = {};
-  for (const row of rows) {
-    if (row.schoolId) map[row.schoolId] = Number(row.count);
+    .from(players);
+
+  // Group players by school
+  const bySchool: Record<string, typeof allRows> = {};
+  for (const row of allRows) {
+    if (!row.schoolId) continue;
+    if (!bySchool[row.schoolId]) bySchool[row.schoolId] = [];
+    bySchool[row.schoolId].push(row);
   }
+
+  // Run calculateRosterGap for each school
+  const map: Record<string, { graduating: number; positionGraduating: number; commits: number; openings: number; positionOpenings: number }> = {};
+
+  for (const [schoolId, schoolPlayers] of Object.entries(bySchool)) {
+    // Map DB rows to PlayerRecord shape
+    const playerRecords = schoolPlayers.map(p => ({
+      player_name: p.name ?? undefined,
+      position: p.position ?? undefined,
+      graduation_year: p.graduationYear ?? undefined,
+    }));
+    const result = calculateRosterGap(playerRecords, resolvedGradYear, userPositions);
+    if (result.totalGraduating > 0 || result.graduatingAtUserPosition > 0) {
+      map[schoolId] = {
+        graduating: result.totalGraduating,
+        positionGraduating: result.graduatingAtUserPosition,
+        commits: result.totalCommits,
+        openings: result.totalOpenings,
+        positionOpenings: result.openingsAtUserPosition,
+      };
+    }
+  }
+
   return map;
 }
+
+
 
 // ─── Coaches ─────────────────────────────────────────────────────────────────
 
@@ -457,4 +670,199 @@ export async function getSchoolLinks(schoolId: string): Promise<{
     recruitingQuestionnaireUrl: rows[0].recruitingQuestionnaireUrl ?? null,
     athleticsWebsiteUrl: rows[0].athleticsWebsiteUrl ?? null,
   };
+}
+
+
+// ─── Sync hasRosterData flags ────────────────────────────────────────────────
+/**
+ * Syncs the hasRosterData boolean in the schools table based on whether
+ * players actually exist for each school. Safe to run on every startup.
+ */
+export async function syncHasRosterDataFlags() {
+  const db = await getDb();
+  if (!db) return;
+
+  // Get all schoolIds that have at least one player
+  const schoolsWithPlayers = await db
+    .selectDistinct({ schoolId: players.schoolId })
+    .from(players);
+
+  const schoolIdsWithData = new Set(schoolsWithPlayers.map(r => r.schoolId));
+
+  // Get all schools
+  const allSchools = await db.select({ id: schools.id }).from(schools);
+
+  // Update all schools — set hasRosterData=true if they have players, false otherwise
+  for (const school of allSchools) {
+    await db
+      .update(schools)
+      .set({ hasRosterData: schoolIdsWithData.has(school.id) })
+      .where(eq(schools.id, school.id));
+  }
+
+  console.log(`[syncHasRosterData] Updated ${schoolIdsWithData.size} schools to hasRosterData=true out of ${allSchools.length} total`);
+}
+
+/**
+ * Returns a map of schoolId → count of UNIQUE graduating players for a specific year.
+ * Uses exact year match. Deduplicates by player name.
+ * One player = one roster spot regardless of positions played.
+ */
+/**
+ * Returns a map of schoolId → { total, atPosition } for a specific grad year.
+ * total = all unique graduating players
+ * atPosition = unique graduating players at the athlete's positions
+ */
+export async function getOpeningCountsForAllSchools(
+  gradYear: number,
+  athletePositions: string[] = []
+): Promise<Record<string, { total: number; atPosition: number }>> {
+  const db = await getDb();
+  if (!db) return {};
+
+  const rows = await db
+    .select({ schoolId: players.schoolId, name: players.name, position: players.position })
+    .from(players)
+    .where(eq(players.graduationYear, gradYear));
+
+  const schoolMap: Record<string, { allNames: Set<string>; posNames: Set<string> }> = {};
+
+  for (const row of rows) {
+    if (!row.schoolId || !row.name) continue;
+    if (!schoolMap[row.schoolId]) schoolMap[row.schoolId] = { allNames: new Set(), posNames: new Set() };
+    const name = row.name.trim().toLowerCase();
+    schoolMap[row.schoolId].allNames.add(name);
+
+    if (athletePositions.length > 0 && row.position) {
+      const playerPositions = row.position.split("/").map(p => p.trim().toUpperCase());
+      if (playerPositions.some(p => athletePositions.includes(p))) {
+        schoolMap[row.schoolId].posNames.add(name);
+      }
+    }
+  }
+
+  const result: Record<string, { total: number; atPosition: number }> = {};
+  for (const [schoolId, data] of Object.entries(schoolMap)) {
+    result[schoolId] = {
+      total: data.allNames.size,
+      atPosition: athletePositions.length > 0 ? data.posNames.size : data.allNames.size,
+    };
+  }
+  return result;
+}
+
+/**
+ * Returns graduating player details for one school at a specific year.
+ * Deduplicates by name. Handles combo positions like OH/OPP.
+ */
+export async function getSchoolGapData(
+  schoolId: string,
+  gradYear: number,
+  athletePositions: string[]
+): Promise<{
+  total: number;
+  atPosition: number;
+  graduatingNames: string[];
+  positionGraduatingNames: string[];
+}> {
+  const db = await getDb();
+  if (!db) return { total: 0, atPosition: 0, graduatingNames: [], positionGraduatingNames: [] };
+
+  const rows = await db
+    .select({ name: players.name, position: players.position })
+    .from(players)
+    .where(
+      and(
+        eq(players.schoolId, schoolId),
+        eq(players.graduationYear, gradYear)
+      )
+    );
+
+  // Deduplicate by name — one player = one roster spot
+  const uniquePlayers = new Map<string, string | null>();
+  for (const row of rows) {
+    const name = row.name?.trim();
+    if (!name) continue;
+    const key = name.toLowerCase();
+    if (!uniquePlayers.has(key)) uniquePlayers.set(key, row.position);
+  }
+
+  const graduatingNames: string[] = [];
+  const positionGraduatingNames: string[] = [];
+
+  for (const [key, position] of Array.from(uniquePlayers.entries())) {
+    const originalName = rows.find(
+      r => r.name?.trim().toLowerCase() === key
+    )?.name?.trim() ?? key;
+    graduatingNames.push(originalName);
+
+    if (athletePositions.length > 0 && position) {
+      const playerPositions = position.split("/").map((p: string) => p.trim().toUpperCase());
+      if (playerPositions.some((p: string) => athletePositions.includes(p))) {
+        positionGraduatingNames.push(originalName);
+      }
+    }
+  }
+
+  return {
+    total: uniquePlayers.size,
+    atPosition: athletePositions.length > 0
+      ? positionGraduatingNames.length
+      : uniquePlayers.size,
+    graduatingNames,
+    positionGraduatingNames,
+  };
+}
+
+/** Returns all commits for a school, optionally filtered by grad year */
+export async function getCommitsForSchool(schoolId: string, gradYear?: number) {
+  const db = await getDb();
+  if (!db) return [];
+
+  const conditions = [eq(commits.schoolId, schoolId)];
+  if (gradYear) conditions.push(eq(commits.gradYear, gradYear));
+
+  return db
+    .select()
+    .from(commits)
+    .where(and(...conditions))
+    .orderBy(commits.name);
+}
+
+/** Returns a map of schoolId → commit count for a specific grad year */
+export async function getCommitCountsForAllSchools(gradYear: number): Promise<Record<string, number>> {
+  const db = await getDb();
+  if (!db) return {};
+
+  const rows = await db
+    .select({ schoolId: commits.schoolId, count: sql<number>`COUNT(*)` })
+    .from(commits)
+    .where(eq(commits.gradYear, gradYear))
+    .groupBy(commits.schoolId);
+
+  const map: Record<string, number> = {};
+  for (const row of rows) {
+    if (row.schoolId) map[row.schoolId] = Number(row.count);
+  }
+  return map;
+}
+
+export async function addToWaitlist(email: string, source = "landing_page") {
+  const db = await getDb();
+  if (!db) return { success: false, error: "db_unavailable" };
+  try {
+    await db.insert(waitlist).values({ email: email.trim().toLowerCase(), source });
+    return { success: true, alreadyExists: false };
+  } catch (err: any) {
+    if (err?.code === "ER_DUP_ENTRY") {
+      return { success: true, alreadyExists: true };
+    }
+    return { success: false, error: "unknown" };
+  }
+}
+
+export async function getWaitlistEntries() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(waitlist).orderBy(waitlist.createdAt);
 }

@@ -317,17 +317,45 @@ export async function sendGmailEmail(
 // ─── RFC 2822 message builder ─────────────────────────────────────────────────
 
 /**
+ * Encode a header value using RFC 2047 encoded-word syntax (UTF-8/Base64).
+ * This handles em dashes, smart quotes, and any non-ASCII characters in
+ * Subject lines so they render correctly in all email clients.
+ */
+function encodeHeader(value: string): string {
+  // Only encode if the value contains non-ASCII characters
+  if (/^[\x00-\x7F]*$/.test(value)) return value;
+  const encoded = Buffer.from(value, "utf8").toString("base64");
+  return `=?UTF-8?B?${encoded}?=`;
+}
+
+/**
+ * Strip any leading "Subject: ..." line that the AI may have prepended to the body.
+ * The subject is sent as a proper email header — it must not appear in the body.
+ */
+function stripSubjectFromBody(body: string): string {
+  // Remove lines like "Subject: 2028 Setter — Excited About..." at the start
+  return body
+    .replace(/^Subject:.*\n?/im, "")  // remove subject line if present
+    .replace(/^\s+/, "")               // trim leading whitespace/newlines
+    .trim();
+}
+
+/**
  * Build a base64url-encoded RFC 2822 email message for the Gmail API.
  */
 function buildRawMessage(from: string, to: string, subject: string, body: string): string {
+  // Clean the body — remove any subject line the AI may have prepended
+  const cleanBody = stripSubjectFromBody(body);
+
   const message = [
     `From: ${from}`,
     `To: ${to}`,
-    `Subject: ${subject}`,
+    `Subject: ${encodeHeader(subject)}`,
     "MIME-Version: 1.0",
     "Content-Type: text/plain; charset=UTF-8",
+    "Content-Transfer-Encoding: 8bit",
     "",
-    body,
+    cleanBody,
   ].join("\r\n");
 
   return Buffer.from(message)
