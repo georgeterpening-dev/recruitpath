@@ -79,7 +79,7 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
       </div>
       {/* Content area: full width on mobile (no px), offset by sidebar on desktop */}
       {/* Pages with AppFooter handle pb-[100px] themselves; pages without it must add their own */}
-      <div className="w-full md:ml-[200px] px-0 md:px-0" style={{ flex: 1, minWidth: 0 }}>
+      <div className="w-full md:ml-[232px] px-0 md:px-0" style={{ flex: 1, minWidth: 0 }}>
         {children}
       </div>
       {/* Mobile dock nav: only visible on mobile */}

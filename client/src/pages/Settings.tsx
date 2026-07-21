@@ -24,9 +24,9 @@ function CancelButton({ onClick }: { onClick: () => void }) {
       className="px-5 py-2 text-xs font-bold tracking-widest uppercase rounded-sm cursor-pointer"
       style={{
         background: "transparent",
-        border: `1px solid ${hovered ? "#E24B4A" : "#2A2A2A"}`,
-        color: hovered ? "#E24B4A" : "#888888",
-        fontFamily: "DM Sans, sans-serif",
+        border: `1px solid ${hovered ? "#E24B4A" : "#1E293B"}`,
+        color: hovered ? "#E24B4A" : "#94A3B8",
+        fontFamily: "Inter, sans-serif",
         transition: "border-color 0.2s, color 0.2s",
       }}
     >
@@ -297,7 +297,7 @@ export default function Settings() {
         >
           <h1
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "56px",
               fontWeight: 700,
               color: "#FFFFFF",
@@ -309,7 +309,7 @@ export default function Settings() {
           </h1>
           <div
             className="mt-4"
-            style={{ width: "40px", height: "3px", background: "#F5C518" }}
+            style={{ width: "40px", height: "3px", background: "#F5B800" }}
           />
         </motion.div>
 
@@ -323,7 +323,7 @@ export default function Settings() {
               className="mb-8"
               style={{
                 background: "#1A1A00",
-                border: "1px solid #F5C518",
+                border: "1px solid #F5B800",
                 borderRadius: "4px",
                 padding: "24px",
               }}
@@ -340,8 +340,8 @@ export default function Settings() {
                     style={{
                       width: "24px",
                       height: "24px",
-                      border: "3px solid #2A2A2A",
-                      borderTop: "3px solid #F5C518",
+                      border: "3px solid #1E293B",
+                      borderTop: "3px solid #F5B800",
                       borderRadius: "50%",
                     }}
                   />
@@ -349,17 +349,17 @@ export default function Settings() {
                 <div>
                   <div
                     style={{
-                      fontFamily: "Bebas Neue, sans-serif",
+                      fontFamily: "Barlow Condensed, sans-serif",
                       fontSize: "20px",
                       fontWeight: 700,
-                      color: "#F5C518",
+                      color: "#F5B800",
                     }}
                   >
                     ACTIVATING YOUR SUBSCRIPTION...
                   </div>
                   <div
                     style={{
-                      fontFamily: "DM Sans, sans-serif",
+                      fontFamily: "Inter, sans-serif",
                       fontSize: "14px",
                       color: "#A3A3A3",
                       marginTop: "4px",
@@ -383,7 +383,7 @@ export default function Settings() {
               className="mb-8"
               style={{
                 background: "#1A1A00",
-                border: "2px solid #F5C518",
+                border: "2px solid #F5B800",
                 borderRadius: "4px",
                 padding: "24px",
                 textAlign: "center",
@@ -391,7 +391,7 @@ export default function Settings() {
             >
               <div
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "24px",
                   fontWeight: 700,
                   color: "#FFFFFF",
@@ -402,7 +402,7 @@ export default function Settings() {
               </div>
               <div
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "14px",
                   color: "#A3A3A3",
                   marginBottom: "16px",
@@ -414,9 +414,9 @@ export default function Settings() {
                 onClick={handleManualRefresh}
                 className="px-8 py-3 text-sm font-bold tracking-widest uppercase rounded-sm cursor-pointer"
                 style={{
-                  background: "#F5C518",
-                  color: "#0A0A0A",
-                  fontFamily: "DM Sans, sans-serif",
+                  background: "#F5B800",
+                  color: "#0A0E1A",
+                  fontFamily: "Inter, sans-serif",
                   border: "none",
                   fontSize: "14px",
                 }}
@@ -434,8 +434,8 @@ export default function Settings() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mb-12"
           style={{
-            background: "#141414",
-            border: "1px solid #2A2A2A",
+            background: "#0F172A",
+            border: "1px solid #1E293B",
             borderRadius: "4px",
             padding: "32px",
           }}
@@ -443,7 +443,7 @@ export default function Settings() {
           <h2
             className="mb-6"
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "24px",
               fontWeight: 700,
               color: "#FFFFFF",
@@ -456,9 +456,9 @@ export default function Settings() {
           <div className="mb-6">
             <span
               style={{
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 fontSize: "13px",
-                color: "#6B6B6B",
+                color: "#94A3B8",
                 textTransform: "uppercase",
                 letterSpacing: "0.05em",
               }}
@@ -468,10 +468,10 @@ export default function Settings() {
             <div
               className="mt-1"
               style={{
-                fontFamily: "Bebas Neue, sans-serif",
+                fontFamily: "Barlow Condensed, sans-serif",
                 fontSize: "24px",
                 fontWeight: 700,
-                color: "#F5C518",
+                color: "#F5B800",
               }}
             >
               {subLoading || activating
@@ -485,7 +485,7 @@ export default function Settings() {
                 : "FREE"}
             </div>
             {hasPaidAccess && (
-              <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#64748B", marginTop: "4px" }}>
+              <div style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#64748B", marginTop: "4px" }}>
                 {subStatus?.subscriptionType === "annual"
                   ? "Annual subscription — $220/year"
                   : subStatus?.subscriptionType === "monthly"
@@ -499,9 +499,9 @@ export default function Settings() {
             <div className="mb-6">
               <span
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "13px",
-                  color: "#6B6B6B",
+                  color: "#94A3B8",
                   textTransform: "uppercase",
                   letterSpacing: "0.05em",
                 }}
@@ -511,7 +511,7 @@ export default function Settings() {
               <div
                 className="mt-1"
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "16px",
                   color: "#FFFFFF",
                 }}
@@ -523,9 +523,9 @@ export default function Settings() {
               {!hasPaidAccess && (
                 <div
                   style={{
-                    fontFamily: "DM Sans, sans-serif",
+                    fontFamily: "Inter, sans-serif",
                     fontSize: "11px",
-                    color: "#6B6B6B",
+                    color: "#94A3B8",
                     marginTop: "4px",
                     fontStyle: "italic",
                   }}
@@ -542,9 +542,9 @@ export default function Settings() {
                 <button
                   className="px-6 py-3 text-sm font-bold tracking-widest uppercase rounded-sm cursor-pointer"
                   style={{
-                    background: "#F5C518",
-                    color: "#0A0A0A",
-                    fontFamily: "DM Sans, sans-serif",
+                    background: "#F5B800",
+                    color: "#0A0E1A",
+                    fontFamily: "Inter, sans-serif",
                     border: "none",
                   }}
                 >
@@ -555,10 +555,10 @@ export default function Settings() {
               <div
                 className="px-6 py-3 text-sm font-bold tracking-widest uppercase rounded-sm"
                 style={{
-                  background: "rgba(245,197,24,0.08)",
-                  color: "#F5C518",
-                  fontFamily: "DM Sans, sans-serif",
-                  border: "1px solid rgba(245,197,24,0.2)",
+                  background: "rgba(245,184,0,0.08)",
+                  color: "#F5B800",
+                  fontFamily: "Inter, sans-serif",
+                  border: "1px solid rgba(245,184,0,0.2)",
                 }}
               >
                 ✓ PRO ACCESS ACTIVE
@@ -577,7 +577,7 @@ export default function Settings() {
                     style={{
                       background: "rgba(226,75,74,0.08)",
                       border: "1px solid rgba(226,75,74,0.25)",
-                      fontFamily: "DM Sans, sans-serif",
+                      fontFamily: "Inter, sans-serif",
                       fontSize: "13px",
                       color: "#A3A3A3",
                       lineHeight: 1.6,
@@ -596,9 +596,9 @@ export default function Settings() {
                     className="px-6 py-3 text-sm font-bold tracking-widest uppercase rounded-sm cursor-pointer"
                     style={{
                       background: "transparent",
-                      color: "#F5C518",
-                      fontFamily: "DM Sans, sans-serif",
-                      border: "1px solid rgba(245,197,24,0.4)",
+                      color: "#F5B800",
+                      fontFamily: "Inter, sans-serif",
+                      border: "1px solid rgba(245,184,0,0.4)",
                       opacity: reactivateSubscription.isPending ? 0.5 : 1,
                       cursor: reactivateSubscription.isPending ? "not-allowed" : "pointer",
                       transition: "border-color 0.2s, color 0.2s",
@@ -624,8 +624,8 @@ export default function Settings() {
           transition={{ duration: 0.5, delay: 0.15 }}
           className="mb-12"
           style={{
-            background: "#141414",
-            border: "1px solid #2A2A2A",
+            background: "#0F172A",
+            border: "1px solid #1E293B",
             borderRadius: "4px",
             padding: "32px",
           }}
@@ -633,7 +633,7 @@ export default function Settings() {
           <h2
             className="mb-2"
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "24px",
               fontWeight: 700,
               color: "#FFFFFF",
@@ -645,9 +645,9 @@ export default function Settings() {
           <p
             className="mb-6"
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "13px",
-              color: "#6B6B6B",
+              color: "#94A3B8",
               lineHeight: 1.6,
             }}
           >
@@ -656,7 +656,7 @@ export default function Settings() {
           </p>
 
           {gmailLoading ? (
-            <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#6B6B6B" }}>Loading...</div>
+            <div style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#94A3B8" }}>Loading...</div>
           ) : gmailStatus?.connected ? (
             <div>
               {/* Connected state */}
@@ -670,16 +670,16 @@ export default function Settings() {
                     flexShrink: 0,
                   }}
                 />
-                <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#FFFFFF" }}>
+                <span style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#FFFFFF" }}>
                   {gmailStatus.email}
                 </span>
               </div>
               <div className="mb-6">
                 <span
                   style={{
-                    fontFamily: "DM Sans, sans-serif",
+                    fontFamily: "Inter, sans-serif",
                     fontSize: "13px",
-                    color: "#6B6B6B",
+                    color: "#94A3B8",
                     textTransform: "uppercase",
                     letterSpacing: "0.05em",
                   }}
@@ -689,10 +689,10 @@ export default function Settings() {
                 <div
                   className="mt-1"
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "24px",
                     fontWeight: 700,
-                    color: "#F5C518",
+                    color: "#F5B800",
                   }}
                 >
                   {gmailStatus.emailsSent ?? 0}
@@ -706,7 +706,7 @@ export default function Settings() {
                   background: "transparent",
                   color: "#EF4444",
                   border: "1px solid #EF4444",
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   opacity: disconnecting ? 0.5 : 1,
                   cursor: disconnecting ? "not-allowed" : "pointer",
                 }}
@@ -723,11 +723,11 @@ export default function Settings() {
                     width: "8px",
                     height: "8px",
                     borderRadius: "50%",
-                    background: "#6B6B6B",
+                    background: "#94A3B8",
                     flexShrink: 0,
                   }}
                 />
-                <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#6B6B6B" }}>
+                <span style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#94A3B8" }}>
                   Not connected
                 </span>
               </div>
@@ -736,9 +736,9 @@ export default function Settings() {
                 onClick={hasPaidAccess ? undefined : (e) => e.preventDefault()}
                 className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold tracking-widest uppercase rounded-sm"
                 style={{
-                  background: "#F5C518",
-                  color: "#0A0A0A",
-                  fontFamily: "DM Sans, sans-serif",
+                  background: "#F5B800",
+                  color: "#0A0E1A",
+                  fontFamily: "Inter, sans-serif",
                   textDecoration: "none",
                   display: "inline-block",
                   opacity: hasPaidAccess ? 1 : 0.4,
@@ -751,9 +751,9 @@ export default function Settings() {
               {!hasPaidAccess && (
                 <p
                   style={{
-                    fontFamily: "DM Sans, sans-serif",
+                    fontFamily: "Inter, sans-serif",
                     fontSize: "13px",
-                    color: "#6B6B6B",
+                    color: "#94A3B8",
                     marginTop: "12px",
                     lineHeight: 1.5,
                   }}
@@ -762,7 +762,7 @@ export default function Settings() {
                   <a
                     href="/pricing"
                     style={{
-                      color: "#F5C518",
+                      color: "#F5B800",
                       textDecoration: "none",
                       fontWeight: 600,
                     }}
@@ -782,8 +782,8 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           style={{
-            background: "#141414",
-            border: "1px solid #2A2A2A",
+            background: "#0F172A",
+            border: "1px solid #1E293B",
             borderRadius: "4px",
             padding: "32px",
           }}
@@ -791,7 +791,7 @@ export default function Settings() {
           <h2
             className="mb-6"
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "24px",
               fontWeight: 700,
               color: "#FFFFFF",
@@ -805,9 +805,9 @@ export default function Settings() {
             <div>
               <span
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "13px",
-                  color: "#6B6B6B",
+                  color: "#94A3B8",
                   textTransform: "uppercase",
                   letterSpacing: "0.05em",
                 }}
@@ -817,7 +817,7 @@ export default function Settings() {
               <div
                 className="mt-1"
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "16px",
                   color: "#FFFFFF",
                 }}
@@ -828,9 +828,9 @@ export default function Settings() {
             <div>
               <span
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "13px",
-                  color: "#6B6B6B",
+                  color: "#94A3B8",
                   textTransform: "uppercase",
                   letterSpacing: "0.05em",
                 }}
@@ -840,7 +840,7 @@ export default function Settings() {
               <div
                 className="mt-1"
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "16px",
                   color: "#FFFFFF",
                 }}
@@ -857,8 +857,8 @@ export default function Settings() {
               style={{
                 background: "transparent",
                 color: "#FFFFFF",
-                fontFamily: "DM Sans, sans-serif",
-                border: "1px solid #2A2A2A",
+                fontFamily: "Inter, sans-serif",
+                border: "1px solid #1E293B",
               }}
             >
               SIGN OUT
@@ -868,9 +868,9 @@ export default function Settings() {
               className="px-6 py-3 text-sm font-bold tracking-widest uppercase rounded-sm cursor-pointer"
               style={{
                 background: "transparent",
-                color: "#F5C518",
-                fontFamily: "DM Sans, sans-serif",
-                border: "1px solid rgba(245,197,24,0.3)",
+                color: "#F5B800",
+                fontFamily: "Inter, sans-serif",
+                border: "1px solid rgba(245,184,0,0.3)",
               }}
             >
               REPLAY TOUR
@@ -881,7 +881,7 @@ export default function Settings() {
               style={{
                 background: "transparent",
                 color: "#991B1B",
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 border: "1px solid #991B1B33",
               }}
             >
@@ -908,8 +908,8 @@ export default function Settings() {
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
               style={{
-                background: "#141414",
-                border: "1px solid #2A2A2A",
+                background: "#0F172A",
+                border: "1px solid #1E293B",
                 borderRadius: "4px",
                 padding: "32px",
                 maxWidth: "440px",
@@ -919,7 +919,7 @@ export default function Settings() {
               <h3
                 className="mb-4"
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "28px",
                   fontWeight: 700,
                   color: "#FFFFFF",
@@ -930,7 +930,7 @@ export default function Settings() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "14px",
                   color: "#A3A3A3",
                   lineHeight: 1.65,
@@ -944,9 +944,9 @@ export default function Settings() {
                   className="flex-1 py-3 text-sm font-bold tracking-widest uppercase rounded-sm cursor-pointer"
                   style={{
                     background: "transparent",
-                    color: "#888888",
-                    fontFamily: "DM Sans, sans-serif",
-                    border: "1px solid #2A2A2A",
+                    color: "#94A3B8",
+                    fontFamily: "Inter, sans-serif",
+                    border: "1px solid #1E293B",
                   }}
                 >
                   NEVER MIND
@@ -958,7 +958,7 @@ export default function Settings() {
                   style={{
                     background: "#E24B4A",
                     color: "#FFFFFF",
-                    fontFamily: "DM Sans, sans-serif",
+                    fontFamily: "Inter, sans-serif",
                     border: "none",
                     opacity: cancelSubscription.isPending ? 0.6 : 1,
                     cursor: cancelSubscription.isPending ? "not-allowed" : "pointer",
@@ -989,7 +989,7 @@ export default function Settings() {
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
               style={{
-                background: "#141414",
+                background: "#0F172A",
                 border: "2px solid #991B1B",
                 borderRadius: "4px",
                 padding: "32px",
@@ -1000,7 +1000,7 @@ export default function Settings() {
               <div className="flex items-start justify-between mb-6">
                 <h3
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "36px",
                     fontWeight: 700,
                     color: "#FFFFFF",
@@ -1010,14 +1010,14 @@ export default function Settings() {
                 </h3>
                 <button
                   onClick={() => setShowDeleteModal(false)}
-                  className="text-2xl text-[#6B6B6B] hover:text-white transition-colors cursor-pointer"
+                  className="text-2xl text-[#94A3B8] hover:text-white transition-colors cursor-pointer"
                 >
                   ×
                 </button>
               </div>
               <p
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "15px",
                   color: "#A3A3A3",
                   marginBottom: "24px",
@@ -1029,9 +1029,9 @@ export default function Settings() {
               <p
                 className="mb-4"
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "14px",
-                  color: "#6B6B6B",
+                  color: "#94A3B8",
                 }}
               >
                 Type <strong style={{ color: "#FFFFFF" }}>DELETE</strong> to confirm:
@@ -1043,10 +1043,10 @@ export default function Settings() {
                 placeholder="DELETE"
                 className="w-full px-4 py-3 mb-6 rounded-sm"
                 style={{
-                  background: "#0A0A0A",
-                  border: "1px solid #2A2A2A",
+                  background: "#0A0E1A",
+                  border: "1px solid #1E293B",
                   color: "#FFFFFF",
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "14px",
                   outline: "none",
                 }}
@@ -1058,8 +1058,8 @@ export default function Settings() {
                   style={{
                     background: "transparent",
                     color: "#FFFFFF",
-                    fontFamily: "DM Sans, sans-serif",
-                    border: "1px solid #2A2A2A",
+                    fontFamily: "Inter, sans-serif",
+                    border: "1px solid #1E293B",
                   }}
                 >
                   CANCEL
@@ -1068,9 +1068,9 @@ export default function Settings() {
                   disabled={deleteConfirm !== "DELETE"}
                   className="flex-1 py-3 text-sm font-bold tracking-widest uppercase rounded-sm"
                   style={{
-                    background: deleteConfirm === "DELETE" ? "#991B1B" : "#2A2A2A",
-                    color: deleteConfirm === "DELETE" ? "#FFFFFF" : "#6B6B6B",
-                    fontFamily: "DM Sans, sans-serif",
+                    background: deleteConfirm === "DELETE" ? "#991B1B" : "#1E293B",
+                    color: deleteConfirm === "DELETE" ? "#FFFFFF" : "#94A3B8",
+                    fontFamily: "Inter, sans-serif",
                     border: "none",
                     cursor: deleteConfirm === "DELETE" ? "pointer" : "not-allowed",
                   }}

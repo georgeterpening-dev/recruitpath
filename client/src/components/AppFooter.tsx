@@ -2,17 +2,17 @@ import { Link } from "wouter";
 
 /**
  * AppFooter — consistent footer shown on every page.
- * Dark bg (#0A0A0A), muted gray text, DM Sans 12px.
+ * Dark bg (#0A0E1A), muted gray text, DM Sans 12px.
  */
 export default function AppFooter() {
   return (
     <footer
       style={{
-        background: "#0A0A0A",
-        borderTop: "1px solid #3A3A3A",
-        fontFamily: "DM Sans, sans-serif",
+        background: "#0A0E1A",
+        borderTop: "1px solid #1E293B",
+        fontFamily: "Inter, sans-serif",
         fontSize: "12px",
-        color: "#888888",
+        color: "#64748B",
       }}
     >
       <div
@@ -26,9 +26,9 @@ export default function AppFooter() {
           <Link href="/terms">
             <span
               className="cursor-pointer transition-colors duration-150"
-              style={{ color: "#888888" }}
+              style={{ color: "#94A3B8" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "#cccccc")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#888888")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#94A3B8")}
             >
               Terms of Service
             </span>
@@ -36,9 +36,9 @@ export default function AppFooter() {
           <Link href="/privacy">
             <span
               className="cursor-pointer transition-colors duration-150"
-              style={{ color: "#888888" }}
+              style={{ color: "#94A3B8" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "#cccccc")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#888888")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#94A3B8")}
             >
               Privacy Policy
             </span>
@@ -48,9 +48,9 @@ export default function AppFooter() {
         {/* Right: contact email */}
         <a
           href="mailto:contact.recruitpath@gmail.com"
-          style={{ color: "#888888" }}
+          style={{ color: "#94A3B8" }}
           onMouseEnter={(e) => (e.currentTarget.style.color = "#cccccc")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "#888888")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "#94A3B8")}
           className="transition-colors duration-150"
         >
           contact.recruitpath@gmail.com

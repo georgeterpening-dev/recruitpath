@@ -55,7 +55,7 @@ function StepProgressBar({ currentStep }: { currentStep: Step }) {
                 style={{
                   width: "60px",
                   height: "2px",
-                  background: isCompleted || isCurrent ? "#F5C518" : "#2A2A2A",
+                  background: isCompleted || isCurrent ? "#F5B800" : "#1E293B",
                   transition: "background 0.3s",
                 }}
               />
@@ -71,7 +71,7 @@ function StepProgressBar({ currentStep }: { currentStep: Step }) {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  background: isCompleted ? "#F5C518" : isUpcoming ? "#2A2A2A" : "transparent",
+                  background: isCompleted ? "#F5B800" : isUpcoming ? "#1E293B" : "transparent",
                   border: isCurrent ? "2px solid #FFFFFF" : "none",
                   transition: "all 0.3s",
                   flexShrink: 0,
@@ -85,7 +85,7 @@ function StepProgressBar({ currentStep }: { currentStep: Step }) {
                 ) : (
                   <span
                     style={{
-                      fontFamily: "DM Sans, sans-serif",
+                      fontFamily: "Inter, sans-serif",
                       fontSize: "13px",
                       fontWeight: 600,
                       color: isCurrent ? "#FFFFFF" : "#555",
@@ -97,7 +97,7 @@ function StepProgressBar({ currentStep }: { currentStep: Step }) {
               </div>
               <span
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "11px",
                   color: isUpcoming ? "#444" : "#FFFFFF",
                   whiteSpace: "nowrap",
@@ -127,7 +127,7 @@ function Field({
     <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
       <label
         style={{
-          fontFamily: "DM Sans, sans-serif",
+          fontFamily: "Inter, sans-serif",
           fontSize: "10px",
           color: "#777",
           textTransform: "uppercase",
@@ -140,7 +140,7 @@ function Field({
       {error && (
         <span
           style={{
-            fontFamily: "DM Sans, sans-serif",
+            fontFamily: "Inter, sans-serif",
             fontSize: "11px",
             color: "#EF4444",
           }}
@@ -153,13 +153,13 @@ function Field({
 }
 
 const inputStyle: React.CSSProperties = {
-  background: "#1A1A1A",
-  border: "1px solid #2A2A2A",
+  background: "#111827",
+  border: "1px solid #1E293B",
   borderRadius: "8px",
   padding: "12px 16px",
   fontSize: "14px",
   color: "#FFFFFF",
-  fontFamily: "DM Sans, sans-serif",
+  fontFamily: "Inter, sans-serif",
   outline: "none",
   width: "100%",
   boxSizing: "border-box",
@@ -186,7 +186,7 @@ function TextInput({
       placeholder={placeholder}
       style={{
         ...inputStyle,
-        borderColor: focused ? "#F5C518" : "#2A2A2A",
+        borderColor: focused ? "#F5B800" : "#1E293B",
       }}
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
@@ -239,10 +239,10 @@ function PillSelector({
             style={{
               padding: "10px 12px",
               borderRadius: "8px",
-              border: selected ? "none" : "1px solid #2A2A2A",
-              background: selected ? "#F5C518" : "#1A1A1A",
+              border: selected ? "none" : "1px solid #1E293B",
+              background: selected ? "#F5B800" : "#111827",
               color: selected ? "#000000" : "#888",
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "12px",
               fontWeight: selected ? 600 : 400,
               cursor: "pointer",
@@ -278,11 +278,11 @@ function PrimaryButton({
       style={{
         width: "100%",
         height: "48px",
-        background: disabled || loading ? "#3A3A2A" : "#F5C518",
+        background: disabled || loading ? "#3A3A2A" : "#F5B800",
         color: disabled || loading ? "#666" : "#000000",
         border: "none",
         borderRadius: "8px",
-        fontFamily: "Bebas Neue, sans-serif",
+        fontFamily: "Barlow Condensed, sans-serif",
         fontSize: "14px",
         letterSpacing: "1.5px",
         cursor: disabled || loading ? "not-allowed" : "pointer",
@@ -329,7 +329,7 @@ function Step1({
       <div>
         <h1
           style={{
-            fontFamily: "Bebas Neue, sans-serif",
+            fontFamily: "Barlow Condensed, sans-serif",
             fontSize: "28px",
             color: "#FFFFFF",
             margin: 0,
@@ -341,7 +341,7 @@ function Step1({
         </h1>
         <p
           style={{
-            fontFamily: "DM Sans, sans-serif",
+            fontFamily: "Inter, sans-serif",
             fontSize: "13px",
             color: "#888",
             margin: 0,
@@ -382,7 +382,7 @@ function Step1({
         </PrimaryButton>
         <p
           style={{
-            fontFamily: "DM Sans, sans-serif",
+            fontFamily: "Inter, sans-serif",
             fontSize: "11px",
             color: "#555",
             textAlign: "center",
@@ -435,7 +435,7 @@ function Step2({
       <div>
         <h1
           style={{
-            fontFamily: "Bebas Neue, sans-serif",
+            fontFamily: "Barlow Condensed, sans-serif",
             fontSize: "28px",
             color: "#FFFFFF",
             margin: 0,
@@ -447,7 +447,7 @@ function Step2({
         </h1>
         <p
           style={{
-            fontFamily: "DM Sans, sans-serif",
+            fontFamily: "Inter, sans-serif",
             fontSize: "13px",
             color: "#888",
             margin: 0,
@@ -497,7 +497,7 @@ function Step2({
             background: "transparent",
             border: "none",
             cursor: "pointer",
-            fontFamily: "DM Sans, sans-serif",
+            fontFamily: "Inter, sans-serif",
             fontSize: "11px",
             color: "#555",
             textAlign: "left",
@@ -529,7 +529,7 @@ function Step3({ onGoToDashboard }: { onGoToDashboard: () => void }) {
           width: "80px",
           height: "80px",
           borderRadius: "50%",
-          background: "#F5C518",
+          background: "#F5B800",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -550,7 +550,7 @@ function Step3({ onGoToDashboard }: { onGoToDashboard: () => void }) {
       <div>
         <h1
           style={{
-            fontFamily: "Bebas Neue, sans-serif",
+            fontFamily: "Barlow Condensed, sans-serif",
             fontSize: "32px",
             color: "#FFFFFF",
             margin: 0,
@@ -562,7 +562,7 @@ function Step3({ onGoToDashboard }: { onGoToDashboard: () => void }) {
         </h1>
         <p
           style={{
-            fontFamily: "DM Sans, sans-serif",
+            fontFamily: "Inter, sans-serif",
             fontSize: "14px",
             color: "#888",
             margin: 0,
@@ -638,7 +638,7 @@ export default function Onboarding() {
       <div
         style={{
           minHeight: "100vh",
-          background: "#0A0A0A",
+          background: "#0A0E1A",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -648,8 +648,8 @@ export default function Onboarding() {
           style={{
             width: "32px",
             height: "32px",
-            border: "2px solid #2A2A2A",
-            borderTop: "2px solid #F5C518",
+            border: "2px solid #1E293B",
+            borderTop: "2px solid #F5B800",
             borderRadius: "50%",
             animation: "spin 0.8s linear infinite",
           }}
@@ -662,7 +662,7 @@ export default function Onboarding() {
     <div
       style={{
         minHeight: "100vh",
-        background: "#0A0A0A",
+        background: "#0A0E1A",
         display: "flex",
         flexDirection: "column",
       }}
@@ -670,7 +670,7 @@ export default function Onboarding() {
       {/* Top bar */}
       <div
         style={{
-          borderBottom: "1px solid #1A1A1A",
+          borderBottom: "1px solid #111827",
           padding: "20px 40px",
           display: "flex",
           alignItems: "center",
@@ -680,9 +680,9 @@ export default function Onboarding() {
         {/* Logo */}
         <span
           style={{
-            fontFamily: "Bebas Neue, sans-serif",
+            fontFamily: "Barlow Condensed, sans-serif",
             fontSize: "18px",
-            color: "#F5C518",
+            color: "#F5B800",
             letterSpacing: "1px",
           }}
         >

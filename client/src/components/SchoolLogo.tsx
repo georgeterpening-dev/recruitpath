@@ -5,7 +5,7 @@
  *   3. Initials avatar fallback
  *
  * CSS strategy:
- * - logoUrl overrides (SVG, transparent bg): dark container (#1A1A1A) + mix-blend-mode: screen
+ * - logoUrl overrides (SVG, transparent bg): dark container (#111827) + mix-blend-mode: screen
  *   → White/colored SVG paths become visible against dark background
  * - Logo.dev PNGs (white bg + colored logo): white circular container, no blend mode
  *   → Clean white badge look, standard for dark-background apps
@@ -95,8 +95,8 @@ export default function SchoolLogo({
 
   // ── Priority 1: logoUrl override (SVG from official athletics site) ──────────
   // These SVGs typically have transparent backgrounds with white/colored paths.
-  // Strategy: dark container (#1A1A1A) + mix-blend-mode: screen
-  //   • White paths (#fff) screen against dark (#1A1A1A) → white (visible)
+  // Strategy: dark container (#111827) + mix-blend-mode: screen
+  //   • White paths (#fff) screen against dark (#111827) → white (visible)
   //   • Colored paths screen against dark → vivid colors (visible)
   //   • Transparent areas → dark container shows through (correct)
   if (logoUrl && !imgFailed) {
@@ -112,7 +112,7 @@ export default function SchoolLogo({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#1A1A1A",
+          background: "#111827",
           border: "1px solid #333333",
           flexShrink: 0,
         }}

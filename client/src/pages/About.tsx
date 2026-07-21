@@ -1,6 +1,6 @@
 /*
  * RecruitPath — About Page
- * Design: Dark mode, Bebas Neue headlines, DM Sans body, #F5C518 yellow accents
+ * Design: Dark mode, Bebas Neue headlines, DM Sans body, #F5B800 yellow accents
  */
 import { motion } from "framer-motion";
 import { Link } from "wouter";
@@ -9,7 +9,7 @@ import PublicNav from "@/components/PublicNav";
 
 function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20" style={{ background: "#0A0A0A" }}>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20" style={{ background: "#0A0E1A" }}>
       {/* Background image with overlay */}
       <div
         className="absolute inset-0 opacity-20"
@@ -28,7 +28,7 @@ function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.7 }}
           className="text-white mb-6"
-          style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(48px, 8vw, 72px)", letterSpacing: "0.05em" }}
+          style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "clamp(48px, 8vw, 72px)", letterSpacing: "0.05em" }}
         >
           BUILT FOR ATHLETES.
           <br />
@@ -39,7 +39,7 @@ function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
           className="text-[#94A3B8] text-lg"
-          style={{ fontFamily: "DM Sans, sans-serif", maxWidth: "600px", margin: "0 auto" }}
+          style={{ fontFamily: "Inter, sans-serif", maxWidth: "600px", margin: "0 auto" }}
         >
           RecruitPath was built because the college volleyball recruiting process is broken. We're fixing it.
         </motion.p>
@@ -50,7 +50,7 @@ function HeroSection() {
 
 function ProblemSection() {
   return (
-    <section className="py-24 px-6" style={{ background: "#0A0A0A" }}>
+    <section className="py-24 px-6" style={{ background: "#0A0E1A" }}>
       <div className="max-w-3xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -58,7 +58,7 @@ function ProblemSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="text-white mb-8"
-          style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(36px, 6vw, 48px)", letterSpacing: "0.05em" }}
+          style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "clamp(36px, 6vw, 48px)", letterSpacing: "0.05em" }}
         >
           THE PROBLEM
         </motion.h2>
@@ -68,7 +68,7 @@ function ProblemSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.1, duration: 0.6 }}
           className="text-[#94A3B8] text-lg leading-relaxed"
-          style={{ fontFamily: "DM Sans, sans-serif" }}
+          style={{ fontFamily: "Inter, sans-serif" }}
         >
           Every year thousands of talented volleyball players miss out on their dream program not because they weren't good enough — but because they didn't know how to navigate the recruiting process. Cold emails get ignored. Rosters are hard to read. Coaches are hard to reach. Most athletes have no idea which programs even have openings for their position and graduation year.
         </motion.p>
@@ -94,7 +94,7 @@ function SolutionSection() {
   ];
 
   return (
-    <section className="py-24 px-6" style={{ background: "#0A0A0A" }}>
+    <section className="py-24 px-6" style={{ background: "#0A0E1A" }}>
       <div className="max-w-6xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -102,7 +102,7 @@ function SolutionSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="text-white mb-16 text-center"
-          style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(36px, 6vw, 48px)", letterSpacing: "0.05em" }}
+          style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "clamp(36px, 6vw, 48px)", letterSpacing: "0.05em" }}
         >
           WHAT WE BUILT
         </motion.h2>
@@ -115,15 +115,15 @@ function SolutionSection() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.6 }}
               className="p-8 rounded-lg"
-              style={{ background: "#111111", border: "1px solid #2A2A2A" }}
+              style={{ background: "#111111", border: "1px solid #1E293B" }}
             >
               <h3
                 className="text-white mb-4"
-                style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "20px", letterSpacing: "0.05em" }}
+                style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "20px", letterSpacing: "0.05em" }}
               >
                 {card.title}
               </h3>
-              <p className="text-[#94A3B8]" style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", lineHeight: 1.6 }}>
+              <p className="text-[#94A3B8]" style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", lineHeight: 1.6 }}>
                 {card.description}
               </p>
             </motion.div>
@@ -136,7 +136,7 @@ function SolutionSection() {
 
 function WhoItForSection() {
   return (
-    <section className="py-24 px-6" style={{ background: "#0A0A0A" }}>
+    <section className="py-24 px-6" style={{ background: "#0A0E1A" }}>
       <div className="max-w-3xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -144,7 +144,7 @@ function WhoItForSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="text-white mb-8"
-          style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(36px, 6vw, 48px)", letterSpacing: "0.05em" }}
+          style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "clamp(36px, 6vw, 48px)", letterSpacing: "0.05em" }}
         >
           WHO IT'S FOR
         </motion.h2>
@@ -154,7 +154,7 @@ function WhoItForSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.1, duration: 0.6 }}
           className="text-[#94A3B8] text-lg leading-relaxed"
-          style={{ fontFamily: "DM Sans, sans-serif" }}
+          style={{ fontFamily: "Inter, sans-serif" }}
         >
           RecruitPath is currently built specifically for men's volleyball student athletes in the Class of 2026, 2027, 2028, and 2029 who are serious about playing at the college level. We are starting with men's volleyball and expanding to other sports soon.
         </motion.p>
@@ -165,7 +165,7 @@ function WhoItForSection() {
 
 function BetaSection() {
   return (
-    <section className="py-24 px-6" style={{ background: "#0A0A0A" }}>
+    <section className="py-24 px-6" style={{ background: "#0A0E1A" }}>
       <div className="max-w-3xl mx-auto text-center">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -173,7 +173,7 @@ function BetaSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="text-white mb-6"
-          style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(36px, 6vw, 48px)", letterSpacing: "0.05em" }}
+          style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "clamp(36px, 6vw, 48px)", letterSpacing: "0.05em" }}
         >
           WE'RE IN BETA
         </motion.h2>
@@ -183,7 +183,7 @@ function BetaSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.1, duration: 0.6 }}
           className="text-[#94A3B8] text-lg leading-relaxed mb-8"
-          style={{ fontFamily: "DM Sans, sans-serif" }}
+          style={{ fontFamily: "Inter, sans-serif" }}
         >
           RecruitPath is currently in beta. That means you're getting early access at a reduced price, and your feedback directly shapes what we build next. If something is broken or missing, reach out — we want to know.
         </motion.p>
@@ -199,8 +199,8 @@ function BetaSection() {
               whileTap={{ scale: 0.97 }}
               className="inline-block px-8 py-3.5 text-sm font-semibold tracking-wider uppercase rounded-lg cursor-pointer"
               style={{
-                background: "#F5C518",
-                color: "#0A0A0A",
+                background: "#F5B800",
+                color: "#0A0E1A",
                 fontFamily: "Inter, sans-serif",
               }}
             >
@@ -214,9 +214,9 @@ function BetaSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.3, duration: 0.6 }}
           className="text-[#4A4A4A] text-sm mt-6"
-          style={{ fontFamily: "DM Sans, sans-serif" }}
+          style={{ fontFamily: "Inter, sans-serif" }}
         >
-          Questions? <a href="mailto:contact.recruitpath@gmail.com" className="text-[#94A3B8] hover:text-[#F5C518] transition-colors">contact.recruitpath@gmail.com</a>
+          Questions? <a href="mailto:contact.recruitpath@gmail.com" className="text-[#94A3B8] hover:text-[#F5B800] transition-colors">contact.recruitpath@gmail.com</a>
         </motion.p>
       </div>
     </section>
@@ -225,7 +225,7 @@ function BetaSection() {
 
 export default function About() {
   return (
-    <div style={{ background: "#0A0A0A" }}>
+    <div style={{ background: "#0A0E1A" }}>
       <PublicNav currentPage="about" />
       <HeroSection />
       <ProblemSection />

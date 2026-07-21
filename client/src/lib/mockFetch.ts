@@ -20,6 +20,10 @@ import {
   MOCK_SENT_SCHOOL_IDS,
   MOCK_GENERATED_EMAIL,
   MOCK_FOLLOW_UP_EMAIL,
+  MOCK_SCHOOL_GAP,
+  MOCK_COMMITS,
+  MOCK_ROSTER_OPENINGS,
+  MOCK_AFFILIATE_CONVERSIONS,
 } from "./mockData";
 
 // tRPC superjson response envelope
@@ -40,6 +44,14 @@ function getMockForProcedure(procedure: string, _input: unknown): unknown {
     case "auth.logout":
       return { success: true };
     case "auth.dismissWelcome":
+    case "auth.completeWalkthrough":
+    case "auth.resetWalkthrough":
+      return { success: true };
+
+    // ── Onboarding ────────────────────────────────────────────────────────
+    case "onboarding.status":
+      return { hasCompletedOnboarding: true };
+    case "onboarding.complete":
       return { success: true };
 
     // ── Subscription ──────────────────────────────────────────────────────
@@ -53,6 +65,9 @@ function getMockForProcedure(procedure: string, _input: unknown): unknown {
       return { success: true };
     case "subscription.createPortal":
       return { url: null };
+    case "subscription.cancel":
+    case "subscription.reactivate":
+      return { success: true };
 
     // ── Volleyball / Schools ──────────────────────────────────────────────
     case "volleyball.schools":
@@ -68,7 +83,23 @@ function getMockForProcedure(procedure: string, _input: unknown): unknown {
     case "volleyball.links":
       return MOCK_SCHOOL_LINKS;
     case "volleyball.generate":
-      return MOCK_GENERATED_EMAIL;
+      return { email: MOCK_GENERATED_EMAIL };
+    case "volleyball.schoolGap":
+    case "volleyball.schoolGapData":
+      return MOCK_SCHOOL_GAP;
+    case "volleyball.commitsForSchool":
+      return MOCK_COMMITS;
+    case "volleyball.commitCounts":
+      return { ucla: 2, byu: 1, "long-beach-state": 1 };
+    case "volleyball.rosterOpenings":
+      return MOCK_ROSTER_OPENINGS;
+    case "volleyball.openingsBatch":
+      return {};
+    case "volleyball.debugRoster":
+    case "volleyball.debugSchools":
+    case "volleyball.debugCommits":
+    case "volleyball.reseedPlayers":
+      return {};
 
     // ── Outreach List ─────────────────────────────────────────────────────
     case "outreach.list":
@@ -76,6 +107,7 @@ function getMockForProcedure(procedure: string, _input: unknown): unknown {
     case "outreach.add":
       return MOCK_OUTREACH_LIST[0];
     case "outreach.remove":
+    case "outreach.toggleStar":
       return { success: true };
 
     // ── Outreach Tracker ──────────────────────────────────────────────────
@@ -92,9 +124,9 @@ function getMockForProcedure(procedure: string, _input: unknown): unknown {
     case "outreachTracker.updateStatus":
       return { success: true };
     case "outreachTracker.generateFollowUp":
-      return MOCK_FOLLOW_UP_EMAIL;
+      return { subject: "Following up — Alex Johnson, Class of 2027", body: MOCK_FOLLOW_UP_EMAIL };
     case "outreachTracker.generateReply":
-      return MOCK_FOLLOW_UP_EMAIL;
+      return { replyBody: MOCK_FOLLOW_UP_EMAIL };
 
     // ── Athlete Profile ───────────────────────────────────────────────────
     case "athleteProfile.get":
@@ -108,9 +140,32 @@ function getMockForProcedure(procedure: string, _input: unknown): unknown {
     case "gmail.send":
       return { success: true, messageId: "mock-msg-123" };
 
+    // ── Affiliate ─────────────────────────────────────────────────────────
+    case "affiliate.myConversions":
+      return MOCK_AFFILIATE_CONVERSIONS;
+    case "affiliate.submitApplication":
+      return { success: true };
+    case "affiliate.adminListApplications":
+    case "affiliate.adminListAffiliates":
+      return [];
+    case "affiliate.adminApprove":
+    case "affiliate.adminReject":
+    case "affiliate.adminMarkPaid":
+      return { success: true };
+
+    // ── Waitlist ──────────────────────────────────────────────────────────
+    case "waitlist.join":
+      return { success: true };
+    case "waitlist.list":
+      return [];
+    case "waitlist.count":
+      return { count: 214 };
+
     // ── System ────────────────────────────────────────────────────────────
     case "system.healthcheck":
       return { ok: true };
+    case "system.contactUs":
+      return { success: true };
 
     default:
       console.warn(`[mock] Unhandled tRPC procedure: ${procedure}`);
@@ -173,6 +228,6 @@ export function installMockFetch() {
   globalThis.fetch = mockFetch as typeof fetch;
   console.info(
     "%c[RecruitPath Mock Mode] All API calls are mocked — no database needed.",
-    "color: #F5C518; font-weight: bold; background: #090D18; padding: 4px 8px; border-radius: 4px;"
+    "color: #F5B800; font-weight: bold; background: #090D18; padding: 4px 8px; border-radius: 4px;"
   );
 }

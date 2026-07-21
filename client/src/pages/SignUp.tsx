@@ -101,15 +101,15 @@ export default function SignUp() {
         {/* Card */}
         <div className="rp-card p-8">
           {/* Free trial banner */}
-          <div className="mb-6 pb-6 border-b border-[#2A2A2A]">
+          <div className="mb-6 pb-6 border-b border-[#1E293B]">
             <div className="flex justify-center mb-3">
               <span
                 className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase"
                 style={{
-                  background: "rgba(245,197,24,0.12)",
-                  color: "#F5C518",
-                  border: "1px solid rgba(245,197,24,0.25)",
-                  fontFamily: "DM Sans, sans-serif",
+                  background: "rgba(245,184,0,0.12)",
+                  color: "#F5B800",
+                  border: "1px solid rgba(245,184,0,0.25)",
+                  fontFamily: "Inter, sans-serif",
                 }}
               >
                 FREE TO START -- NO CARD NEEDED
@@ -118,7 +118,7 @@ export default function SignUp() {
             <p
               className="text-center text-sm"
               style={{
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 color: "#94A3B8",
                 lineHeight: 1.5,
               }}
@@ -141,13 +141,13 @@ export default function SignUp() {
           <motion.button
             type="button"
             onClick={handleGoogleSignIn}
-            whileHover={{ borderColor: "#3A3A3A" }}
+            whileHover={{ borderColor: "#1E293B" }}
             whileTap={{ scale: 0.98 }}
             className="w-full flex items-center justify-center gap-3 py-3 rounded-[10px] mb-5 transition-colors"
             style={{
-              background: "#1A1A1A",
-              border: "1px solid #2A2A2A",
-              fontFamily: "DM Sans, sans-serif",
+              background: "#111827",
+              border: "1px solid #1E293B",
+              fontFamily: "Inter, sans-serif",
               fontSize: "14px",
               color: "#F8FAFC",
               fontWeight: 500,
@@ -159,14 +159,14 @@ export default function SignUp() {
 
           {/* OR Divider */}
           <div className="flex items-center gap-3 mb-5">
-            <div className="flex-1 h-px" style={{ background: "#2A2A2A" }} />
+            <div className="flex-1 h-px" style={{ background: "#1E293B" }} />
             <span
               className="text-xs font-semibold tracking-widest"
-              style={{ color: "#555", fontFamily: "DM Sans, sans-serif" }}
+              style={{ color: "#555", fontFamily: "Inter, sans-serif" }}
             >
               OR
             </span>
-            <div className="flex-1 h-px" style={{ background: "#2A2A2A" }} />
+            <div className="flex-1 h-px" style={{ background: "#1E293B" }} />
           </div>
 
           {/* Error message */}

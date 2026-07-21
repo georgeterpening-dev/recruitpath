@@ -77,15 +77,15 @@ function HeroSection({ isAuthenticated }: { isAuthenticated: boolean }) {
         >
           <span
             style={{
-              background: "#1A1A1A",
-              color: "#F5C518",
-              fontFamily: "DM Sans, sans-serif",
+              background: "#111827",
+              color: "#F5B800",
+              fontFamily: "Inter, sans-serif",
               fontSize: "11px",
               letterSpacing: "2px",
               padding: "4px 12px",
               borderRadius: "999px",
               fontWeight: 600,
-              border: "1px solid rgba(245,197,24,0.25)",
+              border: "1px solid rgba(245,184,0,0.25)",
             }}
           >
             BETA — MEN’S VOLLEYBALL
@@ -152,7 +152,7 @@ function HeroSection({ isAuthenticated }: { isAuthenticated: boolean }) {
                 {isAuthenticated ? "Go to Dashboard" : "Get Started"}
               </motion.button>
               {!isAuthenticated && (
-                <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#888", marginTop: "8px" }}>
+                <p style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#888", marginTop: "8px" }}>
                   First 5 schools free — no credit card required
                 </p>
               )}
@@ -333,14 +333,14 @@ function StatsBar() {
 
 function FindYourFitSection({ onOpenQuiz }: { onOpenQuiz: () => void }) {
   return (
-    <section className="py-24 px-6" style={{ background: "#0A0A0A", borderTop: "1px solid #1E293B" }}>
+    <section className="py-24 px-6" style={{ background: "#0A0E1A", borderTop: "1px solid #1E293B" }}>
       <div className="max-w-3xl mx-auto text-center">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(52px, 8vw, 80px)", color: "#F8FAFC", lineHeight: 1, letterSpacing: "-0.01em" }}
+          style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "clamp(52px, 8vw, 80px)", color: "#F8FAFC", lineHeight: 1, letterSpacing: "-0.01em" }}
         >
           FIND YOUR FIT.
         </motion.h2>
@@ -350,7 +350,7 @@ function FindYourFitSection({ onOpenQuiz }: { onOpenQuiz: () => void }) {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mt-4 mb-10"
-          style={{ fontFamily: "DM Sans, sans-serif", fontSize: "17px", color: "#888888" }}
+          style={{ fontFamily: "Inter, sans-serif", fontSize: "17px", color: "#94A3B8" }}
         >
           Answer 8 questions. See which programs match you.
         </motion.p>
@@ -363,7 +363,7 @@ function FindYourFitSection({ onOpenQuiz }: { onOpenQuiz: () => void }) {
           whileTap={{ scale: 0.97 }}
           onClick={onOpenQuiz}
           className="px-10 py-4 rounded-xl font-bold tracking-wider"
-          style={{ background: "#F5C518", color: "#0A0A0A", fontFamily: "DM Sans, sans-serif", fontSize: "15px", letterSpacing: "0.08em" }}
+          style={{ background: "#F5B800", color: "#0A0E1A", fontFamily: "Inter, sans-serif", fontSize: "15px", letterSpacing: "0.08em" }}
         >
           FIND MY SCHOOLS →
         </motion.button>

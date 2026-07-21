@@ -53,7 +53,7 @@ const POSITION_LABELS: Record<Position, string> = {
 const GRAD_YEAR_COLORS: Record<number, { color: string; bg: string; label: string }> = {
   2025: { color: "#EF4444", bg: "rgba(239,68,68,0.12)", label: "SR" },
   2026: { color: "#F97316", bg: "rgba(249,115,22,0.12)", label: "SR" },
-  2027: { color: "#F5C518", bg: "rgba(245,197,24,0.12)", label: "JR" },
+  2027: { color: "#F5B800", bg: "rgba(245,184,0,0.12)", label: "JR" },
   2028: { color: "#22C55E", bg: "rgba(34,197,94,0.12)", label: "SO" },
   2029: { color: "#3B82F6", bg: "rgba(59,130,246,0.12)", label: "FR" },
 };
@@ -102,7 +102,7 @@ function RosterGapBanner({ athleteGradYear }: { athleteGradYear?: string }) {
     config = {
       icon: "⚠️",
       text: "Add your graduation year to your profile for personalized gap analysis.",
-      color: "#888888",
+      color: "#94A3B8",
       bg: "rgba(136,136,136,0.06)",
       border: "rgba(136,136,136,0.18)",
     };
@@ -110,9 +110,9 @@ function RosterGapBanner({ athleteGradYear }: { athleteGradYear?: string }) {
     config = {
       icon: "⚠️",
       text: "Most rosters are already finalized for your class. The gap data below may not reflect available spots for Class of 2026.",
-      color: "#F5C518",
-      bg: "rgba(245,197,24,0.07)",
-      border: "rgba(245,197,24,0.25)",
+      color: "#F5B800",
+      bg: "rgba(245,184,0,0.07)",
+      border: "rgba(245,184,0,0.25)",
     };
   } else if (year === 2027) {
     config = {
@@ -127,7 +127,7 @@ function RosterGapBanner({ athleteGradYear }: { athleteGradYear?: string }) {
     config = {
       icon: "⚠️",
       text: "Recruiting for Class of 2028 typically opens in your junior year. The gaps below show current openings but spots may be filled before coaches recruit your class.",
-      color: "#888888",
+      color: "#94A3B8",
       bg: "rgba(136,136,136,0.06)",
       border: "rgba(136,136,136,0.18)",
     };
@@ -135,7 +135,7 @@ function RosterGapBanner({ athleteGradYear }: { athleteGradYear?: string }) {
     config = {
       icon: "⚠️",
       text: "It\u2019s early \u2014 coaches aren\u2019t recruiting your class yet. Use this tool to explore rosters and get familiar with programs, but gap data won\u2019t reflect your actual recruiting window.",
-      color: "#888888",
+      color: "#94A3B8",
       bg: "rgba(136,136,136,0.06)",
       border: "rgba(136,136,136,0.18)",
     };
@@ -158,7 +158,7 @@ function RosterGapBanner({ athleteGradYear }: { athleteGradYear?: string }) {
         <div className="flex items-center gap-2">
           <span
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "13px",
               letterSpacing: "0.12em",
               color: config.color,
@@ -175,7 +175,7 @@ function RosterGapBanner({ athleteGradYear }: { athleteGradYear?: string }) {
           </span>
           <p
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "12.5px",
               color: config.color,
               lineHeight: 1.55,
@@ -567,7 +567,7 @@ export default function SchoolDetailModal({
           className="school-modal-container flex flex-col w-full md:max-w-2xl"
           style={{
             background: "#111111",
-            border: "1px solid #2A2A2A",
+            border: "1px solid #1E293B",
             overflow: "hidden",
           } as React.CSSProperties}
         >
@@ -591,7 +591,7 @@ export default function SchoolDetailModal({
               <div>
                 <h2
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "clamp(20px, 5vw, 28px)",
                     fontWeight: 700,
                     color: "#FFFFFF",
@@ -605,13 +605,13 @@ export default function SchoolDetailModal({
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "6px",
-                    background: "rgba(245,197,24,0.12)",
-                    border: "1px solid rgba(245,197,24,0.3)",
+                    background: "rgba(245,184,0,0.12)",
+                    border: "1px solid rgba(245,184,0,0.3)",
                     borderRadius: "6px",
                     padding: "4px 10px",
                     marginTop: "6px",
                   }}>
-                    <span style={{ fontSize: "11px", color: "#F5C518", fontFamily: "Bebas Neue, sans-serif", letterSpacing: "0.1em" }}>
+                    <span style={{ fontSize: "11px", color: "#F5B800", fontFamily: "Barlow Condensed, sans-serif", letterSpacing: "0.1em" }}>
                       ⭐ INAUGURAL SEASON 2026–2027
                     </span>
                   </div>
@@ -619,13 +619,13 @@ export default function SchoolDetailModal({
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
                   <span
                     style={{
-                      fontFamily: "Bebas Neue, sans-serif",
+                      fontFamily: "Barlow Condensed, sans-serif",
                       fontSize: "11px",
                       letterSpacing: "0.12em",
-                      color: "#6B6B6B",
+                      color: "#94A3B8",
                       padding: "2px 8px",
-                      background: "#1A1A1A",
-                      border: "1px solid #2A2A2A",
+                      background: "#111827",
+                      border: "1px solid #1E293B",
                       borderRadius: "2px",
                     }}
                   >
@@ -633,13 +633,13 @@ export default function SchoolDetailModal({
                   </span>
                   <span
                     style={{
-                      fontFamily: "Bebas Neue, sans-serif",
+                      fontFamily: "Barlow Condensed, sans-serif",
                       fontSize: "11px",
                       letterSpacing: "0.12em",
-                      color: "#6B6B6B",
+                      color: "#94A3B8",
                       padding: "2px 8px",
-                      background: "#1A1A1A",
-                      border: "1px solid #2A2A2A",
+                      background: "#111827",
+                      border: "1px solid #1E293B",
                       borderRadius: "2px",
                     }}
                   >
@@ -647,9 +647,9 @@ export default function SchoolDetailModal({
                   </span>
                   <span
                     style={{
-                      fontFamily: "DM Sans, sans-serif",
+                      fontFamily: "Inter, sans-serif",
                       fontSize: "12px",
-                      color: "#6B6B6B",
+                      color: "#94A3B8",
                     }}
                   >
                     {school.city}, {school.state}
@@ -660,7 +660,7 @@ export default function SchoolDetailModal({
             <button
               onClick={onClose}
               style={{
-                color: "#6B6B6B",
+                color: "#94A3B8",
                 background: "none",
                 border: "none",
                 cursor: "pointer",
@@ -685,10 +685,10 @@ export default function SchoolDetailModal({
                 onClick={() => handleTabChange(tab.id)}
                 className="flex-1 relative"
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "clamp(11px, 2.5vw, 13px)",
                   letterSpacing: "0.12em",
-                  color: activeTab === tab.id ? "#F5C518" : "#6B6B6B",
+                  color: activeTab === tab.id ? "#F5B800" : "#94A3B8",
                   background: "none",
                   border: "none",
                   cursor: "pointer",
@@ -703,7 +703,7 @@ export default function SchoolDetailModal({
                   <motion.div
                     layoutId="tab-indicator"
                     className="absolute bottom-0 left-0 right-0 h-0.5"
-                    style={{ background: "#F5C518" }}
+                    style={{ background: "#F5B800" }}
                     transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
                   />
                 )}
@@ -725,7 +725,7 @@ export default function SchoolDetailModal({
                 <div className="space-y-5">
                   <div
                     style={{
-                      background: "#141414",
+                      background: "#0F172A",
                       border: "1px solid #1E1E1E",
                       borderRadius: "4px",
                       padding: "20px",
@@ -733,10 +733,10 @@ export default function SchoolDetailModal({
                   >
                     <p
                       style={{
-                        fontFamily: "Bebas Neue, sans-serif",
+                        fontFamily: "Barlow Condensed, sans-serif",
                         fontSize: "11px",
                         letterSpacing: "0.15em",
-                        color: "#6B6B6B",
+                        color: "#94A3B8",
                         marginBottom: "12px",
                       }}
                     >
@@ -754,9 +754,9 @@ export default function SchoolDetailModal({
                         <div key={label}>
                           <p
                             style={{
-                              fontFamily: "DM Sans, sans-serif",
+                              fontFamily: "Inter, sans-serif",
                               fontSize: "11px",
-                              color: "#6B6B6B",
+                              color: "#94A3B8",
                               marginBottom: "2px",
                             }}
                           >
@@ -764,9 +764,9 @@ export default function SchoolDetailModal({
                           </p>
                           <p
                             style={{
-                              fontFamily: "DM Sans, sans-serif",
+                              fontFamily: "Inter, sans-serif",
                               fontSize: "15px",
-                              color: highlight ? "#F5C518" : "#FFFFFF",
+                              color: highlight ? "#F5B800" : "#FFFFFF",
                               fontWeight: 500,
                             }}
                           >
@@ -779,7 +779,7 @@ export default function SchoolDetailModal({
 
                   <div
                     style={{
-                      background: "#141414",
+                      background: "#0F172A",
                       border: "1px solid #1E1E1E",
                       borderRadius: "4px",
                       padding: "20px",
@@ -787,10 +787,10 @@ export default function SchoolDetailModal({
                   >
                     <p
                       style={{
-                        fontFamily: "Bebas Neue, sans-serif",
+                        fontFamily: "Barlow Condensed, sans-serif",
                         fontSize: "11px",
                         letterSpacing: "0.15em",
-                        color: "#6B6B6B",
+                        color: "#94A3B8",
                         marginBottom: "12px",
                       }}
                     >
@@ -806,13 +806,13 @@ export default function SchoolDetailModal({
                         <span
                           key={tag}
                           style={{
-                            fontFamily: "Bebas Neue, sans-serif",
+                            fontFamily: "Barlow Condensed, sans-serif",
                             fontSize: "12px",
                             letterSpacing: "0.1em",
                             color: "#A3A3A3",
                             padding: "4px 12px",
-                            background: "#1A1A1A",
-                            border: "1px solid #2A2A2A",
+                            background: "#111827",
+                            border: "1px solid #1E293B",
                             borderRadius: "2px",
                           }}
                         >
@@ -830,9 +830,9 @@ export default function SchoolDetailModal({
                       className="flex items-center gap-2 w-full py-3 px-4"
                       style={{
                         background: "transparent",
-                        border: "1px solid #2A2A2A",
+                        border: "1px solid #1E293B",
                         borderRadius: "4px",
-                        fontFamily: "Bebas Neue, sans-serif",
+                        fontFamily: "Barlow Condensed, sans-serif",
                         fontSize: "13px",
                         letterSpacing: "0.1em",
                         color: "#A3A3A3",
@@ -852,7 +852,7 @@ export default function SchoolDetailModal({
                   {/* ── Primary Head Coach Card ── */}
                   <div
                     style={{
-                      background: "#141414",
+                      background: "#0F172A",
                       border: "1px solid #1E1E1E",
                       borderRadius: "4px",
                       padding: "20px",
@@ -860,10 +860,10 @@ export default function SchoolDetailModal({
                   >
                     <p
                       style={{
-                        fontFamily: "Bebas Neue, sans-serif",
+                        fontFamily: "Barlow Condensed, sans-serif",
                         fontSize: "11px",
                         letterSpacing: "0.15em",
-                        color: "#6B6B6B",
+                        color: "#94A3B8",
                         marginBottom: "16px",
                       }}
                     >
@@ -874,9 +874,9 @@ export default function SchoolDetailModal({
                       <div>
                         <p
                           style={{
-                            fontFamily: "DM Sans, sans-serif",
+                            fontFamily: "Inter, sans-serif",
                             fontSize: "11px",
-                            color: "#6B6B6B",
+                            color: "#94A3B8",
                             marginBottom: "4px",
                           }}
                         >
@@ -885,16 +885,16 @@ export default function SchoolDetailModal({
                         <div
                           className="px-3 py-2.5"
                           style={{
-                            background: "#0A0A0A",
-                            border: "1px solid #2A2A2A",
+                            background: "#0A0E1A",
+                            border: "1px solid #1E293B",
                             borderRadius: "4px",
                           }}
                         >
                           <p
                             style={{
-                              fontFamily: "DM Sans, sans-serif",
+                              fontFamily: "Inter, sans-serif",
                               fontSize: "15px",
-                              color: primaryCoach ? "#FFFFFF" : "#6B6B6B",
+                              color: primaryCoach ? "#FFFFFF" : "#94A3B8",
                             }}
                           >
                             {primaryCoach
@@ -908,9 +908,9 @@ export default function SchoolDetailModal({
                       <div>
                         <p
                           style={{
-                            fontFamily: "DM Sans, sans-serif",
+                            fontFamily: "Inter, sans-serif",
                             fontSize: "11px",
-                            color: "#6B6B6B",
+                            color: "#94A3B8",
                             marginBottom: "4px",
                           }}
                         >
@@ -919,14 +919,14 @@ export default function SchoolDetailModal({
                         <div
                           className="px-3 py-2.5"
                           style={{
-                            background: "#0A0A0A",
-                            border: "1px solid #2A2A2A",
+                            background: "#0A0E1A",
+                            border: "1px solid #1E293B",
                             borderRadius: "4px",
                           }}
                         >
                           <p
                             style={{
-                              fontFamily: "DM Sans, sans-serif",
+                              fontFamily: "Inter, sans-serif",
                               fontSize: "15px",
                               color: "#FFFFFF",
                             }}
@@ -940,9 +940,9 @@ export default function SchoolDetailModal({
                       <div>
                         <p
                           style={{
-                            fontFamily: "DM Sans, sans-serif",
+                            fontFamily: "Inter, sans-serif",
                             fontSize: "11px",
-                            color: "#6B6B6B",
+                            color: "#94A3B8",
                             marginBottom: "4px",
                           }}
                         >
@@ -951,18 +951,18 @@ export default function SchoolDetailModal({
                         <div
                           className="flex items-center justify-between px-3 py-2.5"
                           style={{
-                            background: "#0A0A0A",
-                            border: "1px solid #2A2A2A",
+                            background: "#0A0E1A",
+                            border: "1px solid #1E293B",
                             borderRadius: "4px",
                           }}
                         >
                           <div className="flex items-center gap-2">
-                            <Mail size={14} style={{ color: "#6B6B6B", flexShrink: 0 }} />
+                            <Mail size={14} style={{ color: "#94A3B8", flexShrink: 0 }} />
                             <p
                               style={{
-                                fontFamily: "DM Sans, sans-serif",
+                                fontFamily: "Inter, sans-serif",
                                 fontSize: "15px",
-                                color: (primaryCoach?.email || school.coachEmail) ? "#FFFFFF" : "#6B6B6B",
+                                color: (primaryCoach?.email || school.coachEmail) ? "#FFFFFF" : "#94A3B8",
                                 wordBreak: "break-all",
                               }}
                             >
@@ -973,7 +973,7 @@ export default function SchoolDetailModal({
                             <button
                               onClick={() => handleCopyCoachEmail(primaryCoach?.email || school.coachEmail || "")}
                               style={{
-                                color: copiedCoachEmail === (primaryCoach?.email || school.coachEmail) ? "#22C55E" : "#6B6B6B",
+                                color: copiedCoachEmail === (primaryCoach?.email || school.coachEmail) ? "#22C55E" : "#94A3B8",
                                 background: "none",
                                 border: "none",
                                 cursor: "pointer",
@@ -993,7 +993,7 @@ export default function SchoolDetailModal({
                   {staffCoaches.length > 0 && (
                     <div
                       style={{
-                        background: "#141414",
+                        background: "#0F172A",
                         border: "1px solid #1E1E1E",
                         borderRadius: "4px",
                         overflow: "hidden",
@@ -1010,13 +1010,13 @@ export default function SchoolDetailModal({
                         }}
                       >
                         <div className="flex items-center gap-2.5">
-                          <Users size={14} style={{ color: "#6B6B6B" }} />
+                          <Users size={14} style={{ color: "#94A3B8" }} />
                           <p
                             style={{
-                              fontFamily: "Bebas Neue, sans-serif",
+                              fontFamily: "Barlow Condensed, sans-serif",
                               fontSize: "11px",
                               letterSpacing: "0.15em",
-                              color: "#6B6B6B",
+                              color: "#94A3B8",
                               margin: 0,
                             }}
                           >
@@ -1024,7 +1024,7 @@ export default function SchoolDetailModal({
                           </p>
                           <span
                             style={{
-                              fontFamily: "DM Sans, sans-serif",
+                              fontFamily: "Inter, sans-serif",
                               fontSize: "11px",
                               color: "#4A4A4A",
                               background: "#1E1E1E",
@@ -1036,8 +1036,8 @@ export default function SchoolDetailModal({
                           </span>
                         </div>
                         {coachStaffExpanded
-                          ? <ChevronUp size={14} style={{ color: "#6B6B6B" }} />
-                          : <ChevronDown size={14} style={{ color: "#6B6B6B" }} />}
+                          ? <ChevronUp size={14} style={{ color: "#94A3B8" }} />
+                          : <ChevronDown size={14} style={{ color: "#94A3B8" }} />}
                       </button>
 
                       {/* Expandable content */}
@@ -1054,8 +1054,8 @@ export default function SchoolDetailModal({
                                 key={coach.id}
                                 className="flex items-center justify-between"
                                 style={{
-                                  background: "#0A0A0A",
-                                  border: "1px solid #2A2A2A",
+                                  background: "#0A0E1A",
+                                  border: "1px solid #1E293B",
                                   borderRadius: "4px",
                                   padding: "12px 14px",
                                 }}
@@ -1063,7 +1063,7 @@ export default function SchoolDetailModal({
                                 <div className="flex-1 min-w-0">
                                   <p
                                     style={{
-                                      fontFamily: "DM Sans, sans-serif",
+                                      fontFamily: "Inter, sans-serif",
                                       fontSize: "14px",
                                       color: "#FFFFFF",
                                       fontWeight: 500,
@@ -1074,9 +1074,9 @@ export default function SchoolDetailModal({
                                   </p>
                                   <p
                                     style={{
-                                      fontFamily: "DM Sans, sans-serif",
+                                      fontFamily: "Inter, sans-serif",
                                       fontSize: "12px",
-                                      color: "#6B6B6B",
+                                      color: "#94A3B8",
                                       marginBottom: coach.email ? "4px" : 0,
                                     }}
                                   >
@@ -1085,7 +1085,7 @@ export default function SchoolDetailModal({
                                   {coach.email && (
                                     <p
                                       style={{
-                                        fontFamily: "DM Sans, sans-serif",
+                                        fontFamily: "Inter, sans-serif",
                                         fontSize: "12px",
                                         color: "#A3A3A3",
                                         wordBreak: "break-all",
@@ -1099,7 +1099,7 @@ export default function SchoolDetailModal({
                                   <button
                                     onClick={() => handleCopyCoachEmail(coach.email!)}
                                     style={{
-                                      color: copiedCoachEmail === coach.email ? "#22C55E" : "#6B6B6B",
+                                      color: copiedCoachEmail === coach.email ? "#22C55E" : "#94A3B8",
                                       background: "none",
                                       border: "none",
                                       cursor: "pointer",
@@ -1123,14 +1123,14 @@ export default function SchoolDetailModal({
                   <div
                     className="px-4 py-3"
                     style={{
-                      background: "rgba(245,197,24,0.04)",
-                      border: "1px solid rgba(245,197,24,0.15)",
+                      background: "rgba(245,184,0,0.04)",
+                      border: "1px solid rgba(245,184,0,0.15)",
                       borderRadius: "4px",
                     }}
                   >
                     <p
                       style={{
-                        fontFamily: "DM Sans, sans-serif",
+                        fontFamily: "Inter, sans-serif",
                         fontSize: "13px",
                         color: "#A3A3A3",
                         lineHeight: 1.5,
@@ -1160,13 +1160,13 @@ export default function SchoolDetailModal({
                     <div className="flex flex-col items-center justify-center py-16 text-center">
                       <div
                         className="w-14 h-14 rounded-full flex items-center justify-center mb-5"
-                        style={{ background: "#1A1A1A", border: "1px solid #2A2A2A" }}
+                        style={{ background: "#111827", border: "1px solid #1E293B" }}
                       >
-                        <Lock size={24} style={{ color: "#6B6B6B" }} />
+                        <Lock size={24} style={{ color: "#94A3B8" }} />
                       </div>
                       <h3
                         style={{
-                          fontFamily: "Bebas Neue, sans-serif",
+                          fontFamily: "Barlow Condensed, sans-serif",
                           fontSize: "24px",
                           color: "#FFFFFF",
                           marginBottom: "8px",
@@ -1176,9 +1176,9 @@ export default function SchoolDetailModal({
                       </h3>
                       <p
                         style={{
-                          fontFamily: "DM Sans, sans-serif",
+                          fontFamily: "Inter, sans-serif",
                           fontSize: "14px",
-                          color: "#6B6B6B",
+                          color: "#94A3B8",
                           maxWidth: "320px",
                           lineHeight: 1.6,
                         }}
@@ -1194,7 +1194,7 @@ export default function SchoolDetailModal({
                           key={i}
                           className="h-24 animate-pulse"
                           style={{
-                            background: "#141414",
+                            background: "#0F172A",
                             border: "1px solid #1E1E1E",
                             borderRadius: "4px",
                           }}
@@ -1205,9 +1205,9 @@ export default function SchoolDetailModal({
                     <div className="text-center py-16">
                       <p
                         style={{
-                          fontFamily: "DM Sans, sans-serif",
+                          fontFamily: "Inter, sans-serif",
                           fontSize: "14px",
-                          color: "#6B6B6B",
+                          color: "#94A3B8",
                         }}
                       >
                         No roster data available.
@@ -1218,14 +1218,14 @@ export default function SchoolDetailModal({
                       {/* Summary */}
                       <div
                         style={{
-                          background: "#141414",
+                          background: "#0F172A",
                           border: "1px solid #1E1E1E",
                           borderRadius: "4px",
                           padding: "20px",
                         }}
                       >
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
-                          <p style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "11px", letterSpacing: "0.15em", color: "#6B6B6B", margin: 0 }}>
+                          <p style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "11px", letterSpacing: "0.15em", color: "#94A3B8", margin: 0 }}>
                             ROSTER GAP ANALYSIS
                           </p>
                           <div style={{ display: "flex", gap: "6px" }}>
@@ -1237,10 +1237,10 @@ export default function SchoolDetailModal({
                                   padding: "4px 10px",
                                   borderRadius: "999px",
                                   fontSize: "11px",
-                                  fontFamily: "DM Sans, sans-serif",
+                                  fontFamily: "Inter, sans-serif",
                                   cursor: "pointer",
                                   border: selectedRosterYear === yr ? "none" : "1px solid rgba(255,255,255,0.08)",
-                                  background: selectedRosterYear === yr ? "#F5C518" : "rgba(255,255,255,0.04)",
+                                  background: selectedRosterYear === yr ? "#F5B800" : "rgba(255,255,255,0.04)",
                                   color: selectedRosterYear === yr ? "#000" : "#888",
                                   fontWeight: selectedRosterYear === yr ? 700 : 400,
                                   transition: "all 0.15s ease",
@@ -1260,14 +1260,14 @@ export default function SchoolDetailModal({
                                 key={yr}
                                 onClick={() => setDisplayYear(yr)}
                                 style={{
-                                  fontFamily: "Bebas Neue, sans-serif",
+                                  fontFamily: "Barlow Condensed, sans-serif",
                                   fontSize: "13px",
                                   letterSpacing: "0.08em",
                                   padding: "4px 12px",
                                   borderRadius: "3px",
-                                  border: isActive ? "1px solid #F5C518" : "1px solid #2A2A2A",
-                                  background: isActive ? "rgba(245,197,24,0.12)" : "transparent",
-                                  color: isActive ? "#F5C518" : "#6B6B6B",
+                                  border: isActive ? "1px solid #F5B800" : "1px solid #1E293B",
+                                  background: isActive ? "rgba(245,184,0,0.12)" : "transparent",
+                                  color: isActive ? "#F5B800" : "#94A3B8",
                                   cursor: "pointer",
                                   transition: "all 0.15s ease",
                                 }}
@@ -1281,7 +1281,7 @@ export default function SchoolDetailModal({
                           <div className="text-center">
                             <p
                               style={{
-                                fontFamily: "Bebas Neue, sans-serif",
+                                fontFamily: "Barlow Condensed, sans-serif",
                                 fontSize: "36px",
                                 color: "#EF4444",
                                 lineHeight: 1,
@@ -1291,10 +1291,10 @@ export default function SchoolDetailModal({
                             </p>
                             <p
                               style={{
-                                fontFamily: "Bebas Neue, sans-serif",
+                                fontFamily: "Barlow Condensed, sans-serif",
                                 fontSize: "11px",
                                 letterSpacing: "0.1em",
-                                color: "#6B6B6B",
+                                color: "#94A3B8",
                                 marginTop: "4px",
                               }}
                             >
@@ -1320,9 +1320,9 @@ export default function SchoolDetailModal({
                             >
                               <p
                                 style={{
-                                  fontFamily: "Bebas Neue, sans-serif",
+                                  fontFamily: "Barlow Condensed, sans-serif",
                                   fontSize: "36px",
-                                  color: schoolCommits.length > 0 ? "#F5C518" : "#6B6B6B",
+                                  color: schoolCommits.length > 0 ? "#F5B800" : "#94A3B8",
                                   lineHeight: 1,
                                 }}
                               >
@@ -1330,10 +1330,10 @@ export default function SchoolDetailModal({
                               </p>
                               <p
                                 style={{
-                                  fontFamily: "Bebas Neue, sans-serif",
+                                  fontFamily: "Barlow Condensed, sans-serif",
                                   fontSize: "11px",
                                   letterSpacing: "0.1em",
-                                  color: schoolCommits.length > 0 ? "#F5C518" : "#6B6B6B",
+                                  color: schoolCommits.length > 0 ? "#F5B800" : "#94A3B8",
                                   marginTop: "4px",
                                   textDecoration: schoolCommits.length > 0 ? "underline" : "none",
                                 }}
@@ -1345,7 +1345,7 @@ export default function SchoolDetailModal({
                           <div className="text-center">
                             <p
                               style={{
-                                fontFamily: "Bebas Neue, sans-serif",
+                                fontFamily: "Barlow Condensed, sans-serif",
                                 fontSize: "36px",
                                 color: totalOpenings > 0 ? "#22C55E" : "#EF4444",
                                 lineHeight: 1,
@@ -1355,10 +1355,10 @@ export default function SchoolDetailModal({
                             </p>
                             <p
                               style={{
-                                fontFamily: "Bebas Neue, sans-serif",
+                                fontFamily: "Barlow Condensed, sans-serif",
                                 fontSize: "11px",
                                 letterSpacing: "0.1em",
-                                color: "#6B6B6B",
+                                color: "#94A3B8",
                                 marginTop: "4px",
                               }}
                             >
@@ -1368,7 +1368,7 @@ export default function SchoolDetailModal({
                         </div>
                         <p
                           style={{
-                            fontFamily: "DM Sans, sans-serif",
+                            fontFamily: "Inter, sans-serif",
                             fontSize: "13px",
                             color: "#A3A3A3",
                             marginTop: "16px",
@@ -1391,14 +1391,14 @@ export default function SchoolDetailModal({
                         {positionGraduating > 0 && athletePositionsFromGap.length > 0 && (
                           <p
                             style={{
-                              fontFamily: "DM Sans, sans-serif",
+                              fontFamily: "Inter, sans-serif",
                               fontSize: "12.5px",
-                              color: "#F5C518",
+                              color: "#F5B800",
                               marginTop: "10px",
                               lineHeight: 1.5,
                               padding: "8px 12px",
-                              background: "rgba(245,197,24,0.06)",
-                              border: "1px solid rgba(245,197,24,0.15)",
+                              background: "rgba(245,184,0,0.06)",
+                              border: "1px solid rgba(245,184,0,0.15)",
                               borderRadius: "4px",
                             }}
                           >
@@ -1414,8 +1414,8 @@ export default function SchoolDetailModal({
                         onClick={() => setShowFullRoster((v) => !v)}
                         style={{
                           width: "100%",
-                          background: "#141414",
-                          border: "1px solid #2A2A2A",
+                          background: "#0F172A",
+                          border: "1px solid #1E293B",
                           borderRadius: "4px",
                           padding: "12px 20px",
                           display: "flex",
@@ -1425,27 +1425,27 @@ export default function SchoolDetailModal({
                           transition: "border-color 0.15s",
                         }}
                         onMouseEnter={(e) => {
-                          (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(245,197,24,0.4)";
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(245,184,0,0.4)";
                         }}
                         onMouseLeave={(e) => {
-                          (e.currentTarget as HTMLButtonElement).style.borderColor = "#2A2A2A";
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = "#1E293B";
                         }}
                       >
                         <span
                           style={{
-                            fontFamily: "Bebas Neue, sans-serif",
+                            fontFamily: "Barlow Condensed, sans-serif",
                             fontSize: "13px",
                             letterSpacing: "0.12em",
-                            color: "#F5C518",
+                            color: "#F5B800",
                           }}
                         >
                           {showFullRoster ? "HIDE ROSTER" : "VIEW FULL ROSTER"}
                         </span>
                         <span
                           style={{
-                            fontFamily: "DM Sans, sans-serif",
+                            fontFamily: "Inter, sans-serif",
                             fontSize: "14px",
-                            color: "#F5C518",
+                            color: "#F5B800",
                             transition: "transform 0.25s ease",
                             display: "inline-block",
                             transform: showFullRoster ? "rotate(180deg)" : "rotate(0deg)",
@@ -1468,7 +1468,7 @@ export default function SchoolDetailModal({
                           <div
                             key={pos}
                             style={{
-                              background: "#141414",
+                              background: "#0F172A",
                               border: "1px solid #1E1E1E",
                               borderRadius: "4px",
                               padding: "16px 20px",
@@ -1478,13 +1478,13 @@ export default function SchoolDetailModal({
                               <div className="flex items-center gap-2">
                                 <span
                                   style={{
-                                    fontFamily: "Bebas Neue, sans-serif",
+                                    fontFamily: "Barlow Condensed, sans-serif",
                                     fontSize: "13px",
                                     letterSpacing: "0.12em",
-                                    color: "#F5C518",
+                                    color: "#F5B800",
                                     padding: "2px 8px",
-                                    background: "rgba(245,197,24,0.08)",
-                                    border: "1px solid rgba(245,197,24,0.2)",
+                                    background: "rgba(245,184,0,0.08)",
+                                    border: "1px solid rgba(245,184,0,0.2)",
                                     borderRadius: "2px",
                                   }}
                                 >
@@ -1492,7 +1492,7 @@ export default function SchoolDetailModal({
                                 </span>
                                 <span
                                   style={{
-                                    fontFamily: "DM Sans, sans-serif",
+                                    fontFamily: "Inter, sans-serif",
                                     fontSize: "13px",
                                     color: "#A3A3A3",
                                   }}
@@ -1504,7 +1504,7 @@ export default function SchoolDetailModal({
                                 {graduating.length > 0 && (
                                   <span
                                     style={{
-                                      fontFamily: "DM Sans, sans-serif",
+                                      fontFamily: "Inter, sans-serif",
                                       fontSize: "12px",
                                       color: "#EF4444",
                                     }}
@@ -1514,9 +1514,9 @@ export default function SchoolDetailModal({
                                 )}
                                 <span
                                   style={{
-                                    fontFamily: "DM Sans, sans-serif",
+                                    fontFamily: "Inter, sans-serif",
                                     fontSize: "12px",
-                                    color: "#6B6B6B",
+                                    color: "#94A3B8",
                                   }}
                                 >
                                   {posPlayers.length} total
@@ -1542,14 +1542,14 @@ export default function SchoolDetailModal({
                                       style={{
                                         background: isGraduating
                                           ? "rgba(239,68,68,0.08)"
-                                          : "#1A1A1A",
-                                        border: `1px solid ${isGraduating ? "rgba(239,68,68,0.25)" : "#2A2A2A"}`,
+                                          : "#111827",
+                                        border: `1px solid ${isGraduating ? "rgba(239,68,68,0.25)" : "#1E293B"}`,
                                         borderRadius: "3px",
                                       }}
                                     >
                                       <span
                                         style={{
-                                          fontFamily: "DM Sans, sans-serif",
+                                          fontFamily: "Inter, sans-serif",
                                           fontSize: "13px",
                                           color: isGraduating ? "#EF4444" : "#FFFFFF",
                                         }}
@@ -1559,7 +1559,7 @@ export default function SchoolDetailModal({
                                       {gradInfo && (
                                         <span
                                           style={{
-                                            fontFamily: "Bebas Neue, sans-serif",
+                                            fontFamily: "Barlow Condensed, sans-serif",
                                             fontSize: "10px",
                                             letterSpacing: "0.08em",
                                             color: gradInfo.color,
@@ -1591,9 +1591,9 @@ export default function SchoolDetailModal({
                               />
                               <span
                                 style={{
-                                  fontFamily: "DM Sans, sans-serif",
+                                  fontFamily: "Inter, sans-serif",
                                   fontSize: "12px",
-                                  color: "#6B6B6B",
+                                  color: "#94A3B8",
                                 }}
                               >
                                 {info.label} (Grad {year})
@@ -1623,7 +1623,7 @@ export default function SchoolDetailModal({
                   {/* Intro card */}
                   <div
                     style={{
-                      background: "#141414",
+                      background: "#0F172A",
                       border: "1px solid #1E1E1E",
                       borderRadius: "4px",
                       padding: "20px",
@@ -1631,10 +1631,10 @@ export default function SchoolDetailModal({
                   >
                     <p
                       style={{
-                        fontFamily: "Bebas Neue, sans-serif",
+                        fontFamily: "Barlow Condensed, sans-serif",
                         fontSize: "11px",
                         letterSpacing: "0.15em",
-                        color: "#6B6B6B",
+                        color: "#94A3B8",
                         marginBottom: "8px",
                       }}
                     >
@@ -1642,7 +1642,7 @@ export default function SchoolDetailModal({
                     </p>
                     <p
                       style={{
-                        fontFamily: "DM Sans, sans-serif",
+                        fontFamily: "Inter, sans-serif",
                         fontSize: "13px",
                         color: "#94A3B8",
                         lineHeight: 1.5,
@@ -1658,7 +1658,7 @@ export default function SchoolDetailModal({
                   <div>
                     <p
                       style={{
-                        fontFamily: "DM Sans, sans-serif",
+                        fontFamily: "Inter, sans-serif",
                         fontSize: "13px",
                         fontWeight: 600,
                         color: "#F8FAFC",
@@ -1678,27 +1678,27 @@ export default function SchoolDetailModal({
                       style={{
                         width: "100%",
                         height: "80px",
-                        background: "#1A1A1A",
-                        border: "2px solid #2A2A2A",
-                        borderLeft: "3px solid #F5C518",
+                        background: "#111827",
+                        border: "2px solid #1E293B",
+                        borderLeft: "3px solid #F5B800",
                         borderRadius: "8px",
                         color: "#F8FAFC",
-                        fontFamily: "DM Sans, sans-serif",
+                        fontFamily: "Inter, sans-serif",
                         fontSize: "13px",
                         padding: "12px",
                         resize: "none",
                         transition: "border-color 0.2s ease",
                       }}
                       onFocus={(e) => {
-                        (e.target as HTMLTextAreaElement).style.borderColor = "#F5C518";
+                        (e.target as HTMLTextAreaElement).style.borderColor = "#F5B800";
                       }}
                       onBlur={(e) => {
-                        (e.target as HTMLTextAreaElement).style.borderColor = "#2A2A2A";
+                        (e.target as HTMLTextAreaElement).style.borderColor = "#1E293B";
                       }}
                     />
                     <p
                       style={{
-                        fontFamily: "DM Sans, sans-serif",
+                        fontFamily: "Inter, sans-serif",
                         fontSize: "12px",
                         color: "#5a6478",
                         marginTop: "6px",
@@ -1719,21 +1719,21 @@ export default function SchoolDetailModal({
                           width: "100%",
                           padding: "10px",
                           background: "transparent",
-                          border: "1px solid #2A2A2A",
+                          border: "1px solid #1E293B",
                           borderRadius: "8px",
                           color: "#F8FAFC",
-                          fontFamily: "DM Sans, sans-serif",
+                          fontFamily: "Inter, sans-serif",
                           fontSize: "11px",
                           letterSpacing: "0.05em",
                           cursor: "pointer",
                           transition: "all 0.2s ease",
                         }}
                         onMouseEnter={(e) => {
-                          (e.currentTarget as HTMLButtonElement).style.borderColor = "#F5C518";
-                          (e.currentTarget as HTMLButtonElement).style.color = "#F5C518";
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = "#F5B800";
+                          (e.currentTarget as HTMLButtonElement).style.color = "#F5B800";
                         }}
                         onMouseLeave={(e) => {
-                          (e.currentTarget as HTMLButtonElement).style.borderColor = "#2A2A2A";
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = "#1E293B";
                           (e.currentTarget as HTMLButtonElement).style.color = "#F8FAFC";
                         }}
                       >
@@ -1749,11 +1749,11 @@ export default function SchoolDetailModal({
                       disabled={generateEmailMutation.isPending}
                       className="w-full py-3 flex items-center justify-center gap-2"
                       style={{
-                        background: generateEmailMutation.isPending ? "#2A2A2A" : "#F5C518",
-                        color: generateEmailMutation.isPending ? "#6B6B6B" : "#0A0A0A",
+                        background: generateEmailMutation.isPending ? "#1E293B" : "#F5B800",
+                        color: generateEmailMutation.isPending ? "#94A3B8" : "#0A0E1A",
                         border: "none",
                         borderRadius: "0px",
-                        fontFamily: "Bebas Neue, sans-serif",
+                        fontFamily: "Barlow Condensed, sans-serif",
                         fontSize: "14px",
                         letterSpacing: "0.12em",
                         cursor: generateEmailMutation.isPending ? "not-allowed" : "pointer",
@@ -1785,10 +1785,10 @@ export default function SchoolDetailModal({
                         style={{
                           width: "100%",
                           background: "#0D0D0D",
-                          border: "1px solid #2A2A2A",
+                          border: "1px solid #1E293B",
                           borderRadius: "4px",
                           color: "#F8FAFC",
-                          fontFamily: "DM Sans, sans-serif",
+                          fontFamily: "Inter, sans-serif",
                           fontSize: "13px",
                           lineHeight: 1.65,
                           padding: "16px",
@@ -1796,10 +1796,10 @@ export default function SchoolDetailModal({
                           outline: "none",
                         }}
                         onFocus={(e) => {
-                          e.currentTarget.style.borderColor = "#F5C518";
+                          e.currentTarget.style.borderColor = "#F5B800";
                         }}
                         onBlur={(e) => {
-                          e.currentTarget.style.borderColor = "#2A2A2A";
+                          e.currentTarget.style.borderColor = "#1E293B";
                         }}
                       />
 
@@ -1812,9 +1812,9 @@ export default function SchoolDetailModal({
                           style={{
                             background: "transparent",
                             color: emailCopiedDraft ? "#22C55E" : "#94A3B8",
-                            border: `1px solid ${emailCopiedDraft ? "#22C55E" : "#2A2A2A"}`,
+                            border: `1px solid ${emailCopiedDraft ? "#22C55E" : "#1E293B"}`,
                             borderRadius: "0px",
-                            fontFamily: "Bebas Neue, sans-serif",
+                            fontFamily: "Barlow Condensed, sans-serif",
                             fontSize: "12px",
                             letterSpacing: "0.1em",
                             cursor: "pointer",
@@ -1832,10 +1832,10 @@ export default function SchoolDetailModal({
                           className="flex items-center gap-1.5 px-4 py-2.5"
                           style={{
                             background: "transparent",
-                            color: generateEmailMutation.isPending ? "#6B6B6B" : "#94A3B8",
-                            border: "1px solid #2A2A2A",
+                            color: generateEmailMutation.isPending ? "#94A3B8" : "#94A3B8",
+                            border: "1px solid #1E293B",
                             borderRadius: "0px",
-                            fontFamily: "Bebas Neue, sans-serif",
+                            fontFamily: "Barlow Condensed, sans-serif",
                             fontSize: "12px",
                             letterSpacing: "0.1em",
                             cursor: generateEmailMutation.isPending ? "not-allowed" : "pointer",
@@ -1855,11 +1855,11 @@ export default function SchoolDetailModal({
                           disabled={sending || emailSent}
                           className="flex items-center gap-1.5 px-4 py-2.5 ml-auto"
                           style={{
-                            background: emailSent ? "#22C55E" : sending ? "#2A2A2A" : "#F5C518",
-                            color: emailSent ? "#FFFFFF" : sending ? "#6B6B6B" : "#0A0A0A",
+                            background: emailSent ? "#22C55E" : sending ? "#1E293B" : "#F5B800",
+                            color: emailSent ? "#FFFFFF" : sending ? "#94A3B8" : "#0A0E1A",
                             border: "none",
                             borderRadius: "0px",
-                            fontFamily: "Bebas Neue, sans-serif",
+                            fontFamily: "Barlow Condensed, sans-serif",
                             fontSize: "12px",
                             letterSpacing: "0.1em",
                             cursor: sending || emailSent ? "not-allowed" : "pointer",
@@ -1888,10 +1888,10 @@ export default function SchoolDetailModal({
                   {/* Section label */}
                   <p
                     style={{
-                      fontFamily: "DM Sans, sans-serif",
+                      fontFamily: "Inter, sans-serif",
                       fontSize: "11px",
                       letterSpacing: "0.12em",
-                      color: "#6B6B6B",
+                      color: "#94A3B8",
                       textTransform: "uppercase",
                       marginBottom: "16px",
                     }}
@@ -1902,8 +1902,8 @@ export default function SchoolDetailModal({
                   {/* Link 1 — Recruiting Questionnaire (primary, larger card) */}
                   <div
                     style={{
-                      background: schoolLinks?.recruitingQuestionnaireUrl ? "#1A1A1A" : "#141414",
-                      border: "1px solid #2A2A2A",
+                      background: schoolLinks?.recruitingQuestionnaireUrl ? "#111827" : "#0F172A",
+                      border: "1px solid #1E293B",
                       borderRadius: "10px",
                       padding: "20px",
                       opacity: schoolLinks?.recruitingQuestionnaireUrl ? 1 : 0.5,
@@ -1918,7 +1918,7 @@ export default function SchoolDetailModal({
                         width: "8px",
                         height: "8px",
                         borderRadius: "50%",
-                        background: schoolLinks?.recruitingQuestionnaireUrl ? "#F5C518" : "#3A3A3A",
+                        background: schoolLinks?.recruitingQuestionnaireUrl ? "#F5B800" : "#1E293B",
                         flexShrink: 0,
                       }}
                     />
@@ -1926,10 +1926,10 @@ export default function SchoolDetailModal({
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p
                         style={{
-                          fontFamily: "DM Sans, sans-serif",
+                          fontFamily: "Inter, sans-serif",
                           fontSize: "11px",
                           letterSpacing: "0.1em",
-                          color: "#6B6B6B",
+                          color: "#94A3B8",
                           textTransform: "uppercase",
                           marginBottom: "4px",
                         }}
@@ -1938,7 +1938,7 @@ export default function SchoolDetailModal({
                       </p>
                       <p
                         style={{
-                          fontFamily: "DM Sans, sans-serif",
+                          fontFamily: "Inter, sans-serif",
                           fontSize: "15px",
                           color: schoolLinks?.recruitingQuestionnaireUrl ? "#FFFFFF" : "#4A4A4A",
                           fontWeight: 500,
@@ -1960,11 +1960,11 @@ export default function SchoolDetailModal({
                           alignItems: "center",
                           gap: "6px",
                           padding: "10px 18px",
-                          background: "#F5C518",
-                          color: "#0A0A0A",
+                          background: "#F5B800",
+                          color: "#0A0E1A",
                           border: "none",
                           borderRadius: "6px",
-                          fontFamily: "Bebas Neue, sans-serif",
+                          fontFamily: "Barlow Condensed, sans-serif",
                           fontSize: "14px",
                           letterSpacing: "0.1em",
                           cursor: "pointer",
@@ -1981,8 +1981,8 @@ export default function SchoolDetailModal({
                   {/* Link 2 — Athletics Website */}
                   <div
                     style={{
-                      background: schoolLinks?.athleticsWebsiteUrl ? "#1A1A1A" : "#141414",
-                      border: "1px solid #2A2A2A",
+                      background: schoolLinks?.athleticsWebsiteUrl ? "#111827" : "#0F172A",
+                      border: "1px solid #1E293B",
                       borderRadius: "10px",
                       padding: "16px 20px",
                       opacity: schoolLinks?.athleticsWebsiteUrl ? 1 : 0.5,
@@ -1997,7 +1997,7 @@ export default function SchoolDetailModal({
                         width: "8px",
                         height: "8px",
                         borderRadius: "50%",
-                        background: schoolLinks?.athleticsWebsiteUrl ? "#F5C518" : "#3A3A3A",
+                        background: schoolLinks?.athleticsWebsiteUrl ? "#F5B800" : "#1E293B",
                         flexShrink: 0,
                       }}
                     />
@@ -2005,10 +2005,10 @@ export default function SchoolDetailModal({
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p
                         style={{
-                          fontFamily: "DM Sans, sans-serif",
+                          fontFamily: "Inter, sans-serif",
                           fontSize: "11px",
                           letterSpacing: "0.1em",
-                          color: "#6B6B6B",
+                          color: "#94A3B8",
                           textTransform: "uppercase",
                           marginBottom: "4px",
                         }}
@@ -2017,7 +2017,7 @@ export default function SchoolDetailModal({
                       </p>
                       <p
                         style={{
-                          fontFamily: "DM Sans, sans-serif",
+                          fontFamily: "Inter, sans-serif",
                           fontSize: "14px",
                           color: schoolLinks?.athleticsWebsiteUrl ? "#FFFFFF" : "#4A4A4A",
                           fontWeight: 500,
@@ -2043,7 +2043,7 @@ export default function SchoolDetailModal({
                           color: "#FFFFFF",
                           border: "1px solid #FFFFFF",
                           borderRadius: "6px",
-                          fontFamily: "Bebas Neue, sans-serif",
+                          fontFamily: "Barlow Condensed, sans-serif",
                           fontSize: "13px",
                           letterSpacing: "0.1em",
                           cursor: "pointer",
@@ -2069,11 +2069,11 @@ export default function SchoolDetailModal({
               onClick={onToggleOutreach}
               className="flex-1 py-2.5"
               style={{
-                background: isInOutreachList ? "transparent" : "#F5C518",
-                color: isInOutreachList ? "#F5C518" : "#0A0A0A",
-                border: isInOutreachList ? "1px solid #F5C518" : "none",
+                background: isInOutreachList ? "transparent" : "#F5B800",
+                color: isInOutreachList ? "#F5B800" : "#0A0E1A",
+                border: isInOutreachList ? "1px solid #F5B800" : "none",
                 borderRadius: "0px",
-                fontFamily: "Bebas Neue, sans-serif",
+                fontFamily: "Barlow Condensed, sans-serif",
                 fontSize: "13px",
                 letterSpacing: "0.1em",
                 cursor: "pointer",
@@ -2086,10 +2086,10 @@ export default function SchoolDetailModal({
               className="py-2.5 px-5"
               style={{
                 background: "transparent",
-                color: "#6B6B6B",
-                border: "1px solid #2A2A2A",
+                color: "#94A3B8",
+                border: "1px solid #1E293B",
                 borderRadius: "0px",
-                fontFamily: "Bebas Neue, sans-serif",
+                fontFamily: "Barlow Condensed, sans-serif",
                 fontSize: "13px",
                 letterSpacing: "0.1em",
                 cursor: "pointer",
@@ -2114,23 +2114,23 @@ export default function SchoolDetailModal({
         >
           <div
             style={{
-              background: "#1A1A1A", border: "1px solid #2A2A2A",
+              background: "#111827", border: "1px solid #1E293B",
               borderRadius: "12px", width: "100%", maxWidth: "480px",
               maxHeight: "70vh", overflow: "hidden", display: "flex", flexDirection: "column",
             }}
             onClick={e => e.stopPropagation()}
           >
             {/* Header */}
-            <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid #2A2A2A", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid #1E293B", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
-                <p style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "18px", color: "#F5C518", letterSpacing: "0.05em", margin: 0 }}>
+                <p style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "18px", color: "#F5B800", letterSpacing: "0.05em", margin: 0 }}>
                   KNOWN COMMITS — CLASS OF {selectedRosterYear}
                 </p>
-                <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", marginTop: "4px" }}>
+                <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8", marginTop: "4px" }}>
                   {schoolCommits.length} verified commit{schoolCommits.length !== 1 ? "s" : ""} · sourced from MiddleHitter.com
                 </p>
               </div>
-              <button onClick={() => setShowCommitsModal(false)} style={{ background: "none", border: "none", cursor: "pointer", color: "#6B6B6B", fontSize: "20px", lineHeight: 1 }}>×</button>
+              <button onClick={() => setShowCommitsModal(false)} style={{ background: "none", border: "none", cursor: "pointer", color: "#94A3B8", fontSize: "20px", lineHeight: 1 }}>×</button>
             </div>
             {/* Commit list */}
             <div style={{ overflowY: "auto", flex: 1, padding: "12px 20px 20px" }}>
@@ -2144,20 +2144,20 @@ export default function SchoolDetailModal({
                   }}
                 >
                   <div>
-                    <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", fontWeight: 600, color: "#FFFFFF", margin: 0 }}>
+                    <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 600, color: "#FFFFFF", margin: 0 }}>
                       {commit.name}
                     </p>
                     {(commit.club || commit.highSchool) && (
-                      <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", margin: "2px 0 0" }}>
+                      <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8", margin: "2px 0 0" }}>
                         {[commit.club, commit.highSchool].filter(Boolean).join(" · ")}
                       </p>
                     )}
                   </div>
                   {commit.position && (
                     <span style={{
-                      fontFamily: "Bebas Neue, sans-serif", fontSize: "13px",
-                      color: "#F5C518", letterSpacing: "0.05em",
-                      background: "rgba(245,197,24,0.1)", border: "1px solid rgba(245,197,24,0.2)",
+                      fontFamily: "Barlow Condensed, sans-serif", fontSize: "13px",
+                      color: "#F5B800", letterSpacing: "0.05em",
+                      background: "rgba(245,184,0,0.1)", border: "1px solid rgba(245,184,0,0.2)",
                       borderRadius: "4px", padding: "3px 8px",
                     }}>
                       {commit.position}
@@ -2188,8 +2188,8 @@ export default function SchoolDetailModal({
               exit={{ opacity: 0, scale: 0.95, y: 16 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
               style={{
-                background: "#1A1A1A",
-                border: "1px solid #3A3A3A",
+                background: "#111827",
+                border: "1px solid #1E293B",
                 borderRadius: "16px",
                 padding: "32px",
                 width: "100%",
@@ -2201,7 +2201,7 @@ export default function SchoolDetailModal({
               <div className="flex justify-center mb-5">
                 <div
                   style={{
-                    background: "rgba(245,197,24,0.12)",
+                    background: "rgba(245,184,0,0.12)",
                     borderRadius: "50%",
                     width: "56px",
                     height: "56px",
@@ -2210,7 +2210,7 @@ export default function SchoolDetailModal({
                     justifyContent: "center",
                   }}
                 >
-                  <AlertTriangle size={28} style={{ color: "#F5C518" }} />
+                  <AlertTriangle size={28} style={{ color: "#F5B800" }} />
                 </div>
               </div>
 
@@ -2218,7 +2218,7 @@ export default function SchoolDetailModal({
               <p
                 className="text-center mb-6"
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "26px",
                   letterSpacing: "0.06em",
                   color: "#FFFFFF",
@@ -2242,14 +2242,14 @@ export default function SchoolDetailModal({
                         width: "7px",
                         height: "7px",
                         borderRadius: "50%",
-                        background: "#F5C518",
+                        background: "#F5B800",
                         flexShrink: 0,
                         marginTop: "6px",
                       }}
                     />
                     <p
                       style={{
-                        fontFamily: "DM Sans, sans-serif",
+                        fontFamily: "Inter, sans-serif",
                         fontSize: "14px",
                         color: "#C0C0C0",
                         lineHeight: 1.5,
@@ -2265,7 +2265,7 @@ export default function SchoolDetailModal({
               <div
                 style={{
                   background: "#0F0F0F",
-                  border: "1px solid #2A2A2A",
+                  border: "1px solid #1E293B",
                   borderRadius: "8px",
                   padding: "14px 16px",
                   marginBottom: "24px",
@@ -2273,10 +2273,10 @@ export default function SchoolDetailModal({
               >
                 <p
                   style={{
-                    fontFamily: "DM Sans, sans-serif",
+                    fontFamily: "Inter, sans-serif",
                     fontSize: "11px",
                     letterSpacing: "0.1em",
-                    color: "#6B6B6B",
+                    color: "#94A3B8",
                     marginBottom: "8px",
                     textTransform: "uppercase",
                   }}
@@ -2285,7 +2285,7 @@ export default function SchoolDetailModal({
                 </p>
                 <p
                   style={{
-                    fontFamily: "DM Sans, sans-serif",
+                    fontFamily: "Inter, sans-serif",
                     fontSize: "13px",
                     color: "#E0E0E0",
                     marginBottom: "12px",
@@ -2296,13 +2296,13 @@ export default function SchoolDetailModal({
                 <div
                   style={{
                     height: "1px",
-                    background: "#2A2A2A",
+                    background: "#1E293B",
                     marginBottom: "12px",
                   }}
                 />
                 <p
                   style={{
-                    fontFamily: "DM Sans, sans-serif",
+                    fontFamily: "Inter, sans-serif",
                     fontSize: "13px",
                     color: "#94A3B8",
                     lineHeight: 1.6,
@@ -2323,10 +2323,10 @@ export default function SchoolDetailModal({
                   className="flex-1 py-3"
                   style={{
                     background: "transparent",
-                    color: "#6B6B6B",
-                    border: "1px solid #3A3A3A",
+                    color: "#94A3B8",
+                    border: "1px solid #1E293B",
                     borderRadius: "8px",
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "14px",
                     letterSpacing: "0.1em",
                     cursor: "pointer",
@@ -2338,11 +2338,11 @@ export default function SchoolDetailModal({
                   onClick={handleConfirmSend}
                   className="flex-1 py-3"
                   style={{
-                    background: "#F5C518",
-                    color: "#0A0A0A",
+                    background: "#F5B800",
+                    color: "#0A0E1A",
                     border: "none",
                     borderRadius: "8px",
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "14px",
                     letterSpacing: "0.1em",
                     cursor: "pointer",
@@ -2374,8 +2374,8 @@ export default function SchoolDetailModal({
               exit={{ opacity: 0, scale: 0.95, y: 16 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
               style={{
-                background: "#1A1A1A",
-                border: "1px solid #3A3A3A",
+                background: "#111827",
+                border: "1px solid #1E293B",
                 borderRadius: "16px",
                 padding: "32px",
                 width: "100%",
@@ -2404,7 +2404,7 @@ export default function SchoolDetailModal({
               <p
                 className="text-center mb-2"
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "32px",
                   letterSpacing: "0.06em",
                   color: "#FFFFFF",
@@ -2417,7 +2417,7 @@ export default function SchoolDetailModal({
               <p
                 className="text-center mb-6"
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "14px",
                   color: "#94A3B8",
                   lineHeight: 1.5,
@@ -2437,7 +2437,7 @@ export default function SchoolDetailModal({
               <div
                 style={{
                   height: "2px",
-                  background: "#F5C518",
+                  background: "#F5B800",
                   borderRadius: "2px",
                   marginBottom: "20px",
                 }}
@@ -2447,7 +2447,7 @@ export default function SchoolDetailModal({
               <div
                 style={{
                   background: "#111111",
-                  borderLeft: "3px solid #F5C518",
+                  borderLeft: "3px solid #F5B800",
                   borderRadius: "0 8px 8px 0",
                   padding: "16px",
                   marginBottom: "24px",
@@ -2455,10 +2455,10 @@ export default function SchoolDetailModal({
               >
                 <p
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "11px",
                     letterSpacing: "0.15em",
-                    color: "#F5C518",
+                    color: "#F5B800",
                     marginBottom: "8px",
                   }}
                 >
@@ -2466,7 +2466,7 @@ export default function SchoolDetailModal({
                 </p>
                 <p
                   style={{
-                    fontFamily: "DM Sans, sans-serif",
+                    fontFamily: "Inter, sans-serif",
                     fontSize: "13px",
                     color: "#C0C0C0",
                     lineHeight: 1.6,
@@ -2483,11 +2483,11 @@ export default function SchoolDetailModal({
                 onClick={() => setShowSuccessPopup(false)}
                 className="w-full py-3"
                 style={{
-                  background: "#F5C518",
-                  color: "#0A0A0A",
+                  background: "#F5B800",
+                  color: "#0A0E1A",
                   border: "none",
                   borderRadius: "8px",
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "16px",
                   letterSpacing: "0.12em",
                   cursor: "pointer",

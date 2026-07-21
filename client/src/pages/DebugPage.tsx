@@ -26,7 +26,7 @@ export default function DebugPage() {
   };
 
   return (
-    <div style={{ background: "#0a0a0a", minHeight: "100vh", padding: 20, fontFamily: "monospace" }}>
+    <div style={{ background: "#0A0E1A", minHeight: "100vh", padding: 20, fontFamily: "monospace" }}>
       <h1 style={{ color: "#F5B800", marginBottom: 16, fontSize: 20 }}>RecruitPath Debug</h1>
 
       <button
@@ -34,7 +34,7 @@ export default function DebugPage() {
         disabled={reseeding}
         style={{
           background: reseeding ? "#333" : "#F5B800",
-          color: "#0a0a0a",
+          color: "#0A0E1A",
           border: "none",
           padding: "10px 20px",
           borderRadius: 4,

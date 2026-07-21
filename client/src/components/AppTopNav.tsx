@@ -1,6 +1,6 @@
 /**
  * AppTopNav — Fixed top navigation bar for all authenticated pages.
- * - 56px height, #0A0A0A bg with backdrop blur
+ * - 56px height, #0A0E1A bg with backdrop blur
  * - Left: RECRUITPATH logo → / (home page)
  * - Center: DASHBOARD, SCHOOLS, PROFILE, PRICING, SETTINGS links
  * - Right: user avatar (initials) + first name → dropdown (View Profile, Sign Out)
@@ -114,7 +114,7 @@ export default function AppTopNav() {
                         left: 0,
                         right: 0,
                         height: "2px",
-                        background: "#F5C518",
+                        background: "#F5B800",
                       }}
                     />
                   )}
@@ -139,12 +139,12 @@ export default function AppTopNav() {
                 style={{
                   width: "32px",
                   height: "32px",
-                  background: "#1A1A1A",
-                  border: "1px solid #2A2A2A",
-                  fontFamily: "'DM Sans', sans-serif",
+                  background: "#111827",
+                  border: "1px solid #1E293B",
+                  fontFamily: "'Inter', sans-serif",
                   fontSize: "12px",
                   fontWeight: 700,
-                  color: "#F5C518",
+                  color: "#F5B800",
                   letterSpacing: "0.5px",
                 }}
               >
@@ -154,7 +154,7 @@ export default function AppTopNav() {
               <span
                 className="hidden md:block"
                 style={{
-                  fontFamily: "'DM Sans', sans-serif",
+                  fontFamily: "'Inter', sans-serif",
                   fontSize: "13px",
                   color: "#FFFFFF",
                   fontWeight: 500,
@@ -170,8 +170,8 @@ export default function AppTopNav() {
                 className="absolute right-0 mt-2 py-1 z-50"
                 style={{
                   top: "100%",
-                  background: "#1A1A1A",
-                  border: "1px solid #2A2A2A",
+                  background: "#111827",
+                  border: "1px solid #1E293B",
                   borderRadius: "8px",
                   minWidth: "160px",
                   boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
@@ -181,11 +181,11 @@ export default function AppTopNav() {
                   <div
                     className="px-4 py-2.5 cursor-pointer transition-colors duration-100"
                     style={{
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "'Inter', sans-serif",
                       fontSize: "13px",
                       color: "#FFFFFF",
                     }}
-                    onMouseEnter={e => (e.currentTarget.style.background = "#2A2A2A")}
+                    onMouseEnter={e => (e.currentTarget.style.background = "#1E293B")}
                     onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                     onClick={() => setDropdownOpen(false)}
                   >
@@ -195,17 +195,17 @@ export default function AppTopNav() {
                 <div
                   className="px-4 py-2.5 cursor-pointer transition-colors duration-100"
                   style={{
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "'Inter', sans-serif",
                     fontSize: "13px",
-                    color: "#888888",
+                    color: "#94A3B8",
                   }}
                   onMouseEnter={e => {
-                    (e.currentTarget.style.background = "#2A2A2A");
+                    (e.currentTarget.style.background = "#1E293B");
                     (e.currentTarget.style.color = "#FFFFFF");
                   }}
                   onMouseLeave={e => {
                     (e.currentTarget.style.background = "transparent");
-                    (e.currentTarget.style.color = "#888888");
+                    (e.currentTarget.style.color = "#94A3B8");
                   }}
                   onClick={() => {
                     setDropdownOpen(false);
@@ -221,7 +221,7 @@ export default function AppTopNav() {
           {/* Hamburger (mobile only) */}
           <button
             className="flex md:hidden items-center justify-center cursor-pointer"
-            style={{ background: "none", border: "none", padding: "4px", color: "#888888" }}
+            style={{ background: "none", border: "none", padding: "4px", color: "#94A3B8" }}
             onClick={() => setMobileMenuOpen(v => !v)}
             aria-label="Toggle menu"
           >
@@ -237,7 +237,7 @@ export default function AppTopNav() {
           style={{
             top: "56px",
             background: "rgba(10,10,10,0.97)",
-            borderBottom: "1px solid #1A1A1A",
+            borderBottom: "1px solid #111827",
           }}
         >
           {NAV_LINKS.map(({ label, href }) => {
@@ -248,13 +248,13 @@ export default function AppTopNav() {
                   className="flex items-center px-6 cursor-pointer"
                   style={{
                     height: "48px",
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "'Inter', sans-serif",
                     fontSize: "16px",
                     fontWeight: 600,
                     letterSpacing: "1.5px",
-                    color: isActive ? "#FFFFFF" : "#888888",
-                    borderLeft: isActive ? "3px solid #F5C518" : "3px solid transparent",
-                    background: isActive ? "rgba(245,197,24,0.06)" : "transparent",
+                    color: isActive ? "#FFFFFF" : "#94A3B8",
+                    borderLeft: isActive ? "3px solid #F5B800" : "3px solid transparent",
+                    background: isActive ? "rgba(245,184,0,0.06)" : "transparent",
                   }}
                   onClick={() => setMobileMenuOpen(false)}
                 >

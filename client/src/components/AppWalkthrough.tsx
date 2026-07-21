@@ -191,7 +191,7 @@ function SpotlightOverlay({ rect }: { rect: Rect | null }) {
 
 function Arrow({ side, offset }: { side: "top" | "bottom" | "left" | "right"; offset: number }) {
   const size = ARROW_SIZE;
-  const color = "#2a2a2a";
+  const color = "#1E293B";
   const fillColor = "#1a1f2e";
 
   const style: React.CSSProperties = { position: "absolute" };
@@ -288,7 +288,7 @@ function TooltipCard({ step, stepIndex, totalSteps, pos, visible, onNext, onSkip
       <div
         style={{
           background: "#1a1f2e",
-          border: "1px solid #2a2a2a",
+          border: "1px solid #1E293B",
           borderRadius: 14,
           padding: "20px 24px",
           boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
@@ -300,7 +300,7 @@ function TooltipCard({ step, stepIndex, totalSteps, pos, visible, onNext, onSkip
         {/* Title */}
         <div
           style={{
-            fontFamily: "Bebas Neue, sans-serif",
+            fontFamily: "Barlow Condensed, sans-serif",
             fontSize: 16,
             color: "#ffffff",
             letterSpacing: "0.05em",
@@ -313,7 +313,7 @@ function TooltipCard({ step, stepIndex, totalSteps, pos, visible, onNext, onSkip
         {/* Body */}
         <div
           style={{
-            fontFamily: "DM Sans, sans-serif",
+            fontFamily: "Inter, sans-serif",
             fontSize: 13,
             color: "#94a3b8",
             lineHeight: 1.55,
@@ -332,7 +332,7 @@ function TooltipCard({ step, stepIndex, totalSteps, pos, visible, onNext, onSkip
                 width: 6,
                 height: 6,
                 borderRadius: "50%",
-                background: i === stepIndex ? "#F5C518" : "#2a3a50",
+                background: i === stepIndex ? "#F5B800" : "#2a3a50",
                 transition: "background 0.2s",
               }}
             />
@@ -347,7 +347,7 @@ function TooltipCard({ step, stepIndex, totalSteps, pos, visible, onNext, onSkip
               background: "transparent",
               border: "none",
               color: "#4a5568",
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: 12,
               cursor: "pointer",
               padding: "4px 0",
@@ -361,10 +361,10 @@ function TooltipCard({ step, stepIndex, totalSteps, pos, visible, onNext, onSkip
           <button
             onClick={onNext}
             style={{
-              background: "#F5C518",
+              background: "#F5B800",
               border: "none",
               color: "#0a0e1a",
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: 12,
               fontWeight: 700,
               cursor: "pointer",
@@ -397,7 +397,7 @@ function GlowRing({ rect }: { rect: Rect | null }) {
         width: rect.width + pad * 2,
         height: rect.height + pad * 2,
         borderRadius: 10,
-        boxShadow: "0 0 0 3px rgba(245,197,24,0.4)",
+        boxShadow: "0 0 0 3px rgba(245,184,0,0.4)",
         zIndex: 9999,
         pointerEvents: "none",
         transition: "all 0.25s ease",

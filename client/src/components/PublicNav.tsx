@@ -36,7 +36,7 @@ function HamburgerIcon({ open }: { open: boolean }) {
           position: "absolute",
           height: "2px",
           width: "20px",
-          background: "#888888",
+          background: "#94A3B8",
           borderRadius: "2px",
           transition: "transform 0.25s ease, opacity 0.25s ease, top 0.25s ease",
           top: open ? "11px" : "7px",
@@ -50,7 +50,7 @@ function HamburgerIcon({ open }: { open: boolean }) {
           position: "absolute",
           height: "2px",
           width: "20px",
-          background: "#888888",
+          background: "#94A3B8",
           borderRadius: "2px",
           top: "11px",
           transition: "opacity 0.25s ease",
@@ -64,7 +64,7 @@ function HamburgerIcon({ open }: { open: boolean }) {
           position: "absolute",
           height: "2px",
           width: "20px",
-          background: "#888888",
+          background: "#94A3B8",
           borderRadius: "2px",
           transition: "transform 0.25s ease, opacity 0.25s ease, top 0.25s ease",
           top: open ? "11px" : "15px",
@@ -239,7 +239,7 @@ export default function PublicNav({ currentPage }: PublicNavProps) {
                     transition={{ delay: (index + 1) * 0.05, duration: 0.22, ease: "easeOut" }}
                     className="px-6 py-[18px] text-white font-semibold"
                     style={{
-                      fontFamily: "DM Sans, sans-serif",
+                      fontFamily: "Inter, sans-serif",
                       fontSize: "16px",
                       borderBottom: "1px solid rgba(255,255,255,0.04)",
                     }}
@@ -264,7 +264,7 @@ export default function PublicNav({ currentPage }: PublicNavProps) {
                       style={{
                         background: "#F5B800",
                         color: "#0A0E1A",
-                        fontFamily: "DM Sans, sans-serif",
+                        fontFamily: "Inter, sans-serif",
                       }}
                       onClick={handleNavClick}
                     >
@@ -279,7 +279,7 @@ export default function PublicNav({ currentPage }: PublicNavProps) {
                       style={{
                         background: "#F5B800",
                         color: "#0A0E1A",
-                        fontFamily: "DM Sans, sans-serif",
+                        fontFamily: "Inter, sans-serif",
                       }}
                       onClick={handleNavClick}
                     >

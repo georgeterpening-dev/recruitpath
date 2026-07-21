@@ -94,13 +94,13 @@ export default function SignIn() {
           <motion.button
             type="button"
             onClick={handleGoogleSignIn}
-            whileHover={{ borderColor: "#3A3A3A" }}
+            whileHover={{ borderColor: "#1E293B" }}
             whileTap={{ scale: 0.98 }}
             className="w-full flex items-center justify-center gap-3 py-3 rounded-[10px] mb-5 transition-colors"
             style={{
-              background: "#1A1A1A",
-              border: "1px solid #2A2A2A",
-              fontFamily: "DM Sans, sans-serif",
+              background: "#111827",
+              border: "1px solid #1E293B",
+              fontFamily: "Inter, sans-serif",
               fontSize: "14px",
               color: "#F8FAFC",
               fontWeight: 500,
@@ -112,14 +112,14 @@ export default function SignIn() {
 
           {/* OR Divider */}
           <div className="flex items-center gap-3 mb-5">
-            <div className="flex-1 h-px" style={{ background: "#2A2A2A" }} />
+            <div className="flex-1 h-px" style={{ background: "#1E293B" }} />
             <span
               className="text-xs font-semibold tracking-widest"
-              style={{ color: "#555", fontFamily: "DM Sans, sans-serif" }}
+              style={{ color: "#555", fontFamily: "Inter, sans-serif" }}
             >
               OR
             </span>
-            <div className="flex-1 h-px" style={{ background: "#2A2A2A" }} />
+            <div className="flex-1 h-px" style={{ background: "#1E293B" }} />
           </div>
 
           {/* Error message */}

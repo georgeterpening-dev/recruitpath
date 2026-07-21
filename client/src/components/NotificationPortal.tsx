@@ -120,7 +120,7 @@ export default function NotificationPortal() {
             zIndex: 9999,
             width: 340,
             background: "#1E1A0A",
-            border: "1px solid rgba(245,197,24,0.35)",
+            border: "1px solid rgba(245,184,0,0.35)",
             borderRadius: "12px",
             padding: "16px 18px",
             boxShadow: "0 8px 32px rgba(0,0,0,0.6)",
@@ -133,11 +133,11 @@ export default function NotificationPortal() {
           <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
             <Bell
               size={16}
-              style={{ color: "#F5C518", flexShrink: 0, marginTop: 2 }}
+              style={{ color: "#F5B800", flexShrink: 0, marginTop: 2 }}
             />
             <p
               style={{
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 fontSize: "13px",
                 color: "#F8FAFC",
                 lineHeight: 1.5,
@@ -145,7 +145,7 @@ export default function NotificationPortal() {
               }}
             >
               Got a reply from{" "}
-              <span style={{ color: "#F5C518", fontWeight: 600 }}>
+              <span style={{ color: "#F5B800", fontWeight: 600 }}>
                 {notif.schoolName}
               </span>
               ? Paste it in and we'll help you respond.
@@ -157,11 +157,11 @@ export default function NotificationPortal() {
             <button
               onClick={handleGenerateReply}
               style={{
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 fontSize: "12px",
                 fontWeight: 700,
-                color: "#0A0A0A",
-                background: "#F5C518",
+                color: "#0A0E1A",
+                background: "#F5B800",
                 border: "none",
                 borderRadius: "6px",
                 padding: "7px 14px",
@@ -174,11 +174,11 @@ export default function NotificationPortal() {
             <button
               onClick={handleAlreadyReplied}
               style={{
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 fontSize: "12px",
-                color: "#6B6B6B",
+                color: "#94A3B8",
                 background: "transparent",
-                border: "1px solid #3A3A3A",
+                border: "1px solid #1E293B",
                 borderRadius: "6px",
                 padding: "7px 14px",
                 cursor: "pointer",
@@ -196,7 +196,7 @@ export default function NotificationPortal() {
             transition={{ duration: 10, ease: "linear" }}
             style={{
               height: 2,
-              background: "rgba(245,197,24,0.4)",
+              background: "rgba(245,184,0,0.4)",
               borderRadius: 2,
               transformOrigin: "left center",
             }}

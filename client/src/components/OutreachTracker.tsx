@@ -49,10 +49,10 @@ type FollowUpResult = {
 // ─── Status config ────────────────────────────────────────────────────────────
 
 const STATUS_OPTIONS: { value: string; label: string; emoji: string; color: string }[] = [
-  { value: "no_response",          label: "No response yet",      emoji: "⬜", color: "#6B6B6B" },
+  { value: "no_response",          label: "No response yet",      emoji: "⬜", color: "#94A3B8" },
   { value: "response_received",    label: "Response received",    emoji: "📬", color: "#22C55E" },
   { value: "conversation_ongoing", label: "Conversation ongoing", emoji: "💬", color: "#3B82F6" },
-  { value: "visit_scheduled",      label: "Visit scheduled",      emoji: "🏟", color: "#F5C518" },
+  { value: "visit_scheduled",      label: "Visit scheduled",      emoji: "🏟", color: "#F5B800" },
   { value: "offer_received",       label: "Offer received",       emoji: "🏐", color: "#A855F7" },
   { value: "not_interested",       label: "Not interested",       emoji: "❌", color: "#EF4444" },
 ];
@@ -70,7 +70,7 @@ function DaysPill({ sentAt }: { sentAt: Date }) {
   let border = "rgba(34,197,94,0.3)";
   let label = `${days}d ago`;
   if (days >= 8 && days <= 21) {
-    color = "#F5C518"; bg = "rgba(245,197,24,0.1)"; border = "rgba(245,197,24,0.3)";
+    color = "#F5B800"; bg = "rgba(245,184,0,0.1)"; border = "rgba(245,184,0,0.3)";
   } else if (days >= 22) {
     color = "#EF4444"; bg = "rgba(239,68,68,0.1)"; border = "rgba(239,68,68,0.3)";
     label = `${days}d ago — follow up?`;
@@ -78,7 +78,7 @@ function DaysPill({ sentAt }: { sentAt: Date }) {
   return (
     <span
       style={{
-        fontFamily: "DM Sans, sans-serif",
+        fontFamily: "Inter, sans-serif",
         fontSize: "11px",
         fontWeight: 600,
         color,
@@ -144,11 +144,11 @@ function StatusDropdown({
         onClick={handleOpen}
         className="flex items-center gap-1.5"
         style={{
-          fontFamily: "DM Sans, sans-serif",
+          fontFamily: "Inter, sans-serif",
           fontSize: "12px",
           color: current.color,
           background: "rgba(255,255,255,0.04)",
-          border: "1px solid #3A3A3A",
+          border: "1px solid #1E293B",
           borderRadius: "6px",
           padding: "5px 10px",
           cursor: "pointer",
@@ -175,8 +175,8 @@ function StatusDropdown({
               position: "fixed",
               top: `${pos.top}px`,
               left: `${pos.left}px`,
-              background: "#1A1A1A",
-              border: "1px solid #3A3A3A",
+              background: "#111827",
+              border: "1px solid #1E293B",
               borderRadius: "8px",
               minWidth: 220,
               boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
@@ -193,7 +193,7 @@ function StatusDropdown({
                 }}
                 className="flex items-center gap-2 w-full text-left"
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "13px",
                   color: opt.value === currentStatus ? opt.color : "#F8FAFC",
                   background: opt.value === currentStatus ? "rgba(255,255,255,0.06)" : "transparent",
@@ -223,7 +223,7 @@ function StatusDropdown({
 function InterestBadge({ level }: { level: "Hot" | "Warm" | "Neutral" | "Cold" }) {
   const config = {
     Hot:     { bg: "rgba(34,197,94,0.15)",  border: "rgba(34,197,94,0.4)",  color: "#22C55E",  emoji: "🔥" },
-    Warm:    { bg: "rgba(245,197,24,0.15)", border: "rgba(245,197,24,0.4)", color: "#F5C518",  emoji: "☀️" },
+    Warm:    { bg: "rgba(245,184,0,0.15)", border: "rgba(245,184,0,0.4)", color: "#F5B800",  emoji: "☀️" },
     Neutral: { bg: "rgba(148,163,184,0.1)", border: "rgba(148,163,184,0.3)",color: "#94A3B8",  emoji: "😐" },
     Cold:    { bg: "rgba(239,68,68,0.12)",  border: "rgba(239,68,68,0.35)", color: "#EF4444",  emoji: "🧊" },
   }[level];
@@ -231,7 +231,7 @@ function InterestBadge({ level }: { level: "Hot" | "Warm" | "Neutral" | "Cold" }
   return (
     <span
       style={{
-        fontFamily: "Bebas Neue, sans-serif",
+        fontFamily: "Barlow Condensed, sans-serif",
         fontSize: "13px",
         letterSpacing: "0.08em",
         color: config.color,
@@ -300,16 +300,16 @@ function AIReplySection({
   const isLoading = generateMutation.isPending;
 
   return (
-    <div style={{ borderTop: "1px solid #2A2A2A", padding: "20px", background: "#111111" }}>
+    <div style={{ borderTop: "1px solid #1E293B", padding: "20px", background: "#111111" }}>
       <div className="flex items-center gap-2 mb-4">
-        <Sparkles size={14} style={{ color: "#F5C518" }} />
-        <span style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", letterSpacing: "0.12em", color: "#F5C518" }}>
+        <Sparkles size={14} style={{ color: "#F5B800" }} />
+        <span style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "13px", letterSpacing: "0.12em", color: "#F5B800" }}>
           AI REPLY GENERATOR
         </span>
       </div>
 
       <div className="mb-3">
-        <label style={{ fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#6B6B6B", letterSpacing: "0.06em", textTransform: "uppercase" as const, display: "block", marginBottom: 6 }}>
+        <label style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#94A3B8", letterSpacing: "0.06em", textTransform: "uppercase" as const, display: "block", marginBottom: 6 }}>
           Coach's response
         </label>
         <textarea
@@ -317,15 +317,15 @@ function AIReplySection({
           onChange={(e) => setCoachResponse(e.target.value)}
           placeholder="Paste the coach's response here..."
           rows={4}
-          style={{ width: "100%", background: "#1A1A1A", border: "1px solid #3A3A3A", borderRadius: "8px", padding: "12px 14px", fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#F8FAFC", resize: "vertical" as const, outline: "none", lineHeight: 1.6 }}
+          style={{ width: "100%", background: "#111827", border: "1px solid #1E293B", borderRadius: "8px", padding: "12px 14px", fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#F8FAFC", resize: "vertical" as const, outline: "none", lineHeight: 1.6 }}
         />
       </div>
 
       <div className="flex gap-2 mb-5">
-        <button onClick={() => { setCoachResponse(""); setResult(null); setEditableReply(""); }} style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", background: "transparent", border: "1px solid #3A3A3A", borderRadius: "6px", padding: "7px 16px", cursor: "pointer" }}>
+        <button onClick={() => { setCoachResponse(""); setResult(null); setEditableReply(""); }} style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8", background: "transparent", border: "1px solid #1E293B", borderRadius: "6px", padding: "7px 16px", cursor: "pointer" }}>
           CLEAR
         </button>
-        <button onClick={handleGenerate} disabled={isLoading} style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", fontWeight: 600, color: isLoading ? "#6B6B6B" : "#0A0A0A", background: isLoading ? "#2A2A2A" : "#F5C518", border: "none", borderRadius: "6px", padding: "7px 18px", cursor: isLoading ? "not-allowed" : "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+        <button onClick={handleGenerate} disabled={isLoading} style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 600, color: isLoading ? "#94A3B8" : "#0A0E1A", background: isLoading ? "#1E293B" : "#F5B800", border: "none", borderRadius: "6px", padding: "7px 18px", cursor: isLoading ? "not-allowed" : "pointer", display: "flex", alignItems: "center", gap: 6 }}>
           <Sparkles size={12} />
           {isLoading ? "ANALYZING..." : "ANALYZE & GENERATE REPLY →"}
         </button>
@@ -333,10 +333,10 @@ function AIReplySection({
 
       <AnimatePresence>
         {isLoading && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ background: "#1A1A1A", border: "1px solid #2A2A2A", borderRadius: "10px", padding: "24px", textAlign: "center" }}>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ background: "#111827", border: "1px solid #1E293B", borderRadius: "10px", padding: "24px", textAlign: "center" }}>
             <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }} style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-              <Sparkles size={16} style={{ color: "#F5C518" }} />
-              <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#F5C518" }}>Analyzing response...</span>
+              <Sparkles size={16} style={{ color: "#F5B800" }} />
+              <span style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#F5B800" }}>Analyzing response...</span>
             </motion.div>
           </motion.div>
         )}
@@ -345,45 +345,45 @@ function AIReplySection({
       <AnimatePresence>
         {result && !isLoading && (
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="flex flex-col gap-4">
-            <div style={{ background: "#1A1A1A", border: "1px solid #2A2A2A", borderRadius: "10px", padding: "16px 18px" }}>
-              <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "12px", letterSpacing: "0.12em", color: "#6B6B6B", marginBottom: 10 }}>COACH ANALYSIS</div>
+            <div style={{ background: "#111827", border: "1px solid #1E293B", borderRadius: "10px", padding: "16px 18px" }}>
+              <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "12px", letterSpacing: "0.12em", color: "#94A3B8", marginBottom: 10 }}>COACH ANALYSIS</div>
               <div className="flex items-center gap-3 mb-3">
-                <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B" }}>Interest level:</span>
+                <span style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8" }}>Interest level:</span>
                 <InterestBadge level={result.interestLevel} />
               </div>
               <div className="flex flex-col gap-1.5 mb-3">
                 {result.analysisBullets.map((bullet, i) => (
                   <div key={i} className="flex items-start gap-2">
-                    <span style={{ color: "#F5C518", fontSize: "10px", marginTop: 4, flexShrink: 0 }}>●</span>
-                    <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#94A3B8", lineHeight: 1.5 }}>{bullet}</span>
+                    <span style={{ color: "#F5B800", fontSize: "10px", marginTop: 4, flexShrink: 0 }}>●</span>
+                    <span style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#94A3B8", lineHeight: 1.5 }}>{bullet}</span>
                   </div>
                 ))}
               </div>
               {result.actionItems.length > 0 && (
-                <div style={{ background: "rgba(245,197,24,0.06)", border: "1px solid rgba(245,197,24,0.15)", borderRadius: "6px", padding: "10px 12px" }}>
-                  <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#F5C518", letterSpacing: "0.06em", textTransform: "uppercase" as const, marginBottom: 6 }}>Action items</div>
+                <div style={{ background: "rgba(245,184,0,0.06)", border: "1px solid rgba(245,184,0,0.15)", borderRadius: "6px", padding: "10px 12px" }}>
+                  <div style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#F5B800", letterSpacing: "0.06em", textTransform: "uppercase" as const, marginBottom: 6 }}>Action items</div>
                   {result.actionItems.map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
-                      <span style={{ color: "#F5C518", fontSize: "10px", marginTop: 4, flexShrink: 0 }}>●</span>
-                      <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#F8FAFC", lineHeight: 1.5 }}>{item}</span>
+                      <span style={{ color: "#F5B800", fontSize: "10px", marginTop: 4, flexShrink: 0 }}>●</span>
+                      <span style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#F8FAFC", lineHeight: 1.5 }}>{item}</span>
                     </div>
                   ))}
                 </div>
               )}
             </div>
 
-            <div style={{ background: "#1A1A1A", border: "1px solid #2A2A2A", borderRadius: "10px", padding: "16px 18px" }}>
-              <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "12px", letterSpacing: "0.12em", color: "#6B6B6B", marginBottom: 10 }}>SUGGESTED REPLY</div>
-              <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", marginBottom: 10, padding: "6px 10px", background: "#111111", borderRadius: "4px", border: "1px solid #2A2A2A" }}>
+            <div style={{ background: "#111827", border: "1px solid #1E293B", borderRadius: "10px", padding: "16px 18px" }}>
+              <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "12px", letterSpacing: "0.12em", color: "#94A3B8", marginBottom: 10 }}>SUGGESTED REPLY</div>
+              <div style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8", marginBottom: 10, padding: "6px 10px", background: "#111111", borderRadius: "4px", border: "1px solid #1E293B" }}>
                 <span style={{ color: "#4A4A4A", marginRight: 6 }}>Subject:</span>{result.replySubject}
               </div>
-              <textarea value={editableReply} onChange={(e) => setEditableReply(e.target.value)} rows={8} style={{ width: "100%", background: "#111111", border: "1px solid #3A3A3A", borderRadius: "8px", padding: "12px 14px", fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#F8FAFC", resize: "vertical" as const, outline: "none", lineHeight: 1.7, marginBottom: 10 }} />
+              <textarea value={editableReply} onChange={(e) => setEditableReply(e.target.value)} rows={8} style={{ width: "100%", background: "#111111", border: "1px solid #1E293B", borderRadius: "8px", padding: "12px 14px", fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#F8FAFC", resize: "vertical" as const, outline: "none", lineHeight: 1.7, marginBottom: 10 }} />
               <div className="flex gap-2">
-                <button onClick={handleCopy} className="flex items-center gap-1.5" style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: copied ? "#22C55E" : "#94A3B8", background: "transparent", border: `1px solid ${copied ? "rgba(34,197,94,0.4)" : "#3A3A3A"}`, borderRadius: "6px", padding: "7px 14px", cursor: "pointer", transition: "all 0.2s" }}>
+                <button onClick={handleCopy} className="flex items-center gap-1.5" style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: copied ? "#22C55E" : "#94A3B8", background: "transparent", border: `1px solid ${copied ? "rgba(34,197,94,0.4)" : "#1E293B"}`, borderRadius: "6px", padding: "7px 14px", cursor: "pointer", transition: "all 0.2s" }}>
                   {copied ? <Check size={12} /> : <Copy size={12} />}
                   {copied ? "COPIED" : "COPY"}
                 </button>
-                <button onClick={() => onSendReply(result.replySubject, editableReply, row.coachEmail)} className="flex items-center gap-1.5" style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", fontWeight: 600, color: "#0A0A0A", background: "#F5C518", border: "none", borderRadius: "6px", padding: "7px 16px", cursor: "pointer" }}>
+                <button onClick={() => onSendReply(result.replySubject, editableReply, row.coachEmail)} className="flex items-center gap-1.5" style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 600, color: "#0A0E1A", background: "#F5B800", border: "none", borderRadius: "6px", padding: "7px 16px", cursor: "pointer" }}>
                   <Send size={12} />
                   SEND →
                 </button>
@@ -444,14 +444,14 @@ function FollowUpSection({
   const isLoading = generateMutation.isPending;
 
   return (
-    <div style={{ borderTop: "1px solid #2A2A2A", padding: "20px", background: "#111111" }}>
+    <div style={{ borderTop: "1px solid #1E293B", padding: "20px", background: "#111111" }}>
       <div className="flex items-center gap-2 mb-2">
         <MessageSquare size={14} style={{ color: "#94A3B8" }} />
-        <span style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", letterSpacing: "0.12em", color: "#94A3B8" }}>
+        <span style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "13px", letterSpacing: "0.12em", color: "#94A3B8" }}>
           FOLLOW UP EMAIL
         </span>
       </div>
-      <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#4A4A4A", marginBottom: 16 }}>
+      <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#4A4A4A", marginBottom: 16 }}>
         No response yet — remind the coach of your interest
       </p>
 
@@ -461,11 +461,11 @@ function FollowUpSection({
           disabled={isLoading}
           className="flex items-center gap-2"
           style={{
-            fontFamily: "DM Sans, sans-serif",
+            fontFamily: "Inter, sans-serif",
             fontSize: "12px",
             fontWeight: 600,
-            color: isLoading ? "#6B6B6B" : "#0A0A0A",
-            background: isLoading ? "#2A2A2A" : "#F5C518",
+            color: isLoading ? "#94A3B8" : "#0A0E1A",
+            background: isLoading ? "#1E293B" : "#F5B800",
             border: "none",
             borderRadius: "6px",
             padding: "8px 18px",
@@ -490,10 +490,10 @@ function FollowUpSection({
 
       <AnimatePresence>
         {isLoading && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ marginTop: 16, background: "#1A1A1A", border: "1px solid #2A2A2A", borderRadius: "10px", padding: "20px", textAlign: "center" }}>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ marginTop: 16, background: "#111827", border: "1px solid #1E293B", borderRadius: "10px", padding: "20px", textAlign: "center" }}>
             <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }} style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-              <Sparkles size={14} style={{ color: "#F5C518" }} />
-              <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#F5C518" }}>Writing follow-up...</span>
+              <Sparkles size={14} style={{ color: "#F5B800" }} />
+              <span style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#F5B800" }}>Writing follow-up...</span>
             </motion.div>
           </motion.div>
         )}
@@ -502,29 +502,29 @@ function FollowUpSection({
       <AnimatePresence>
         {result && !isLoading && (
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} style={{ marginTop: 0 }}>
-            <div style={{ background: "#1A1A1A", border: "1px solid #2A2A2A", borderRadius: "10px", padding: "16px 18px" }}>
-              <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "12px", letterSpacing: "0.12em", color: "#6B6B6B", marginBottom: 10 }}>GENERATED FOLLOW-UP</div>
-              <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", marginBottom: 10, padding: "6px 10px", background: "#111111", borderRadius: "4px", border: "1px solid #2A2A2A" }}>
+            <div style={{ background: "#111827", border: "1px solid #1E293B", borderRadius: "10px", padding: "16px 18px" }}>
+              <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "12px", letterSpacing: "0.12em", color: "#94A3B8", marginBottom: 10 }}>GENERATED FOLLOW-UP</div>
+              <div style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8", marginBottom: 10, padding: "6px 10px", background: "#111111", borderRadius: "4px", border: "1px solid #1E293B" }}>
                 <span style={{ color: "#4A4A4A", marginRight: 6 }}>Subject:</span>{result.subject}
               </div>
               <textarea
                 value={editableBody}
                 onChange={(e) => setEditableBody(e.target.value)}
                 rows={6}
-                style={{ width: "100%", background: "#111111", border: "1px solid #3A3A3A", borderRadius: "8px", padding: "12px 14px", fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#F8FAFC", resize: "vertical" as const, outline: "none", lineHeight: 1.7, marginBottom: 10 }}
+                style={{ width: "100%", background: "#111111", border: "1px solid #1E293B", borderRadius: "8px", padding: "12px 14px", fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#F8FAFC", resize: "vertical" as const, outline: "none", lineHeight: 1.7, marginBottom: 10 }}
               />
               <div className="flex gap-2">
-                <button onClick={handleCopy} className="flex items-center gap-1.5" style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: copied ? "#22C55E" : "#94A3B8", background: "transparent", border: `1px solid ${copied ? "rgba(34,197,94,0.4)" : "#3A3A3A"}`, borderRadius: "6px", padding: "7px 14px", cursor: "pointer", transition: "all 0.2s" }}>
+                <button onClick={handleCopy} className="flex items-center gap-1.5" style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: copied ? "#22C55E" : "#94A3B8", background: "transparent", border: `1px solid ${copied ? "rgba(34,197,94,0.4)" : "#1E293B"}`, borderRadius: "6px", padding: "7px 14px", cursor: "pointer", transition: "all 0.2s" }}>
                   {copied ? <Check size={12} /> : <Copy size={12} />}
                   {copied ? "COPIED" : "COPY"}
                 </button>
-                <button onClick={() => onSendFollowUp(result.subject, editableBody, row.coachEmail)} className="flex items-center gap-1.5" style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", fontWeight: 600, color: "#0A0A0A", background: "#F5C518", border: "none", borderRadius: "6px", padding: "7px 16px", cursor: "pointer" }}>
+                <button onClick={() => onSendFollowUp(result.subject, editableBody, row.coachEmail)} className="flex items-center gap-1.5" style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 600, color: "#0A0E1A", background: "#F5B800", border: "none", borderRadius: "6px", padding: "7px 16px", cursor: "pointer" }}>
                   <Send size={12} />
                   SEND →
                 </button>
               </div>
             </div>
-            <button onClick={() => { setResult(null); setEditableBody(""); }} style={{ marginTop: 8, fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#4A4A4A", background: "transparent", border: "none", cursor: "pointer", padding: "4px 0" }}>
+            <button onClick={() => { setResult(null); setEditableBody(""); }} style={{ marginTop: 8, fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#4A4A4A", background: "transparent", border: "none", cursor: "pointer", padding: "4px 0" }}>
               ↺ Generate a different version
             </button>
           </motion.div>
@@ -597,8 +597,8 @@ function TrackerRowCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       style={{
-        background: "#1A1A1A",
-        border: "1px solid #2A2A2A",
+        background: "#111827",
+        border: "1px solid #1E293B",
         borderRadius: "12px",
         overflow: "visible",
       }}
@@ -615,24 +615,24 @@ function TrackerRowCard({
             athleticsDomain={entry?.athleticsDomain || ""}
             logoUrl={entry?.logoUrl}
             size={44}
-            brandColor={entry?.brandColor || "#F5C518"}
+            brandColor={entry?.brandColor || "#F5B800"}
           />
         </div>
 
         {/* School + coach info */}
         <div className="flex-1 min-w-0" style={{ minWidth: 140 }}>
-          <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "16px", color: "#F8FAFC", lineHeight: 1.1, letterSpacing: "0.03em" }}>
+          <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "16px", color: "#F8FAFC", lineHeight: 1.1, letterSpacing: "0.03em" }}>
             {(entry?.school || row.schoolName).toUpperCase()}
           </div>
           {row.coachName && (
-            <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", marginTop: 2 }}>{row.coachName}</div>
+            <div style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8", marginTop: 2 }}>{row.coachName}</div>
           )}
-          <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", marginTop: 2 }}>{truncatedSubject}</div>
+          <div style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8", marginTop: 2 }}>{truncatedSubject}</div>
         </div>
 
         {/* Date + days pill */}
         <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
-          <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B" }}>{formattedDate}</span>
+          <span style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8" }}>{formattedDate}</span>
           <DaysPill sentAt={row.sentAt} />
         </div>
 
@@ -660,18 +660,18 @@ function TrackerRowCard({
             {/* Action buttons row — stacked on mobile, inline on sm+ */}
             <div
               className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 px-5 py-3"
-              style={{ borderTop: "1px solid #2A2A2A", background: "#111111" }}
+              style={{ borderTop: "1px solid #1E293B", background: "#111111" }}
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={handleSectionToggle("email")}
                 className="flex items-center justify-center gap-1.5 w-full sm:w-auto"
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "12px",
-                  color: activeSection === "email" ? "#0A0A0A" : "#94A3B8",
+                  color: activeSection === "email" ? "#0A0E1A" : "#94A3B8",
                   background: activeSection === "email" ? "#94A3B8" : "rgba(255,255,255,0.04)",
-                  border: "1px solid #3A3A3A",
+                  border: "1px solid #1E293B",
                   borderRadius: "6px",
                   padding: "8px 10px",
                   cursor: "pointer",
@@ -686,11 +686,11 @@ function TrackerRowCard({
                 onClick={handleSectionToggle("followup")}
                 className="flex items-center justify-center gap-1.5 w-full sm:w-auto"
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "12px",
-                  color: activeSection === "followup" ? "#0A0A0A" : "#F5C518",
-                  background: activeSection === "followup" ? "#F5C518" : "rgba(245,197,24,0.08)",
-                  border: `1px solid ${activeSection === "followup" ? "#F5C518" : "rgba(245,197,24,0.3)"}`,
+                  color: activeSection === "followup" ? "#0A0E1A" : "#F5B800",
+                  background: activeSection === "followup" ? "#F5B800" : "rgba(245,184,0,0.08)",
+                  border: `1px solid ${activeSection === "followup" ? "#F5B800" : "rgba(245,184,0,0.3)"}`,
                   borderRadius: "6px",
                   padding: "8px 10px",
                   cursor: "pointer",
@@ -706,11 +706,11 @@ function TrackerRowCard({
                 onClick={handleSectionToggle("reply")}
                 className="flex items-center justify-center gap-1.5 w-full sm:w-auto"
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "12px",
-                  color: activeSection === "reply" ? "#0A0A0A" : "#F5C518",
-                  background: activeSection === "reply" ? "#F5C518" : "rgba(245,197,24,0.08)",
-                  border: `1px solid ${activeSection === "reply" ? "#F5C518" : "rgba(245,197,24,0.3)"}`,
+                  color: activeSection === "reply" ? "#0A0E1A" : "#F5B800",
+                  background: activeSection === "reply" ? "#F5B800" : "rgba(245,184,0,0.08)",
+                  border: `1px solid ${activeSection === "reply" ? "#F5B800" : "rgba(245,184,0,0.3)"}`,
                   borderRadius: "6px",
                   padding: "8px 10px",
                   cursor: "pointer",
@@ -732,12 +732,12 @@ function TrackerRowCard({
                   transition={{ duration: 0.2 }}
                   style={{ overflow: "hidden" }}
                 >
-                  <div style={{ borderTop: "1px solid #2A2A2A", padding: "16px 20px", background: "#0D0D0D" }}>
-                    <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "11px", letterSpacing: "0.12em", color: "#4A4A4A", marginBottom: 10 }}>FULL EMAIL</div>
-                    <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", marginBottom: 10, padding: "6px 10px", background: "#111111", borderRadius: "4px", border: "1px solid #2A2A2A" }}>
+                  <div style={{ borderTop: "1px solid #1E293B", padding: "16px 20px", background: "#0D0D0D" }}>
+                    <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "11px", letterSpacing: "0.12em", color: "#4A4A4A", marginBottom: 10 }}>FULL EMAIL</div>
+                    <div style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8", marginBottom: 10, padding: "6px 10px", background: "#111111", borderRadius: "4px", border: "1px solid #1E293B" }}>
                       <span style={{ color: "#4A4A4A", marginRight: 6 }}>Subject:</span>{row.subject}
                     </div>
-                    <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#94A3B8", lineHeight: 1.7, whiteSpace: "pre-wrap" }}>
+                    <div style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#94A3B8", lineHeight: 1.7, whiteSpace: "pre-wrap" }}>
                       {row.body}
                     </div>
                   </div>
@@ -823,25 +823,25 @@ const STATUS_GROUPS: {
   },
   {
     label: "CONVERSATION ONGOING",
-    dotColor: "#F5C518",
+    dotColor: "#F5B800",
     statusValues: ["conversation_ongoing"],
     defaultCollapsed: false,
   },
   {
     label: "RESPONSE RECEIVED",
-    dotColor: "#F5C518",
+    dotColor: "#F5B800",
     statusValues: ["response_received"],
     defaultCollapsed: false,
   },
   {
     label: "FOLLOW UP SENT",
-    dotColor: "#6B6B6B",
+    dotColor: "#94A3B8",
     statusValues: ["follow_up_sent"],
     defaultCollapsed: false,
   },
   {
     label: "NO RESPONSE YET",
-    dotColor: "#6B6B6B",
+    dotColor: "#94A3B8",
     statusValues: ["no_response"],
     defaultCollapsed: true,
   },
@@ -882,10 +882,10 @@ function StatusGroupSection({
         style={{ background: "transparent", padding: 0 }}
       >
         <span style={{ width: 8, height: 8, borderRadius: "50%", background: group.dotColor, display: "inline-block", flexShrink: 0 }} />
-        <span style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", letterSpacing: "0.15em", color: "#94A3B8" }}>
+        <span style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "13px", letterSpacing: "0.15em", color: "#94A3B8" }}>
           {group.label}
         </span>
-        <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#4A4A4A", marginLeft: 4 }}>
+        <span style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#4A4A4A", marginLeft: 4 }}>
           ({rows.length})
         </span>
       </div>
@@ -961,30 +961,20 @@ export default function OutreachTracker({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.4, ease: [0.4, 0, 0.2, 1] }}
-      className="mt-14"
+      className="mt-2"
     >
-      {/* Section header */}
-      <div className="mb-5">
-        <span style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "12px", letterSpacing: "0.15em", color: "#6B6B6B", display: "block" }}>
-          OUTREACH TRACKER
-        </span>
-        <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#4A4A4A", marginTop: 2, display: "block" }}>
-          Track your communication with every program
-        </span>
-      </div>
-
       {/* Content */}
       {isLoading ? (
-        <div style={{ background: "#141414", border: "1px solid #2A2A2A", borderRadius: "12px", padding: "48px 24px", textAlign: "center" }}>
-          <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#4A4A4A" }}>Loading...</span>
+        <div style={{ background: "#0F172A", border: "1px solid #1E293B", borderRadius: "12px", padding: "48px 24px", textAlign: "center" }}>
+          <span style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#4A4A4A" }}>Loading...</span>
         </div>
       ) : rows.length === 0 ? (
-        <div style={{ background: "#141414", border: "1px solid #2A2A2A", borderRadius: "12px", padding: "56px 24px", textAlign: "center" }}>
-          <Mail size={28} style={{ color: "#3A3A3A", margin: "0 auto 12px" }} />
-          <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "15px", color: "#6B6B6B", marginBottom: 6 }}>No emails sent yet</p>
-          <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#4A4A4A", marginBottom: 24 }}>Emails you send through RecruitPath will appear here</p>
+        <div style={{ background: "#0F172A", border: "1px solid #1E293B", borderRadius: "12px", padding: "56px 24px", textAlign: "center" }}>
+          <Mail size={28} style={{ color: "#1E293B", margin: "0 auto 12px" }} />
+          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "15px", color: "#94A3B8", marginBottom: 6 }}>No emails sent yet</p>
+          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#4A4A4A", marginBottom: 24 }}>Emails you send through RecruitPath will appear here</p>
           <Link href="/schools">
-            <button style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", letterSpacing: "0.08em", background: "#F5C518", color: "#0A0A0A", border: "none", borderRadius: "4px", padding: "10px 20px", cursor: "pointer" }}>
+            <button style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "13px", letterSpacing: "0.08em", background: "#F5B800", color: "#0A0E1A", border: "none", borderRadius: "4px", padding: "10px 20px", cursor: "pointer" }}>
               FIND SCHOOLS →
             </button>
           </Link>

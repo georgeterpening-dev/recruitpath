@@ -13,7 +13,7 @@ import PublicNav from "@/components/PublicNav";
 
 function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20" style={{ background: "#0A0A0A" }}>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20" style={{ background: "#0A0E1A" }}>
       {/* Background image with overlay */}
       <div
         className="absolute inset-0 opacity-20"
@@ -32,7 +32,7 @@ function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.7 }}
           className="text-white mb-6"
-          style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(48px, 8vw, 72px)", letterSpacing: "0.05em" }}
+          style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "clamp(48px, 8vw, 72px)", letterSpacing: "0.05em" }}
         >
           GET IN TOUCH
         </motion.h1>
@@ -41,7 +41,7 @@ function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
           className="text-[#94A3B8] text-lg"
-          style={{ fontFamily: "DM Sans, sans-serif", maxWidth: "600px", margin: "0 auto" }}
+          style={{ fontFamily: "Inter, sans-serif", maxWidth: "600px", margin: "0 auto" }}
         >
           Have questions about RecruitPath? We'd love to hear from you. Send us a message and we'll get back to you as soon as possible.
         </motion.p>
@@ -80,7 +80,7 @@ function ContactFormSection() {
   };
 
   return (
-    <section className="py-24 px-6" style={{ background: "#0A0A0A" }}>
+    <section className="py-24 px-6" style={{ background: "#0A0E1A" }}>
       <div className="max-w-2xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -101,7 +101,7 @@ function ContactFormSection() {
                 onChange={handleChange}
                 placeholder="Your name"
                 className="w-full px-4 py-3 rounded-lg text-[#0A0E1A] placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#F5B800]"
-                style={{ fontFamily: "Inter, sans-serif", background: "#1A1A1A", border: "1px solid #2A2A2A" }}
+                style={{ fontFamily: "Inter, sans-serif", background: "#111827", border: "1px solid #1E293B" }}
               />
             </div>
 
@@ -117,7 +117,7 @@ function ContactFormSection() {
                 onChange={handleChange}
                 placeholder="your@email.com"
                 className="w-full px-4 py-3 rounded-lg text-[#0A0E1A] placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#F5B800]"
-                style={{ fontFamily: "Inter, sans-serif", background: "#1A1A1A", border: "1px solid #2A2A2A" }}
+                style={{ fontFamily: "Inter, sans-serif", background: "#111827", border: "1px solid #1E293B" }}
               />
             </div>
 
@@ -133,7 +133,7 @@ function ContactFormSection() {
                 placeholder="Tell us what's on your mind..."
                 rows={6}
                 className="w-full px-4 py-3 rounded-lg text-[#0A0E1A] placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#F5B800] resize-none"
-                style={{ fontFamily: "Inter, sans-serif", background: "#1A1A1A", border: "1px solid #2A2A2A" }}
+                style={{ fontFamily: "Inter, sans-serif", background: "#111827", border: "1px solid #1E293B" }}
               />
             </div>
 
@@ -161,7 +161,7 @@ function ContactFormSection() {
 
 export default function Contact() {
   return (
-    <div style={{ background: "#0A0A0A" }}>
+    <div style={{ background: "#0A0E1A" }}>
       <PublicNav currentPage="contact" />
       <HeroSection />
       <ContactFormSection />

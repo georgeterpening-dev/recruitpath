@@ -66,7 +66,7 @@ export default function ComingSoonGate({ onUnlock, children }: ComingSoonGatePro
         WebkitOverflowScrolling: "touch",
         zIndex: 9999,
         background: "linear-gradient(135deg, #0a0f1e 0%, #0d1628 50%, #0a1020 100%)",
-        fontFamily: "'DM Sans', sans-serif",
+        fontFamily: "'Inter', sans-serif",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -82,7 +82,7 @@ export default function ComingSoonGate({ onUnlock, children }: ComingSoonGatePro
           width: "600px",
           height: "600px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(245,197,24,0.08) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(245,184,0,0.08) 0%, transparent 70%)",
           animation: "pulseGlow 4s ease-in-out infinite",
           pointerEvents: "none",
         }}
@@ -111,11 +111,11 @@ export default function ComingSoonGate({ onUnlock, children }: ComingSoonGatePro
         {/* COMING SOON headline */}
         <div
           style={{
-            fontFamily: "'Bebas Neue', sans-serif",
+            fontFamily: "'Barlow Condensed', sans-serif",
             fontSize: "64px",
             letterSpacing: "0.02em",
             lineHeight: 1,
-            background: "linear-gradient(135deg, #F5C518 0%, #FFD700 50%, #F5C518 100%)",
+            background: "linear-gradient(135deg, #F5B800 0%, #FFD700 50%, #F5B800 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -140,17 +140,17 @@ export default function ComingSoonGate({ onUnlock, children }: ComingSoonGatePro
 
         {status === "success" ? (
           <div style={{ textAlign: "center", marginTop: "32px" }}>
-            <p style={{ fontFamily: "DM Sans, sans-serif", color: "#22C55E", fontSize: "15px", fontWeight: 600 }}>
+            <p style={{ fontFamily: "Inter, sans-serif", color: "#22C55E", fontSize: "15px", fontWeight: 600 }}>
               ✓ You're on the list! We'll email your 15% discount code at launch.
             </p>
           </div>
         ) : (
           <div style={{ textAlign: "center", marginTop: "32px", maxWidth: "400px", margin: "32px auto 0" }}>
-            <p style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", letterSpacing: "0.15em", color: "#F5C518", marginBottom: "6px" }}>
+            <p style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "13px", letterSpacing: "0.15em", color: "#F5B800", marginBottom: "6px" }}>
               FOUNDING MEMBER OFFER
             </p>
-            <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#888", marginBottom: "16px" }}>
-              Join the waitlist and lock in <span style={{ color: "#F5C518", fontWeight: 700 }}>15% off forever</span> — founding members only.
+            <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#888", marginBottom: "16px" }}>
+              Join the waitlist and lock in <span style={{ color: "#F5B800", fontWeight: 700 }}>15% off forever</span> — founding members only.
             </p>
             <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "center" }}>
               <input
@@ -167,7 +167,7 @@ export default function ComingSoonGate({ onUnlock, children }: ComingSoonGatePro
                   border: "1px solid rgba(255,255,255,0.15)",
                   background: "rgba(255,255,255,0.05)",
                   color: "#FFFFFF",
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "14px",
                   outline: "none",
                 }}
@@ -179,9 +179,9 @@ export default function ComingSoonGate({ onUnlock, children }: ComingSoonGatePro
                   padding: "12px 24px",
                   borderRadius: "8px",
                   border: "none",
-                  background: "#F5C518",
+                  background: "#F5B800",
                   color: "#000",
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "16px",
                   letterSpacing: "0.08em",
                   cursor: "pointer",
@@ -191,12 +191,12 @@ export default function ComingSoonGate({ onUnlock, children }: ComingSoonGatePro
               </button>
             </div>
             {status === "error" && (
-              <p style={{ fontFamily: "DM Sans, sans-serif", color: "#EF4444", fontSize: "13px", marginTop: "8px" }}>
+              <p style={{ fontFamily: "Inter, sans-serif", color: "#EF4444", fontSize: "13px", marginTop: "8px" }}>
                 Something went wrong. Try again.
               </p>
             )}
             {status === "duplicate" && (
-              <p style={{ fontFamily: "DM Sans, sans-serif", color: "#F5C518", fontSize: "13px", marginTop: "8px" }}>
+              <p style={{ fontFamily: "Inter, sans-serif", color: "#F5B800", fontSize: "13px", marginTop: "8px" }}>
                 You're already on the waitlist!
               </p>
             )}
@@ -225,7 +225,7 @@ export default function ComingSoonGate({ onUnlock, children }: ComingSoonGatePro
                 cursor: "pointer",
                 color: "rgba(255,255,255,0.25)",
                 fontSize: "11px",
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: "'Inter', sans-serif",
                 letterSpacing: "0.05em",
                 padding: "4px 8px",
                 transition: "color 0.2s",
@@ -262,14 +262,14 @@ export default function ComingSoonGate({ onUnlock, children }: ComingSoonGatePro
                     padding: "10px 14px",
                     color: "white",
                     fontSize: "13px",
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "'Inter', sans-serif",
                     outline: "none",
                     width: "180px",
                     backdropFilter: "blur(8px)",
                     transition: "border-color 0.2s",
                   }}
                   onFocus={e => {
-                    if (!error) e.target.style.borderColor = "rgba(245,197,24,0.4)";
+                    if (!error) e.target.style.borderColor = "rgba(245,184,0,0.4)";
                   }}
                   onBlur={e => {
                     if (!error) e.target.style.borderColor = "rgba(255,255,255,0.1)";
@@ -278,13 +278,13 @@ export default function ComingSoonGate({ onUnlock, children }: ComingSoonGatePro
                 <button
                   type="submit"
                   style={{
-                    background: "#F5C518",
+                    background: "#F5B800",
                     border: "none",
                     borderRadius: "20px",
                     padding: "10px 16px",
                     color: "#0a0f1e",
                     fontSize: "12px",
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "'Inter', sans-serif",
                     fontWeight: 700,
                     letterSpacing: "0.06em",
                     cursor: "pointer",
@@ -302,7 +302,7 @@ export default function ComingSoonGate({ onUnlock, children }: ComingSoonGatePro
                   style={{
                     color: "rgba(255,100,100,0.9)",
                     fontSize: "12px",
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "'Inter', sans-serif",
                   }}
                 >
                   Incorrect password

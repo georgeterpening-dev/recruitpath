@@ -1,6 +1,6 @@
 /*
  * RecruitPath — How It Works Page
- * Design: #0A0A0A background, #F5C518 yellow accents, Bebas Neue headlines, DM Sans body
+ * Design: #0A0E1A background, #F5B800 yellow accents, Bebas Neue headlines, DM Sans body
  * Sections: Hero, The Old Way, The RecruitPath Way, Step-by-Step (8 steps), Comparison, Social Proof, CTA
  */
 import { motion } from "framer-motion";
@@ -24,11 +24,11 @@ function GmailCtaButton({ isAuthenticated }: { isAuthenticated: boolean }) {
         <button
           style={{
             marginTop: "16px",
-            fontFamily: "Bebas Neue, sans-serif",
+            fontFamily: "Barlow Condensed, sans-serif",
             fontSize: "13px",
             letterSpacing: "1.5px",
             color: "#000000",
-            background: "#F5C518",
+            background: "#F5B800",
             border: "none",
             borderRadius: "8px",
             padding: "13px 28px",
@@ -51,7 +51,7 @@ function GmailCtaButton({ isAuthenticated }: { isAuthenticated: boolean }) {
         disabled
         style={{
           marginTop: "16px",
-          fontFamily: "Bebas Neue, sans-serif",
+          fontFamily: "Barlow Condensed, sans-serif",
           fontSize: "13px",
           letterSpacing: "1.5px",
           color: "#22C55E",
@@ -73,11 +73,11 @@ function GmailCtaButton({ isAuthenticated }: { isAuthenticated: boolean }) {
       <button
         style={{
           marginTop: "16px",
-          fontFamily: "Bebas Neue, sans-serif",
+          fontFamily: "Barlow Condensed, sans-serif",
           fontSize: "13px",
           letterSpacing: "1.5px",
           color: "#000000",
-          background: "#F5C518",
+          background: "#F5B800",
           border: "none",
           borderRadius: "8px",
           padding: "13px 28px",
@@ -127,7 +127,7 @@ function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
           className="inline-block mb-6 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase"
-          style={{ background: "#F5C518", color: "#0A0A0A", fontFamily: "Inter, sans-serif" }}
+          style={{ background: "#F5B800", color: "#0A0E1A", fontFamily: "Inter, sans-serif" }}
         >
           HOW IT WORKS
         </motion.div>
@@ -137,7 +137,7 @@ function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.7 }}
           className="text-white mb-6 leading-none"
-          style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(56px, 10vw, 96px)", letterSpacing: "0.04em" }}
+          style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "clamp(56px, 10vw, 96px)", letterSpacing: "0.04em" }}
         >
           FROM UNKNOWN<br />TO RECRUITED.
         </motion.h1>
@@ -147,7 +147,7 @@ function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.6 }}
           className="text-[#94A3B8] text-xl max-w-2xl mx-auto leading-relaxed"
-          style={{ fontFamily: "DM Sans, sans-serif" }}
+          style={{ fontFamily: "Inter, sans-serif" }}
         >
           Most athletes send the same generic email to 50 coaches and hear nothing back. RecruitPath does something different. Here's how.
         </motion.p>
@@ -167,7 +167,7 @@ function HeroSection() {
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
         >
-          <ChevronDown size={20} className="text-[#F5C518]" />
+          <ChevronDown size={20} className="text-[#F5B800]" />
         </motion.div>
       </motion.div>
     </section>
@@ -193,7 +193,7 @@ function OldWaySection() {
   ];
 
   return (
-    <section className="py-28 px-6" style={{ background: "#0A0A0A" }}>
+    <section className="py-28 px-6" style={{ background: "#0A0E1A" }}>
       <div className="max-w-3xl mx-auto text-center mb-16">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -201,7 +201,7 @@ function OldWaySection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
           className="text-xs font-semibold tracking-widest uppercase mb-4"
-          style={{ color: "#F5C518", fontFamily: "Inter, sans-serif" }}
+          style={{ color: "#F5B800", fontFamily: "Inter, sans-serif" }}
         >
           THE OLD WAY
         </motion.p>
@@ -211,7 +211,7 @@ function OldWaySection() {
           viewport={{ once: true }}
           transition={{ delay: 0.1, duration: 0.6 }}
           className="text-white mb-8"
-          style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(36px, 6vw, 52px)", letterSpacing: "0.04em" }}
+          style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "clamp(36px, 6vw, 52px)", letterSpacing: "0.04em" }}
         >
           WHY MOST ATHLETES GET IGNORED
         </motion.h2>
@@ -221,7 +221,7 @@ function OldWaySection() {
           viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 0.6 }}
           className="text-[#94A3B8] text-lg leading-relaxed"
-          style={{ fontFamily: "DM Sans, sans-serif" }}
+          style={{ fontFamily: "Inter, sans-serif" }}
         >
           The traditional recruiting process looks like this: find a list of schools, copy and paste the same email, send it to 50 coaches, and wait. Maybe 2 respond. You have no idea why the others didn't. You don't know if the program even has a spot for you. You don't know if the coach is retiring. You don't know if they just signed someone at your position last week. You're shouting into the void.
         </motion.p>
@@ -236,16 +236,16 @@ function OldWaySection() {
             viewport={{ once: true }}
             transition={{ delay: i * 0.1, duration: 0.6 }}
             className="p-7 rounded-xl"
-            style={{ background: "#111111", border: "1px solid #2A2A2A" }}
+            style={{ background: "#111111", border: "1px solid #1E293B" }}
           >
-            <div className="w-8 h-0.5 mb-5" style={{ background: "#F5C518" }} />
+            <div className="w-8 h-0.5 mb-5" style={{ background: "#F5B800" }} />
             <h3
               className="text-white mb-3"
-              style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "18px", letterSpacing: "0.05em" }}
+              style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "18px", letterSpacing: "0.05em" }}
             >
               {point.title}
             </h3>
-            <p className="text-[#94A3B8] text-sm leading-relaxed" style={{ fontFamily: "DM Sans, sans-serif" }}>
+            <p className="text-[#94A3B8] text-sm leading-relaxed" style={{ fontFamily: "Inter, sans-serif" }}>
               {point.body}
             </p>
           </motion.div>
@@ -268,7 +268,7 @@ const timelineSteps = [
 
 function RecruitPathWaySection() {
   return (
-    <section className="py-28 px-6" style={{ background: "#111111", borderTop: "1px solid #1A1A1A", borderBottom: "1px solid #1A1A1A" }}>
+    <section className="py-28 px-6" style={{ background: "#111111", borderTop: "1px solid #111827", borderBottom: "1px solid #111827" }}>
       <div className="max-w-5xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -276,7 +276,7 @@ function RecruitPathWaySection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="text-center mb-6"
-          style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(44px, 8vw, 72px)", letterSpacing: "0.04em", color: "#F5C518" }}
+          style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "clamp(44px, 8vw, 72px)", letterSpacing: "0.04em", color: "#F5B800" }}
         >
           THERE IS A SMARTER WAY.
         </motion.h2>
@@ -286,7 +286,7 @@ function RecruitPathWaySection() {
           viewport={{ once: true }}
           transition={{ delay: 0.1, duration: 0.6 }}
           className="text-[#94A3B8] text-lg leading-relaxed text-center max-w-2xl mx-auto mb-20"
-          style={{ fontFamily: "DM Sans, sans-serif" }}
+          style={{ fontFamily: "Inter, sans-serif" }}
         >
           RecruitPath gives you the same information and tools that only well-connected club coaches and expensive recruiting consultants used to have. Now any athlete can use it.
         </motion.p>
@@ -296,7 +296,7 @@ function RecruitPathWaySection() {
           {/* Connecting line */}
           <div
             className="absolute top-5 left-0 right-0 h-0.5 hidden md:block"
-            style={{ background: "linear-gradient(to right, #F5C518, #F5C518)", opacity: 0.3 }}
+            style={{ background: "linear-gradient(to right, #F5B800, #F5B800)", opacity: 0.3 }}
           />
           <div className="grid grid-cols-2 md:grid-cols-6 gap-8">
             {timelineSteps.map((step, i) => (
@@ -311,13 +311,13 @@ function RecruitPathWaySection() {
                 {/* Yellow dot */}
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 z-10"
-                  style={{ background: "#F5C518", color: "#0A0A0A", fontFamily: "Inter, sans-serif" }}
+                  style={{ background: "#F5B800", color: "#0A0E1A", fontFamily: "Inter, sans-serif" }}
                 >
                   {String(i + 1).padStart(2, "0")}
                 </div>
                 <p
                   className="text-white text-xs font-semibold leading-tight"
-                  style={{ fontFamily: "DM Sans, sans-serif" }}
+                  style={{ fontFamily: "Inter, sans-serif" }}
                 >
                   {step}
                 </p>
@@ -360,13 +360,13 @@ const steps: Step[] = [
     extra: (
       <div
         className="mt-6 p-5 rounded-xl flex flex-wrap gap-3"
-        style={{ background: "#0A0A0A", border: "1px solid #2A2A2A" }}
+        style={{ background: "#0A0E1A", border: "1px solid #1E293B" }}
       >
         {["Division Level", "Location", "School Size", "Academics", "Budget", "Campus Vibe", "Name Recognition", "Conference"].map((q) => (
           <span
             key={q}
             className="px-3 py-1.5 rounded-lg text-xs font-medium"
-            style={{ background: "#1A1A1A", color: "#94A3B8", fontFamily: "DM Sans, sans-serif", border: "1px solid #2A2A2A" }}
+            style={{ background: "#111827", color: "#94A3B8", fontFamily: "Inter, sans-serif", border: "1px solid #1E293B" }}
           >
             {q}
           </span>
@@ -382,18 +382,18 @@ const steps: Step[] = [
     extra: (
       <div className="mt-6 grid grid-cols-3 gap-3">
         {[
-          { label: "GRADUATING", value: "4", color: "#F5C518" },
+          { label: "GRADUATING", value: "4", color: "#F5B800" },
           { label: "COMMITS FILLING", value: "1", color: "#94A3B8" },
           { label: "REAL OPENINGS", value: "3", color: "#22C55E" },
         ].map((stat) => (
           <div
             key={stat.label}
             className="p-4 rounded-xl text-center"
-            style={{ background: "#0A0A0A", border: "1px solid #2A2A2A" }}
+            style={{ background: "#0A0E1A", border: "1px solid #1E293B" }}
           >
             <div
               className="text-3xl font-bold mb-1"
-              style={{ fontFamily: "Bebas Neue, sans-serif", color: stat.color, letterSpacing: "0.04em" }}
+              style={{ fontFamily: "Barlow Condensed, sans-serif", color: stat.color, letterSpacing: "0.04em" }}
             >
               {stat.value}
             </div>
@@ -422,9 +422,9 @@ const steps: Step[] = [
             key={tone.label}
             className="px-4 py-2 rounded-lg text-xs font-semibold tracking-widest"
             style={{
-              background: tone.active ? "#F5C518" : "#1A1A1A",
-              color: tone.active ? "#0A0A0A" : "#94A3B8",
-              border: tone.active ? "none" : "1px solid #2A2A2A",
+              background: tone.active ? "#F5B800" : "#111827",
+              color: tone.active ? "#0A0E1A" : "#94A3B8",
+              border: tone.active ? "none" : "1px solid #1E293B",
               fontFamily: "Inter, sans-serif",
             }}
           >
@@ -453,12 +453,12 @@ const steps: Step[] = [
           { label: "Response Received", color: "#22C55E" },
           { label: "Conversation Ongoing", color: "#3B82F6" },
           { label: "Visit Scheduled", color: "#A855F7" },
-          { label: "Offer Received", color: "#F5C518" },
+          { label: "Offer Received", color: "#F5B800" },
         ].map((status) => (
           <span
             key={status.label}
             className="px-3 py-1.5 rounded-full text-xs font-medium"
-            style={{ background: `${status.color}22`, color: status.color, border: `1px solid ${status.color}44`, fontFamily: "DM Sans, sans-serif" }}
+            style={{ background: `${status.color}22`, color: status.color, border: `1px solid ${status.color}44`, fontFamily: "Inter, sans-serif" }}
           >
             {status.label}
           </span>
@@ -491,16 +491,16 @@ function StepRow({ step, index, onOpenQuiz }: { step: Step; index: number; onOpe
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.7 }}
       className={`flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"} gap-10 md:gap-16 items-start py-16 border-b`}
-      style={{ borderColor: "#1A1A1A" }}
+      style={{ borderColor: "#111827" }}
     >
       {/* Step number */}
       <div className="flex-shrink-0 w-full md:w-auto flex md:flex-col items-center md:items-start gap-4 md:gap-0">
         <span
           className="leading-none select-none"
           style={{
-            fontFamily: "Bebas Neue, sans-serif",
+            fontFamily: "Barlow Condensed, sans-serif",
             fontSize: "clamp(72px, 10vw, 120px)",
-            color: "#F5C518",
+            color: "#F5B800",
             letterSpacing: "0.02em",
             lineHeight: 1,
             opacity: 0.9,
@@ -514,11 +514,11 @@ function StepRow({ step, index, onOpenQuiz }: { step: Step; index: number; onOpe
       <div className="flex-1">
         <h3
           className="text-white mb-5"
-          style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(28px, 4vw, 40px)", letterSpacing: "0.04em" }}
+          style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "clamp(28px, 4vw, 40px)", letterSpacing: "0.04em" }}
         >
           {step.headline}
         </h3>
-        <p className="text-[#94A3B8] text-base leading-relaxed mb-6" style={{ fontFamily: "DM Sans, sans-serif" }}>
+        <p className="text-[#94A3B8] text-base leading-relaxed mb-6" style={{ fontFamily: "Inter, sans-serif" }}>
           {step.body}
         </p>
 
@@ -528,10 +528,10 @@ function StepRow({ step, index, onOpenQuiz }: { step: Step; index: number; onOpe
         {/* Yellow tip card */}
         <div
           className="mt-6 p-4 rounded-xl flex gap-3 items-start"
-          style={{ background: "rgba(245,197,24,0.08)", border: "1px solid rgba(245,197,24,0.25)" }}
+          style={{ background: "rgba(245,184,0,0.08)", border: "1px solid rgba(245,184,0,0.25)" }}
         >
           <span className="text-lg flex-shrink-0">💡</span>
-          <p className="text-sm leading-relaxed" style={{ color: "#F5C518", fontFamily: "DM Sans, sans-serif" }}>
+          <p className="text-sm leading-relaxed" style={{ color: "#F5B800", fontFamily: "Inter, sans-serif" }}>
             {step.tip}
           </p>
         </div>
@@ -542,11 +542,11 @@ function StepRow({ step, index, onOpenQuiz }: { step: Step; index: number; onOpe
             <button
               style={{
                 marginTop: "16px",
-                fontFamily: "Bebas Neue, sans-serif",
+                fontFamily: "Barlow Condensed, sans-serif",
                 fontSize: "13px",
                 letterSpacing: "1.5px",
                 color: "#000000",
-                background: "#F5C518",
+                background: "#F5B800",
                 border: "none",
                 borderRadius: "8px",
                 padding: "13px 28px",
@@ -573,11 +573,11 @@ function StepRow({ step, index, onOpenQuiz }: { step: Step; index: number; onOpe
             onClick={onOpenQuiz}
             className="mt-5 flex items-center gap-2"
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "15px",
               letterSpacing: "0.08em",
-              color: "#0A0A0A",
-              background: "#F5C518",
+              color: "#0A0E1A",
+              background: "#F5B800",
               border: "none",
               borderRadius: "8px",
               padding: "12px 24px",
@@ -597,7 +597,7 @@ function StepRow({ step, index, onOpenQuiz }: { step: Step; index: number; onOpe
 
 function StepByStepSection({ onOpenQuiz }: { onOpenQuiz: () => void }) {
   return (
-    <section className="py-20 px-6" style={{ background: "#0A0A0A" }}>
+    <section className="py-20 px-6" style={{ background: "#0A0E1A" }}>
       <div className="max-w-5xl mx-auto">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -605,7 +605,7 @@ function StepByStepSection({ onOpenQuiz }: { onOpenQuiz: () => void }) {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
           className="text-xs font-semibold tracking-widest uppercase mb-4 text-center"
-          style={{ color: "#F5C518", fontFamily: "Inter, sans-serif" }}
+          style={{ color: "#F5B800", fontFamily: "Inter, sans-serif" }}
         >
           THE RECOMMENDED PATH
         </motion.p>
@@ -615,7 +615,7 @@ function StepByStepSection({ onOpenQuiz }: { onOpenQuiz: () => void }) {
           viewport={{ once: true }}
           transition={{ delay: 0.1, duration: 0.6 }}
           className="text-white text-center mb-16"
-          style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(36px, 6vw, 52px)", letterSpacing: "0.04em" }}
+          style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "clamp(36px, 6vw, 52px)", letterSpacing: "0.04em" }}
         >
           STEP BY STEP
         </motion.h2>
@@ -643,7 +643,7 @@ const comparisonRows = [
 
 function ComparisonSection() {
   return (
-    <section className="py-28 px-6" style={{ background: "#0A0A0A", borderTop: "1px solid #1A1A1A" }}>
+    <section className="py-28 px-6" style={{ background: "#0A0E1A", borderTop: "1px solid #111827" }}>
       <div className="max-w-5xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -651,7 +651,7 @@ function ComparisonSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="text-white text-center mb-4"
-          style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(36px, 6vw, 52px)", letterSpacing: "0.04em" }}
+          style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "clamp(36px, 6vw, 52px)", letterSpacing: "0.04em" }}
         >
           WHY RECRUITPATH WORKS BETTER
         </motion.h2>
@@ -661,7 +661,7 @@ function ComparisonSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.1, duration: 0.6 }}
           className="text-[#94A3B8] text-center mb-14"
-          style={{ fontFamily: "DM Sans, sans-serif", fontSize: "16px" }}
+          style={{ fontFamily: "Inter, sans-serif", fontSize: "16px" }}
         >
           Here's how we compare to the traditional approach and other platforms
         </motion.p>
@@ -672,30 +672,30 @@ function ComparisonSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 0.7 }}
           className="rounded-2xl overflow-hidden"
-          style={{ border: "1px solid #2A2A2A" }}
+          style={{ border: "1px solid #1E293B" }}
         >
           {/* Header row */}
           <div className="grid grid-cols-3 text-xs font-semibold tracking-widest uppercase" style={{ background: "#111111" }}>
             <div className="p-4 text-[#4A4A4A]" style={{ fontFamily: "Inter, sans-serif" }}>Feature</div>
-            <div className="p-4 text-[#4A4A4A] border-l" style={{ fontFamily: "Inter, sans-serif", borderColor: "#2A2A2A" }}>Traditional / Other Platforms</div>
-            <div className="p-4 border-l" style={{ fontFamily: "Inter, sans-serif", borderColor: "#2A2A2A", color: "#F5C518", background: "rgba(245,197,24,0.06)" }}>RecruitPath</div>
+            <div className="p-4 text-[#4A4A4A] border-l" style={{ fontFamily: "Inter, sans-serif", borderColor: "#1E293B" }}>Traditional / Other Platforms</div>
+            <div className="p-4 border-l" style={{ fontFamily: "Inter, sans-serif", borderColor: "#1E293B", color: "#F5B800", background: "rgba(245,184,0,0.06)" }}>RecruitPath</div>
           </div>
 
           {comparisonRows.map((row, i) => (
             <div
               key={row.feature}
               className="grid grid-cols-3 text-sm"
-              style={{ borderTop: "1px solid #1A1A1A", background: i % 2 === 0 ? "#0A0A0A" : "#0D0D0D" }}
+              style={{ borderTop: "1px solid #111827", background: i % 2 === 0 ? "#0A0E1A" : "#0D0D0D" }}
             >
-              <div className="p-4 font-medium text-white" style={{ fontFamily: "DM Sans, sans-serif" }}>{row.feature}</div>
-              <div className="p-4 text-[#4A4A4A] border-l" style={{ fontFamily: "DM Sans, sans-serif", borderColor: "#1A1A1A" }}>{row.traditional}</div>
+              <div className="p-4 font-medium text-white" style={{ fontFamily: "Inter, sans-serif" }}>{row.feature}</div>
+              <div className="p-4 text-[#4A4A4A] border-l" style={{ fontFamily: "Inter, sans-serif", borderColor: "#111827" }}>{row.traditional}</div>
               <div
                 className="p-4 border-l font-medium"
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
-                  borderColor: "#1A1A1A",
-                  color: "#F5C518",
-                  background: "rgba(245,197,24,0.04)",
+                  fontFamily: "Inter, sans-serif",
+                  borderColor: "#111827",
+                  color: "#F5B800",
+                  background: "rgba(245,184,0,0.04)",
                 }}
               >
                 {row.recruitpath}
@@ -712,7 +712,7 @@ function ComparisonSection() {
 
 function CTASection() {
   return (
-    <section className="py-32 px-6 text-center" style={{ background: "#0A0A0A", borderTop: "1px solid #1A1A1A" }}>
+    <section className="py-32 px-6 text-center" style={{ background: "#0A0E1A", borderTop: "1px solid #111827" }}>
       <div className="max-w-2xl mx-auto">
         {/* Beta pill */}
         <motion.div
@@ -721,7 +721,7 @@ function CTASection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
           className="inline-block mb-8 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase"
-          style={{ background: "#1A1A1A", color: "#F5C518", border: "1px solid #2A2A2A", fontFamily: "Inter, sans-serif" }}
+          style={{ background: "#111827", color: "#F5B800", border: "1px solid #1E293B", fontFamily: "Inter, sans-serif" }}
         >
           BETA — MEN'S VOLLEYBALL
         </motion.div>
@@ -732,7 +732,7 @@ function CTASection() {
           viewport={{ once: true }}
           transition={{ delay: 0.1, duration: 0.6 }}
           className="text-white mb-5"
-          style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(44px, 8vw, 72px)", letterSpacing: "0.04em" }}
+          style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "clamp(44px, 8vw, 72px)", letterSpacing: "0.04em" }}
         >
           READY TO GET RECRUITED?
         </motion.h2>
@@ -743,7 +743,7 @@ function CTASection() {
           viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 0.6 }}
           className="text-[#94A3B8] text-lg mb-10"
-          style={{ fontFamily: "DM Sans, sans-serif" }}
+          style={{ fontFamily: "Inter, sans-serif" }}
         >
           Join athletes already using RecruitPath to find their program.
         </motion.p>
@@ -759,14 +759,14 @@ function CTASection() {
               whileHover={{ scale: 1.03, filter: "brightness(1.1)" }}
               whileTap={{ scale: 0.97 }}
               className="px-10 py-4 text-base font-semibold tracking-wider uppercase rounded-xl"
-              style={{ background: "#F5C518", color: "#0A0A0A", fontFamily: "Inter, sans-serif" }}
+              style={{ background: "#F5B800", color: "#0A0E1A", fontFamily: "Inter, sans-serif" }}
             >
               GET STARTED FREE →
             </motion.button>
           </Link>
           <p
             className="mt-4 text-xs"
-            style={{ color: "#4A4A4A", fontFamily: "DM Sans, sans-serif" }}
+            style={{ color: "#4A4A4A", fontFamily: "Inter, sans-serif" }}
           >
             Free to start. Upgrade to Pro anytime.
           </p>
@@ -781,7 +781,7 @@ function CTASection() {
 export default function HowItWorks() {
   const [quizOpen, setQuizOpen] = useState(false);
   return (
-    <div style={{ background: "#0A0A0A" }}>
+    <div style={{ background: "#0A0E1A" }}>
       <PublicNav currentPage="how-it-works" />
       <HeroSection />
       <OldWaySection />

@@ -167,22 +167,12 @@ export default function Emails() {
   return (
     <>
     <div className="min-h-screen pb-8" style={{ background: "#0A0E1A" }}>
-      {/* Header */}
-      <div
-        className="px-6 py-5 flex items-center justify-between"
-        style={{ borderBottom: "1px solid #1E293B" }}
-      >
-        <span
-          className="text-[#F5B800] text-xl"
-          style={{
-            fontFamily: "Barlow Condensed, sans-serif",
-            fontWeight: 800,
-            letterSpacing: "-0.02em",
-          }}
-        >
-          RECRUITPATH
-        </span>
-        <span className="section-label">MY EMAILS</span>
+      <div className="max-w-7xl mx-auto px-4 md:px-6 pt-8 md:pt-10">
+        <p className="section-label mb-1">Outreach</p>
+        <h1 className="page-title text-4xl md:text-5xl">Email Generator</h1>
+        <p className="text-[#94A3B8] text-sm mt-2" style={{ fontFamily: "Inter, sans-serif" }}>
+          AI-personalized intro emails for every coach on your list.
+        </p>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">

@@ -67,7 +67,7 @@
 :root {
   --radius: 0.75rem;
   /* RecruitPath dark-only palette */
-  --background: oklch(0.28 0.042 257.3);    /* #1c2a3e */
+  --background: oklch(0.155 0.03 262);       /* #0A0E1A near-black navy */
   --foreground: oklch(0.97 0.005 220);       /* #F8FAFC */
   --card: oklch(0.14 0.015 260);             /* #111827 */
   --card-foreground: oklch(0.97 0.005 220);
@@ -106,7 +106,7 @@
 
 /* Force dark mode always — no light mode toggle */
 .dark {
-  --background: oklch(0.28 0.042 257.3);
+  --background: oklch(0.155 0.03 262);
   --foreground: oklch(0.97 0.005 220);
   --card: oklch(0.14 0.015 260);
   --card-foreground: oklch(0.97 0.005 220);
@@ -209,6 +209,30 @@
     border: 1px solid #1E293B;
     border-radius: 12px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Interactive card — hover lift + gold border hint */
+  .rp-card-interactive {
+    background: #111827;
+    border: 1px solid #1E293B;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+  }
+  .rp-card-interactive:hover {
+    border-color: rgba(245, 184, 0, 0.35);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Unified page header for app pages */
+  .page-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    line-height: 1;
+    color: #F8FAFC;
   }
 
   /* Gold button */
@@ -348,11 +372,11 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(245, 197, 24, 0.2);
+    background: rgba(245, 184, 0, 0.2);
     border-radius: 2px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(245, 197, 24, 0.4);
+    background: rgba(245, 184, 0, 0.4);
   }
 
   /* Dashboard fade-in animation */
@@ -365,9 +389,9 @@
   }
 }
 
-/* Dashboard sidebar-inset background override */
+/* Dashboard sidebar-inset inherits the global background */
 [data-slot="sidebar-inset"] {
-  background-color: #1c2a3e !important;
+  background-color: #0A0E1A;
 }
 
 /* Hero headline gradient — IS WAITING. */
@@ -432,43 +456,7 @@
   }
 }
 
-/* Profile page: remove min-height stretch on mobile so no empty gap below footer */
 @media (max-width: 767px) {
-  .profile-page-wrapper {
-    min-height: auto !important;
-    padding-bottom: 0 !important;
-  }
-
-  /* Hero: full viewport height on mobile */
-  .profile-hero {
-    min-height: 100vh !important;
-    height: 100vh;
-    /* fixed attachment breaks on iOS Safari */
-    background-attachment: scroll !important;
-  }
-
-  /* Hero content: centered vertically on mobile */
-  .profile-hero-content {
-    position: absolute !important;
-    top: 50% !important;
-    bottom: auto !important;
-    left: 0;
-    right: 0;
-    transform: translateY(-50%) !important;
-    padding: 0 24px;
-    text-align: center;
-  }
-
-  /* Headline: smaller on mobile */
-  .profile-headline {
-    font-size: 72px !important;
-  }
-
-  /* Root padding reset */
-  .profile-page-root {
-    padding-bottom: 0 !important;
-  }
-
   /* Pre-send confirmation modal on mobile */
   .pre-send-modal {
     max-height: 85vh !important;

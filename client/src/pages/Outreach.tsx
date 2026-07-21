@@ -1,8 +1,8 @@
 /**
  * RecruitPath — Outreach Page
  * Design: Matches Dashboard / Schools design system exactly
- * Colors: #0A0E1A bg, #141414 cards, #2A2A2A borders, #F5C518 gold, #6B6B6B muted
- * Fonts: Bebas Neue headlines, DM Sans body
+ * Colors: #0A0E1A bg, #0F172A cards, #1E293B borders, #F5B800 gold, #94A3B8 muted
+ * Fonts: Barlow Condensed headlines, Inter body
  * Contains: Full OutreachTracker (status groups, follow-up, reply generator)
  */
 import { motion } from "framer-motion";
@@ -88,7 +88,7 @@ function OutreachPageInner() {
   return (
     <>
       <div style={{ minHeight: "100vh", background: "#0A0E1A", display: "flex", flexDirection: "column" }}>
-        <div className="mx-auto pb-[100px] md:pb-8" style={{ maxWidth: 860, paddingTop: "clamp(24px, 5vw, 64px)", paddingLeft: "clamp(16px, 4vw, 40px)", paddingRight: "clamp(16px, 4vw, 40px)", flex: 1 }}>
+        <div className="mx-auto pb-[100px] md:pb-8" style={{ maxWidth: 1080, paddingTop: "clamp(24px, 5vw, 56px)", paddingLeft: "clamp(16px, 4vw, 40px)", paddingRight: "clamp(16px, 4vw, 40px)", flex: 1 }}>
 
           {/* ── PAGE HEADER ── */}
           <motion.div
@@ -97,12 +97,9 @@ function OutreachPageInner() {
             transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
             className="mb-14"
           >
-            <h1 style={{ fontFamily: "Bebas Neue, sans-serif", lineHeight: 0.95, marginBottom: "16px" }}>
-              <span style={{ display: "block", fontSize: "clamp(56px, 8vw, 80px)", color: "#F5C518" }}>
-                OUTREACH
-              </span>
-            </h1>
-            <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "16px", color: "#94A3B8", lineHeight: 1.5 }}>
+            <p className="section-label mb-1">Recruiting</p>
+            <h1 className="page-title text-4xl md:text-5xl mb-2">Outreach</h1>
+            <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#94A3B8", lineHeight: 1.5 }}>
               Track your communication with every program.
             </p>
           </motion.div>
@@ -137,7 +134,7 @@ function OutreachPageInner() {
               coachTitle: dbSchool?.coachTitle || "Head Coach",
               coachEmail: dbSchool?.coachEmail || "",
               athleticsDomain: dbSchool?.athleticsDomain || "",
-              brandColor: dbSchool?.brandColor || "#F5C518",
+              brandColor: dbSchool?.brandColor || "#F5B800",
               hasRosterData: !!dbSchool?.hasRosterData,
               logoUrl: dbSchool?.logoUrl || null,
             }}

@@ -18,7 +18,7 @@ const isAdmin = (email: string | null | undefined) => !!email && ADMIN_EMAILS.in
 type Tab = "applications" | "affiliates" | "promoCodes";
 
 const labelStyle: React.CSSProperties = {
-  fontFamily: "DM Sans, sans-serif",
+  fontFamily: "Inter, sans-serif",
   fontSize: "10px",
   fontWeight: 700,
   letterSpacing: "0.12em",
@@ -27,7 +27,7 @@ const labelStyle: React.CSSProperties = {
 };
 
 const cellStyle: React.CSSProperties = {
-  fontFamily: "DM Sans, sans-serif",
+  fontFamily: "Inter, sans-serif",
   fontSize: "13px",
   color: "#94A3B8",
   padding: "14px 16px",
@@ -36,7 +36,7 @@ const cellStyle: React.CSSProperties = {
 
 function StatusBadge({ status }: { status: string }) {
   const colors: Record<string, { bg: string; color: string; border: string }> = {
-    pending: { bg: "rgba(245,197,24,0.1)", color: "#F5C518", border: "rgba(245,197,24,0.2)" },
+    pending: { bg: "rgba(245,184,0,0.1)", color: "#F5B800", border: "rgba(245,184,0,0.2)" },
     approved: { bg: "rgba(34,197,94,0.1)", color: "#22C55E", border: "rgba(34,197,94,0.2)" },
     rejected: { bg: "rgba(226,75,74,0.1)", color: "#E24B4A", border: "rgba(226,75,74,0.2)" },
     active: { bg: "rgba(34,197,94,0.1)", color: "#22C55E", border: "rgba(34,197,94,0.2)" },
@@ -47,7 +47,7 @@ function StatusBadge({ status }: { status: string }) {
     <span
       className="px-2 py-1 rounded-sm text-xs font-bold uppercase"
       style={{
-        fontFamily: "DM Sans, sans-serif",
+        fontFamily: "Inter, sans-serif",
         letterSpacing: "0.08em",
         background: c.bg,
         color: c.color,
@@ -76,7 +76,7 @@ function DeleteConfirm({
   return (
     <div
       className="flex items-center gap-2"
-      style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px" }}
+      style={{ fontFamily: "Inter, sans-serif", fontSize: "12px" }}
     >
       <span style={{ color: "#94A3B8" }}>{label}</span>
       <button
@@ -302,8 +302,8 @@ export default function AdminAffiliates() {
   if (!authLoading && !isAuthenticated) { window.location.href = getLoginUrl(); return null; }
   if (!authLoading && !isAdmin(user?.email)) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0A0A0A" }}>
-        <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "28px", color: "#E24B4A" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0A0E1A" }}>
+        <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "28px", color: "#E24B4A" }}>
           ACCESS DENIED
         </div>
       </div>
@@ -315,11 +315,11 @@ export default function AdminAffiliates() {
       onClick={() => setTab(t)}
       className="px-6 py-3 text-xs font-bold tracking-widest uppercase cursor-pointer"
       style={{
-        fontFamily: "DM Sans, sans-serif",
+        fontFamily: "Inter, sans-serif",
         background: "transparent",
         border: "none",
-        borderBottom: tab === t ? "2px solid #F5C518" : "2px solid transparent",
-        color: tab === t ? "#F5C518" : "#475569",
+        borderBottom: tab === t ? "2px solid #F5B800" : "2px solid transparent",
+        color: tab === t ? "#F5B800" : "#475569",
         transition: "color 0.2s, border-color 0.2s",
       }}
     >
@@ -328,13 +328,13 @@ export default function AdminAffiliates() {
   );
 
   return (
-    <div className="min-h-screen px-6 py-10 pb-[100px] md:pb-10" style={{ background: "#0A0A0A" }}>
+    <div className="min-h-screen px-6 py-10 pb-[100px] md:pb-10" style={{ background: "#0A0E1A" }}>
       <div className="max-w-6xl mx-auto">
         {/* Back button */}
         <button
           onClick={() => navigate("/dashboard")}
           style={{
-            fontFamily: "DM Sans, sans-serif",
+            fontFamily: "Inter, sans-serif",
             fontSize: "13px",
             color: "#888",
             background: "transparent",
@@ -351,10 +351,10 @@ export default function AdminAffiliates() {
 
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="mb-8">
-          <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.18em", color: "#F5C518", textTransform: "uppercase", marginBottom: "8px" }}>
+          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.18em", color: "#F5B800", textTransform: "uppercase", marginBottom: "8px" }}>
             ADMIN
           </p>
-          <h1 style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "44px", color: "#FFFFFF", lineHeight: 1 }}>
+          <h1 style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "44px", color: "#FFFFFF", lineHeight: 1 }}>
             AFFILIATE MANAGEMENT
           </h1>
         </motion.div>
@@ -370,9 +370,9 @@ export default function AdminAffiliates() {
         {tab === "applications" && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
             {appsLoading ? (
-              <div style={{ color: "#475569", fontFamily: "DM Sans, sans-serif", fontSize: "13px" }}>Loading...</div>
+              <div style={{ color: "#475569", fontFamily: "Inter, sans-serif", fontSize: "13px" }}>Loading...</div>
             ) : displayApps.length === 0 ? (
-              <div className="py-16 text-center" style={{ color: "#475569", fontFamily: "DM Sans, sans-serif", fontSize: "14px" }}>
+              <div className="py-16 text-center" style={{ color: "#475569", fontFamily: "Inter, sans-serif", fontSize: "14px" }}>
                 No applications yet.
               </div>
             ) : (
@@ -405,15 +405,15 @@ export default function AdminAffiliates() {
                           }}
                         />
                         {/* Name */}
-                        <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#FFFFFF", fontWeight: 600, minWidth: "140px" }}>
+                        <span style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#FFFFFF", fontWeight: 600, minWidth: "140px" }}>
                           {app.firstName} {app.lastName}
                         </span>
                         {/* Email */}
-                        <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#64748B", flex: 1 }}>
+                        <span style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#64748B", flex: 1 }}>
                           {app.email}
                         </span>
                         {/* Date */}
-                        <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#475569", whiteSpace: "nowrap", marginRight: "12px" }}>
+                        <span style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#475569", whiteSpace: "nowrap", marginRight: "12px" }}>
                           {new Date(app.appliedAt).toLocaleDateString()}
                         </span>
                         {/* Status */}
@@ -427,7 +427,7 @@ export default function AdminAffiliates() {
                               onClick={() => approveMutation.mutate({ applicationId: app.id })}
                               disabled={approveMutation.isPending}
                               className="px-3 py-1 text-xs font-bold tracking-wider uppercase rounded-sm cursor-pointer"
-                              style={{ background: "rgba(34,197,94,0.12)", color: "#22C55E", border: "1px solid rgba(34,197,94,0.25)", fontFamily: "DM Sans, sans-serif", opacity: approveMutation.isPending ? 0.5 : 1 }}
+                              style={{ background: "rgba(34,197,94,0.12)", color: "#22C55E", border: "1px solid rgba(34,197,94,0.25)", fontFamily: "Inter, sans-serif", opacity: approveMutation.isPending ? 0.5 : 1 }}
                             >
                               APPROVE
                             </button>
@@ -435,7 +435,7 @@ export default function AdminAffiliates() {
                               onClick={() => rejectMutation.mutate({ applicationId: app.id })}
                               disabled={rejectMutation.isPending}
                               className="px-3 py-1 text-xs font-bold tracking-wider uppercase rounded-sm cursor-pointer"
-                              style={{ background: "rgba(226,75,74,0.1)", color: "#E24B4A", border: "1px solid rgba(226,75,74,0.2)", fontFamily: "DM Sans, sans-serif", opacity: rejectMutation.isPending ? 0.5 : 1 }}
+                              style={{ background: "rgba(226,75,74,0.1)", color: "#E24B4A", border: "1px solid rgba(226,75,74,0.2)", fontFamily: "Inter, sans-serif", opacity: rejectMutation.isPending ? 0.5 : 1 }}
                             >
                               REJECT
                             </button>
@@ -490,12 +490,12 @@ export default function AdminAffiliates() {
                               ].map(([label, value]) => (
                                 <div key={label}>
                                   <div style={{ ...labelStyle, marginBottom: "4px" }}>{label}</div>
-                                  <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#CBD5E1" }}>{value}</div>
+                                  <div style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#CBD5E1" }}>{value}</div>
                                 </div>
                               ))}
                               <div className="col-span-2 md:col-span-3">
                                 <div style={{ ...labelStyle, marginBottom: "4px" }}>Why do you want to be an affiliate?</div>
-                                <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#CBD5E1", lineHeight: "1.6" }}>
+                                <div style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#CBD5E1", lineHeight: "1.6" }}>
                                   {app.whyJoin}
                                 </div>
                               </div>
@@ -515,9 +515,9 @@ export default function AdminAffiliates() {
         {tab === "affiliates" && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
             {affiliatesLoading ? (
-              <div style={{ color: "#475569", fontFamily: "DM Sans, sans-serif", fontSize: "13px" }}>Loading...</div>
+              <div style={{ color: "#475569", fontFamily: "Inter, sans-serif", fontSize: "13px" }}>Loading...</div>
             ) : displayAffs.length === 0 ? (
-              <div className="py-16 text-center" style={{ color: "#475569", fontFamily: "DM Sans, sans-serif", fontSize: "14px" }}>
+              <div className="py-16 text-center" style={{ color: "#475569", fontFamily: "Inter, sans-serif", fontSize: "14px" }}>
                 No approved affiliates yet.
               </div>
             ) : (
@@ -542,11 +542,11 @@ export default function AdminAffiliates() {
                             <tr key={aff.id} style={{ borderBottom: showDeleteConfirm ? "none" : "1px solid rgba(30,41,59,0.5)" }}>
                               <td style={{ ...cellStyle, color: "#FFFFFF", whiteSpace: "nowrap" }}>{aff.firstName} {aff.lastName}</td>
                               <td style={cellStyle}>{aff.email}</td>
-                              <td style={{ ...cellStyle, color: "#F5C518", fontWeight: 700 }}>{aff.couponCode}</td>
+                              <td style={{ ...cellStyle, color: "#F5B800", fontWeight: 700 }}>{aff.couponCode}</td>
                               <td style={cellStyle}>{aff.totalConversions}</td>
                               <td style={cellStyle}>${earned.toFixed(2)}</td>
                               <td style={cellStyle}>${paid.toFixed(2)}</td>
-                              <td style={{ ...cellStyle, color: pending > 0 ? "#F5C518" : "#475569", fontWeight: pending > 0 ? 700 : 400 }}>
+                              <td style={{ ...cellStyle, color: pending > 0 ? "#F5B800" : "#475569", fontWeight: pending > 0 ? 700 : 400 }}>
                                 ${pending.toFixed(2)}
                               </td>
                               <td style={cellStyle}><StatusBadge status={aff.status} /></td>
@@ -557,7 +557,7 @@ export default function AdminAffiliates() {
                                       onClick={() => markPaidMutation.mutate({ affiliateId: aff.id })}
                                       disabled={markPaidMutation.isPending}
                                       className="px-3 py-1.5 text-xs font-bold tracking-wider uppercase rounded-sm cursor-pointer"
-                                      style={{ background: "rgba(245,197,24,0.1)", color: "#F5C518", border: "1px solid rgba(245,197,24,0.2)", fontFamily: "DM Sans, sans-serif", opacity: markPaidMutation.isPending ? 0.5 : 1 }}
+                                      style={{ background: "rgba(245,184,0,0.1)", color: "#F5B800", border: "1px solid rgba(245,184,0,0.2)", fontFamily: "Inter, sans-serif", opacity: markPaidMutation.isPending ? 0.5 : 1 }}
                                     >
                                       MARK PAID
                                     </button>
@@ -600,9 +600,9 @@ export default function AdminAffiliates() {
         {tab === "promoCodes" && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
             {promoLoading ? (
-              <div style={{ color: "#475569", fontFamily: "DM Sans, sans-serif", fontSize: "13px" }}>Loading promo codes from Stripe...</div>
+              <div style={{ color: "#475569", fontFamily: "Inter, sans-serif", fontSize: "13px" }}>Loading promo codes from Stripe...</div>
             ) : promoCodes.length === 0 ? (
-              <div className="py-16 text-center" style={{ color: "#475569", fontFamily: "DM Sans, sans-serif", fontSize: "14px" }}>
+              <div className="py-16 text-center" style={{ color: "#475569", fontFamily: "Inter, sans-serif", fontSize: "14px" }}>
                 No promotion codes found in Stripe.
               </div>
             ) : (
@@ -629,14 +629,14 @@ export default function AdminAffiliates() {
                         return (
                           <>
                             <tr key={pc.id} style={{ borderBottom: (showDeleteConfirm || isEditing) ? "none" : idx < promoCodes.length - 1 ? "1px solid rgba(30,41,59,0.5)" : "none" }}>
-                              <td style={{ ...cellStyle, color: "#F5C518", fontWeight: 700 }}>{pc.code}</td>
+                              <td style={{ ...cellStyle, color: "#F5B800", fontWeight: 700 }}>{pc.code}</td>
                               <td style={cellStyle}>{discount}</td>
                               <td style={cellStyle}>{pc.times_redeemed ?? 0}</td>
                               <td style={cellStyle}>
                                 {pc.active ? (
-                                  <span style={{ color: "#22C55E", fontFamily: "DM Sans, sans-serif", fontSize: "12px", fontWeight: 700 }}>● Active</span>
+                                  <span style={{ color: "#22C55E", fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 700 }}>● Active</span>
                                 ) : (
-                                  <span style={{ color: "#E24B4A", fontFamily: "DM Sans, sans-serif", fontSize: "12px", fontWeight: 700 }}>● Inactive</span>
+                                  <span style={{ color: "#E24B4A", fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 700 }}>● Inactive</span>
                                 )}
                               </td>
                               <td style={{ ...cellStyle, whiteSpace: "nowrap" }}>
@@ -653,7 +653,7 @@ export default function AdminAffiliates() {
                                       setPromoEditMax(pc.max_redemptions ? String(pc.max_redemptions) : "");
                                     }}
                                     className="px-2 py-1 text-xs font-bold uppercase rounded-sm cursor-pointer flex items-center gap-1"
-                                    style={{ background: "rgba(148,163,184,0.08)", color: "#94A3B8", border: "1px solid rgba(148,163,184,0.15)", fontFamily: "DM Sans, sans-serif" }}
+                                    style={{ background: "rgba(148,163,184,0.08)", color: "#94A3B8", border: "1px solid rgba(148,163,184,0.15)", fontFamily: "Inter, sans-serif" }}
                                   >
                                     <Edit2 size={11} /> EDIT
                                   </button>
@@ -662,7 +662,7 @@ export default function AdminAffiliates() {
                                     <button
                                       onClick={() => setPromoDeleteConfirm(pc.id)}
                                       className="px-2 py-1 text-xs font-bold uppercase rounded-sm cursor-pointer flex items-center gap-1"
-                                      style={{ background: "rgba(226,75,74,0.08)", color: "#E24B4A", border: "1px solid rgba(226,75,74,0.15)", fontFamily: "DM Sans, sans-serif" }}
+                                      style={{ background: "rgba(226,75,74,0.08)", color: "#E24B4A", border: "1px solid rgba(226,75,74,0.15)", fontFamily: "Inter, sans-serif" }}
                                     >
                                       <Trash2 size={11} /> DEACTIVATE
                                     </button>
@@ -699,11 +699,11 @@ export default function AdminAffiliates() {
                                         onChange={(e) => setPromoEditMax(e.target.value)}
                                         placeholder="Unlimited"
                                         style={{
-                                          background: "#1A1A1A",
-                                          border: "1px solid #2A2A2A",
+                                          background: "#111827",
+                                          border: "1px solid #1E293B",
                                           borderRadius: "6px",
                                           color: "#F8FAFC",
-                                          fontFamily: "DM Sans, sans-serif",
+                                          fontFamily: "Inter, sans-serif",
                                           fontSize: "12px",
                                           padding: "4px 8px",
                                           width: "100px",
@@ -723,7 +723,7 @@ export default function AdminAffiliates() {
                                           color: promoEditActive ? "#22C55E" : "#E24B4A",
                                           borderRadius: "6px",
                                           padding: "4px 10px",
-                                          fontFamily: "DM Sans, sans-serif",
+                                          fontFamily: "Inter, sans-serif",
                                           fontSize: "11px",
                                           fontWeight: 700,
                                           cursor: "pointer",
@@ -736,12 +736,12 @@ export default function AdminAffiliates() {
                                       onClick={() => handleSavePromoEdit(pc.id)}
                                       disabled={promoSaving === pc.id}
                                       style={{
-                                        background: "rgba(245,197,24,0.12)",
-                                        border: "1px solid rgba(245,197,24,0.25)",
-                                        color: "#F5C518",
+                                        background: "rgba(245,184,0,0.12)",
+                                        border: "1px solid rgba(245,184,0,0.25)",
+                                        color: "#F5B800",
                                         borderRadius: "6px",
                                         padding: "4px 12px",
-                                        fontFamily: "DM Sans, sans-serif",
+                                        fontFamily: "Inter, sans-serif",
                                         fontSize: "11px",
                                         fontWeight: 700,
                                         cursor: "pointer",
@@ -752,7 +752,7 @@ export default function AdminAffiliates() {
                                     </button>
                                     <button
                                       onClick={() => setPromoEditId(null)}
-                                      style={{ background: "none", border: "none", color: "#475569", cursor: "pointer", fontFamily: "DM Sans, sans-serif", fontSize: "11px" }}
+                                      style={{ background: "none", border: "none", color: "#475569", cursor: "pointer", fontFamily: "Inter, sans-serif", fontSize: "11px" }}
                                     >
                                       CANCEL
                                     </button>

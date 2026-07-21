@@ -39,7 +39,7 @@ function AnimatedCheckmark() {
           cx="40"
           cy="40"
           r="36"
-          stroke="#F5C518"
+          stroke="#F5B800"
           strokeWidth="4"
           fill="none"
           strokeLinecap="round"
@@ -48,7 +48,7 @@ function AnimatedCheckmark() {
         <polyline
           className="checkmark-tick"
           points="24,40 35,52 56,28"
-          stroke="#F5C518"
+          stroke="#F5B800"
           strokeWidth="4.5"
           fill="none"
           strokeLinecap="round"
@@ -98,7 +98,7 @@ export default function PaymentSuccess() {
     confettiFired.current = true;
 
     const end = Date.now() + 2800;
-    const colors = ["#F5C518", "#FFFFFF", "#FFE066", "#FFF8DC"];
+    const colors = ["#F5B800", "#FFFFFF", "#FFE066", "#FFF8DC"];
 
     const frame = () => {
       confetti({
@@ -129,16 +129,16 @@ export default function PaymentSuccess() {
     return (
       <div
         className="min-h-screen flex items-center justify-center"
-        style={{ background: "#0A0A0A" }}
+        style={{ background: "#0A0E1A" }}
       >
         <div className="flex flex-col items-center gap-4">
           <div
             className="w-10 h-10 rounded-full border-2 border-t-transparent animate-spin"
-            style={{ borderColor: "#F5C518", borderTopColor: "transparent" }}
+            style={{ borderColor: "#F5B800", borderTopColor: "transparent" }}
           />
           <p
             className="text-sm tracking-widest uppercase"
-            style={{ color: "#64748B", fontFamily: "DM Sans, sans-serif" }}
+            style={{ color: "#64748B", fontFamily: "Inter, sans-serif" }}
           >
             Confirming your payment…
           </p>
@@ -190,7 +190,7 @@ export default function PaymentSuccess() {
 
       <div
         className="min-h-screen flex flex-col items-center justify-center px-4 py-12 pb-[100px] md:pb-12"
-        style={{ background: "#0A0A0A" }}
+        style={{ background: "#0A0E1A" }}
       >
         <div className="success-content w-full" style={{ maxWidth: 560 }}>
           {/* Animated checkmark */}
@@ -201,10 +201,10 @@ export default function PaymentSuccess() {
             <span
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase"
               style={{
-                background: "rgba(245,197,24,0.12)",
-                color: "#F5C518",
-                border: "1px solid rgba(245,197,24,0.25)",
-                fontFamily: "DM Sans, sans-serif",
+                background: "rgba(245,184,0,0.12)",
+                color: "#F5B800",
+                border: "1px solid rgba(245,184,0,0.25)",
+                fontFamily: "Inter, sans-serif",
               }}
             >
               <Check size={11} strokeWidth={3} />
@@ -216,7 +216,7 @@ export default function PaymentSuccess() {
           <h1
             className="text-center mb-3 leading-none"
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "clamp(64px, 14vw, 96px)",
               color: "#FFFFFF",
               letterSpacing: "0.01em",
@@ -229,7 +229,7 @@ export default function PaymentSuccess() {
           <p
             className="text-center mb-8"
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: 17,
               color: "#94A3B8",
               lineHeight: 1.6,
@@ -252,8 +252,8 @@ export default function PaymentSuccess() {
           <div
             className="mb-8 rounded-2xl overflow-hidden"
             style={{
-              background: "#1A1A1A",
-              border: "1px solid #2A2A2A",
+              background: "#111827",
+              border: "1px solid #1E293B",
             }}
           >
             {FEATURES.map((feature, i) => (
@@ -261,19 +261,19 @@ export default function PaymentSuccess() {
                 key={feature}
                 className="flex items-center gap-4 px-6 py-4"
                 style={{
-                  borderBottom: i < FEATURES.length - 1 ? "1px solid #2A2A2A" : "none",
+                  borderBottom: i < FEATURES.length - 1 ? "1px solid #1E293B" : "none",
                 }}
               >
                 {/* Yellow number */}
                 <span
                   className="flex-shrink-0 w-6 text-center font-bold text-sm"
-                  style={{ color: "#F5C518", fontFamily: "DM Sans, sans-serif" }}
+                  style={{ color: "#F5B800", fontFamily: "Inter, sans-serif" }}
                 >
                   <Check size={16} strokeWidth={3} />
                 </span>
                 <span
                   style={{
-                    fontFamily: "DM Sans, sans-serif",
+                    fontFamily: "Inter, sans-serif",
                     fontSize: 14,
                     color: "#E2E8F0",
                     lineHeight: 1.5,
@@ -292,9 +292,9 @@ export default function PaymentSuccess() {
               onClick={() => navigate("/dashboard")}
               className="w-full py-4 rounded-xl font-bold text-sm tracking-widest uppercase transition-all duration-150 hover:brightness-110 active:scale-[0.98]"
               style={{
-                background: "#F5C518",
-                color: "#0A0A0A",
-                fontFamily: "DM Sans, sans-serif",
+                background: "#F5B800",
+                color: "#0A0E1A",
+                fontFamily: "Inter, sans-serif",
                 letterSpacing: "0.08em",
               }}
             >
@@ -308,8 +308,8 @@ export default function PaymentSuccess() {
               style={{
                 background: "transparent",
                 color: "#F8FAFC",
-                border: "1px solid #2A2A2A",
-                fontFamily: "DM Sans, sans-serif",
+                border: "1px solid #1E293B",
+                fontFamily: "Inter, sans-serif",
                 letterSpacing: "0.08em",
               }}
             >
@@ -324,7 +324,7 @@ export default function PaymentSuccess() {
                 background: "transparent",
                 border: "none",
                 color: "#64748B",
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 cursor: "pointer",
               }}
             >
@@ -336,7 +336,7 @@ export default function PaymentSuccess() {
           <p
             className="text-center mt-8"
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: 12,
               color: "#475569",
               lineHeight: 1.6,

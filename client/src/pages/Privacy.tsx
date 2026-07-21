@@ -1,6 +1,6 @@
 /**
  * RecruitPath — Privacy Policy
- * Styled to match app design: #0A0A0A bg, Bebas Neue heading, DM Sans body, #F5C518 accents
+ * Styled to match app design: #0A0E1A bg, Bebas Neue heading, DM Sans body, #F5B800 accents
  */
 import { Link } from "wouter";
 import AppFooter from "@/components/AppFooter";
@@ -56,18 +56,18 @@ const sections = [
 
 export default function Privacy() {
   return (
-    <div style={{ background: "#0A0A0A", minHeight: "100vh", color: "#E2E8F0", paddingBottom: "120px" }}>
+    <div style={{ background: "#0A0E1A", minHeight: "100vh", color: "#E2E8F0", paddingBottom: "120px" }}>
       {/* Back nav */}
       <div
         className="max-w-3xl mx-auto px-6 pt-10 pb-2"
-        style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px" }}
+        style={{ fontFamily: "Inter, sans-serif", fontSize: "13px" }}
       >
         <Link href="/">
           <span
             className="cursor-pointer transition-colors duration-150"
-            style={{ color: "#888888" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#F5C518")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "#888888")}
+            style={{ color: "#94A3B8" }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "#F5B800")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "#94A3B8")}
           >
             ← Back to RecruitPath
           </span>
@@ -80,13 +80,13 @@ export default function Privacy() {
           style={{
             width: "40px",
             height: "3px",
-            background: "#F5C518",
+            background: "#F5B800",
             marginBottom: "20px",
           }}
         />
         <h1
           style={{
-            fontFamily: "Bebas Neue, sans-serif",
+            fontFamily: "Barlow Condensed, sans-serif",
             fontSize: "clamp(52px, 8vw, 72px)",
             color: "#FFFFFF",
             lineHeight: 1,
@@ -98,9 +98,9 @@ export default function Privacy() {
         </h1>
         <p
           style={{
-            fontFamily: "DM Sans, sans-serif",
+            fontFamily: "Inter, sans-serif",
             fontSize: "14px",
-            color: "#888888",
+            color: "#94A3B8",
           }}
         >
           Effective Date: {EFFECTIVE_DATE}
@@ -116,7 +116,7 @@ export default function Privacy() {
       <div className="max-w-3xl mx-auto px-6 mb-10">
         <p
           style={{
-            fontFamily: "DM Sans, sans-serif",
+            fontFamily: "Inter, sans-serif",
             fontSize: "15px",
             color: "#94A3B8",
             lineHeight: 1.75,
@@ -132,9 +132,9 @@ export default function Privacy() {
           <div key={i} style={{ marginBottom: "40px" }}>
             <h2
               style={{
-                fontFamily: "Bebas Neue, sans-serif",
+                fontFamily: "Barlow Condensed, sans-serif",
                 fontSize: "22px",
-                color: "#F5C518",
+                color: "#F5B800",
                 letterSpacing: "0.04em",
                 marginBottom: "12px",
               }}
@@ -145,7 +145,7 @@ export default function Privacy() {
               <p
                 key={j}
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "15px",
                   color: "#94A3B8",
                   lineHeight: 1.75,
@@ -157,7 +157,7 @@ export default function Privacy() {
               </p>
             ))}
             {i < sections.length - 1 && (
-              <div style={{ height: "1px", background: "#1A1A1A", marginTop: "32px" }} />
+              <div style={{ height: "1px", background: "#111827", marginTop: "32px" }} />
             )}
           </div>
         ))}

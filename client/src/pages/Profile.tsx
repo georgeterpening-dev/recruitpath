@@ -68,7 +68,7 @@ function calcStrength(profile: ProfileData): number {
 // SHARED FIELD COMPONENTS
 // ─────────────────────────────────────────────
 const fieldLabelStyle: React.CSSProperties = {
-  fontFamily: "DM Sans, sans-serif",
+  fontFamily: "Inter, sans-serif",
   fontSize: "10px",
   color: "#777",
   letterSpacing: "1.5px",
@@ -78,9 +78,9 @@ const fieldLabelStyle: React.CSSProperties = {
 
 function ReadField({ label, value }: { label: string; value: string }) {
   return (
-    <div style={{ paddingBottom: "20px", borderBottom: "1px solid #1A1A1A" }}>
+    <div style={{ paddingBottom: "20px", borderBottom: "1px solid #111827" }}>
       <div style={fieldLabelStyle}>{label}</div>
-      <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "15px", color: value ? "#FFFFFF" : "#2E2E2E" }}>
+      <div style={{ fontFamily: "Inter, sans-serif", fontSize: "15px", color: value ? "#FFFFFF" : "#2E2E2E" }}>
         {value || "Not added"}
       </div>
     </div>
@@ -91,7 +91,7 @@ function EditTextField({
   label, value, onChange, placeholder = "Not set", type = "text",
 }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string }) {
   return (
-    <div style={{ paddingBottom: "20px", borderBottom: "1px solid #1A1A1A" }}>
+    <div style={{ paddingBottom: "20px", borderBottom: "1px solid #111827" }}>
       <div style={fieldLabelStyle}>{label}</div>
       <input
         type={type}
@@ -99,13 +99,13 @@ function EditTextField({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         style={{
-          width: "100%", background: "#1A1A1A", border: "1px solid #2A2A2A",
+          width: "100%", background: "#111827", border: "1px solid #1E293B",
           borderRadius: "6px", padding: "9px 12px", outline: "none",
-          fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#FFFFFF",
+          fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#FFFFFF",
           boxSizing: "border-box",
         }}
-        onFocus={(e) => (e.currentTarget.style.borderColor = "#F5C518")}
-        onBlur={(e) => (e.currentTarget.style.borderColor = "#2A2A2A")}
+        onFocus={(e) => (e.currentTarget.style.borderColor = "#F5B800")}
+        onBlur={(e) => (e.currentTarget.style.borderColor = "#1E293B")}
       />
     </div>
   );
@@ -115,7 +115,7 @@ function EditTextAreaField({
   label, value, onChange, placeholder = "Not set",
 }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string }) {
   return (
-    <div style={{ paddingBottom: "20px", borderBottom: "1px solid #1A1A1A" }}>
+    <div style={{ paddingBottom: "20px", borderBottom: "1px solid #111827" }}>
       <div style={fieldLabelStyle}>{label}</div>
       <textarea
         value={value}
@@ -123,13 +123,13 @@ function EditTextAreaField({
         placeholder={placeholder}
         rows={3}
         style={{
-          width: "100%", background: "#1A1A1A", border: "1px solid #2A2A2A",
+          width: "100%", background: "#111827", border: "1px solid #1E293B",
           borderRadius: "6px", padding: "9px 12px", outline: "none",
-          fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#FFFFFF",
+          fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#FFFFFF",
           boxSizing: "border-box", resize: "vertical",
         }}
-        onFocus={(e) => (e.currentTarget.style.borderColor = "#F5C518")}
-        onBlur={(e) => (e.currentTarget.style.borderColor = "#2A2A2A")}
+        onFocus={(e) => (e.currentTarget.style.borderColor = "#F5B800")}
+        onBlur={(e) => (e.currentTarget.style.borderColor = "#1E293B")}
       />
     </div>
   );
@@ -139,27 +139,27 @@ function EditSelectField({
   label, value, options, onChange, placeholder = "Not set",
 }: { label: string; value: string; options: string[]; onChange: (v: string) => void; placeholder?: string }) {
   return (
-    <div style={{ paddingBottom: "20px", borderBottom: "1px solid #1A1A1A" }}>
+    <div style={{ paddingBottom: "20px", borderBottom: "1px solid #111827" }}>
       <div style={fieldLabelStyle}>{label}</div>
       <select
         value={value || ""}
         onChange={(e) => onChange(e.target.value)}
         style={{
-          width: "100%", background: "#1A1A1A", border: "1px solid #2A2A2A",
+          width: "100%", background: "#111827", border: "1px solid #1E293B",
           borderRadius: "6px", padding: "9px 12px", outline: "none",
-          fontFamily: "DM Sans, sans-serif", fontSize: "14px",
+          fontFamily: "Inter, sans-serif", fontSize: "14px",
           color: value ? "#FFFFFF" : "#555",
           cursor: "pointer", appearance: "none", WebkitAppearance: "none",
           backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
           backgroundRepeat: "no-repeat", backgroundPosition: "right 12px center",
           paddingRight: "32px", boxSizing: "border-box",
         }}
-        onFocus={(e) => (e.currentTarget.style.borderColor = "#F5C518")}
-        onBlur={(e) => (e.currentTarget.style.borderColor = "#2A2A2A")}
+        onFocus={(e) => (e.currentTarget.style.borderColor = "#F5B800")}
+        onBlur={(e) => (e.currentTarget.style.borderColor = "#1E293B")}
       >
-        <option value="" style={{ background: "#1A1A1A", color: "#888" }}>{placeholder}</option>
+        <option value="" style={{ background: "#111827", color: "#888" }}>{placeholder}</option>
         {options.map((opt) => (
-          <option key={opt} value={opt} style={{ background: "#1A1A1A", color: "#FFF" }}>{opt}</option>
+          <option key={opt} value={opt} style={{ background: "#111827", color: "#FFF" }}>{opt}</option>
         ))}
       </select>
     </div>
@@ -174,14 +174,14 @@ function SectionHeader({
 }: { title: string; editing: boolean; onEdit: () => void; onSave: () => void; saving: boolean }) {
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "28px" }}>
-      <span style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "18px", color: "#FFFFFF", letterSpacing: "1px" }}>
+      <span style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "18px", color: "#FFFFFF", letterSpacing: "1px" }}>
         {title}
       </span>
       <button
         onClick={editing ? onSave : onEdit}
         style={{
-          fontFamily: "DM Sans, sans-serif", fontSize: "10px",
-          color: editing ? "#F5C518" : "#888888",
+          fontFamily: "Inter, sans-serif", fontSize: "10px",
+          color: editing ? "#F5B800" : "#94A3B8",
           background: "transparent", border: "none", cursor: "pointer",
           letterSpacing: "0.5px",
         }}
@@ -261,8 +261,8 @@ function PositionMultiSelect({
   };
 
   return (
-    <div style={{ paddingBottom: "20px", borderBottom: "1px solid #1A1A1A", gridColumn: "1 / -1" }}>
-      <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "10px", color: "#777", letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "10px" }}>Position</div>
+    <div style={{ paddingBottom: "20px", borderBottom: "1px solid #111827", gridColumn: "1 / -1" }}>
+      <div style={{ fontFamily: "Inter, sans-serif", fontSize: "10px", color: "#777", letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "10px" }}>Position</div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
         {POSITIONS.map((pos) => {
           const isSelected = selected.includes(pos);
@@ -272,12 +272,12 @@ function PositionMultiSelect({
               type="button"
               onClick={() => toggle(pos)}
               style={{
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 fontSize: "12px",
                 padding: "6px 12px",
                 borderRadius: "6px",
-                border: `1px solid ${isSelected ? "#F5C518" : "#2A2A2A"}`,
-                background: isSelected ? "#F5C518" : "#1A1A1A",
+                border: `1px solid ${isSelected ? "#F5B800" : "#1E293B"}`,
+                background: isSelected ? "#F5B800" : "#111827",
                 color: isSelected ? "#000" : "#888",
                 cursor: "pointer",
                 transition: "all 0.15s",
@@ -406,8 +406,8 @@ function MediaPanel({
             <div
               key={field}
               style={{
-                background: "#1A1A1A", borderRadius: "10px",
-                padding: "18px 24px", border: `1px solid ${isRowEditing ? "#2A2A2A" : "#1A1A1A"}`,
+                background: "#111827", borderRadius: "10px",
+                padding: "18px 24px", border: `1px solid ${isRowEditing ? "#1E293B" : "#111827"}`,
                 transition: "border-color 0.15s",
               }}
             >
@@ -415,10 +415,10 @@ function MediaPanel({
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px" }}>
                 {/* Left: platform name + description */}
                 <div style={{ minWidth: 0 }}>
-                  <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", color: "#FFFFFF", letterSpacing: "1px", marginBottom: "4px" }}>
+                  <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "13px", color: "#FFFFFF", letterSpacing: "1px", marginBottom: "4px" }}>
                     {label}
                   </div>
-                  <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#555" }}>
+                  <div style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#555" }}>
                     {description}
                   </div>
                 </div>
@@ -431,7 +431,7 @@ function MediaPanel({
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
-                        fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#F5C518",
+                        fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#F5B800",
                         textDecoration: "none", maxWidth: "240px",
                         overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                         flexShrink: 0, cursor: "pointer",
@@ -444,12 +444,12 @@ function MediaPanel({
                     <button
                       onClick={() => startRowEdit(field, "")}
                       style={{
-                        fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#888888",
+                        fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8",
                         background: "transparent", border: "none", cursor: "pointer", padding: 0,
                         flexShrink: 0,
                       }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = "#F5C518")}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = "#888888")}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = "#F5B800")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "#94A3B8")}
                     >
                       Add link →
                     </button>
@@ -471,9 +471,9 @@ function MediaPanel({
                       if (e.key === "Escape") cancelRowEdit(field);
                     }}
                     style={{
-                      width: "100%", background: "#111", border: "1px solid #F5C518",
+                      width: "100%", background: "#111", border: "1px solid #F5B800",
                       borderRadius: "6px", padding: "9px 12px", outline: "none",
-                      fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#FFFFFF",
+                      fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#FFFFFF",
                       boxSizing: "border-box", marginBottom: "10px",
                     }}
                   />
@@ -481,9 +481,9 @@ function MediaPanel({
                     <button
                       onClick={() => saveRowEdit(field)}
                       style={{
-                        fontFamily: "Bebas Neue, sans-serif", fontSize: "11px", letterSpacing: "1px",
+                        fontFamily: "Barlow Condensed, sans-serif", fontSize: "11px", letterSpacing: "1px",
                         padding: "7px 16px", borderRadius: "6px",
-                        background: "#F5C518", color: "#000", border: "none", cursor: "pointer",
+                        background: "#F5B800", color: "#000", border: "none", cursor: "pointer",
                       }}
                     >
                       SAVE →
@@ -491,13 +491,13 @@ function MediaPanel({
                     <button
                       onClick={() => cancelRowEdit(field)}
                       style={{
-                        fontFamily: "Bebas Neue, sans-serif", fontSize: "11px", letterSpacing: "1px",
+                        fontFamily: "Barlow Condensed, sans-serif", fontSize: "11px", letterSpacing: "1px",
                         padding: "7px 16px", borderRadius: "6px",
-                        background: "transparent", border: "1px solid #2A2A2A",
+                        background: "transparent", border: "1px solid #1E293B",
                         color: "#555", cursor: "pointer",
                       }}
                       onMouseEnter={(e) => { e.currentTarget.style.color = "#888"; e.currentTarget.style.borderColor = "#444"; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.color = "#555"; e.currentTarget.style.borderColor = "#2A2A2A"; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.color = "#555"; e.currentTarget.style.borderColor = "#1E293B"; }}
                     >
                       CANCEL
                     </button>
@@ -512,13 +512,13 @@ function MediaPanel({
         <div
           style={{
             marginTop: "8px",
-            background: "#1A1A1A",
-            borderLeft: "2px solid #F5C518",
+            background: "#111827",
+            borderLeft: "2px solid #F5B800",
             borderRadius: "6px",
             padding: "14px 18px",
           }}
         >
-          <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#777", margin: 0, lineHeight: 1.6 }}>
+          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#777", margin: 0, lineHeight: 1.6 }}>
             Your Hudl link and NCSA profile are automatically included in every email you generate. Add them to improve your response rate.
           </p>
         </div>
@@ -586,7 +586,7 @@ function ProfileModal({
         className="profile-modal-container md:w-[min(96vw,1100px)] md:h-[min(96vh,90vh)] md:rounded-[20px]"
         style={{
           maxWidth: "1100px",
-          background: "#111111", border: "1px solid #2A2A2A",
+          background: "#111111", border: "1px solid #1E293B",
           display: "flex", flexDirection: "column",
           overflow: "hidden",
         }}
@@ -600,12 +600,12 @@ function ProfileModal({
         <div
           className="flex md:hidden items-center justify-between"
           style={{
-            background: "#0A0A0A", borderBottom: "1px solid #1A1A1A",
+            background: "#0A0E1A", borderBottom: "1px solid #111827",
             padding: "0 16px", height: "56px", flexShrink: 0,
           }}
         >
-          <span style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "16px", letterSpacing: "0.1em", color: "#F5C518" }}>RECRUITPATH</span>
-          <span style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "14px", letterSpacing: "0.08em", color: "#FFFFFF", position: "absolute", left: "50%", transform: "translateX(-50%)" }}>EDIT PROFILE</span>
+          <span style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "16px", letterSpacing: "0.1em", color: "#F5B800" }}>RECRUITPATH</span>
+          <span style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "14px", letterSpacing: "0.08em", color: "#FFFFFF", position: "absolute", left: "50%", transform: "translateX(-50%)" }}>EDIT PROFILE</span>
           <button
             onClick={onClose}
             style={{ background: "transparent", border: "none", cursor: "pointer", color: "#555", padding: "0", width: "44px", height: "44px", display: "flex", alignItems: "center", justifyContent: "center" }}
@@ -618,7 +618,7 @@ function ProfileModal({
         <div
           className="hidden md:flex"
           style={{
-            background: "#0A0A0A", borderBottom: "1px solid #1A1A1A",
+            background: "#0A0E1A", borderBottom: "1px solid #111827",
             padding: "clamp(14px, 3vw, 24px) clamp(16px, 4vw, 36px)", flexShrink: 0,
             alignItems: "center", justifyContent: "space-between",
           }}
@@ -628,7 +628,7 @@ function ProfileModal({
             <div
               style={{
                 width: "72px", height: "72px", borderRadius: "50%",
-                background: "#1A1A1A", border: "2px solid #F5C518",
+                background: "#111827", border: "2px solid #F5B800",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 flexShrink: 0,
               }}
@@ -636,11 +636,11 @@ function ProfileModal({
               {profileData.profilePhoto ? (
                 <img src={profileData.profilePhoto} alt={fullName} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
               ) : (
-                <span style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "24px", color: "#F5C518" }}>{initials}</span>
+                <span style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "24px", color: "#F5B800" }}>{initials}</span>
               )}
             </div>
             <div>
-              <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "26px", color: "#FFFFFF", lineHeight: 1.1, marginBottom: "8px" }}>
+              <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "26px", color: "#FFFFFF", lineHeight: 1.1, marginBottom: "8px" }}>
                 {fullName.toUpperCase()}
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
@@ -666,9 +666,9 @@ function ProfileModal({
                     <span
                       key={i}
                       style={{
-                        fontFamily: "DM Sans, sans-serif", fontSize: "10px",
-                        color: "#AAAAAA", background: "#1A1A1A",
-                        border: "1px solid #2A2A2A", borderRadius: "4px",
+                        fontFamily: "Inter, sans-serif", fontSize: "10px",
+                        color: "#AAAAAA", background: "#111827",
+                        border: "1px solid #1E293B", borderRadius: "4px",
                         padding: "3px 8px", letterSpacing: "0.5px",
                       }}
                     >
@@ -683,20 +683,20 @@ function ProfileModal({
           {/* Right: profile strength + close */}
           <div style={{ display: "flex", alignItems: "center", gap: "20px", flexShrink: 0 }}>
             <div style={{ textAlign: "right" }}>
-              <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "10px", color: "#555", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "6px" }}>
+              <div style={{ fontFamily: "Inter, sans-serif", fontSize: "10px", color: "#555", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "6px" }}>
                 Profile Strength
               </div>
-              <div style={{ width: "160px", height: "4px", background: "#2A2A2A", borderRadius: "2px", marginBottom: "4px" }}>
-                <div style={{ width: `${pct}%`, height: "100%", background: "#F5C518", borderRadius: "2px", transition: "width 0.4s ease" }} />
+              <div style={{ width: "160px", height: "4px", background: "#1E293B", borderRadius: "2px", marginBottom: "4px" }}>
+                <div style={{ width: `${pct}%`, height: "100%", background: "#F5B800", borderRadius: "2px", transition: "width 0.4s ease" }} />
               </div>
-              <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", color: "#F5C518", letterSpacing: "1px" }}>
+              <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "13px", color: "#F5B800", letterSpacing: "1px" }}>
                 {pct}%
               </div>
             </div>
             <button
               onClick={onClose}
               style={{ background: "transparent", border: "none", cursor: "pointer", color: "#555", padding: "0", width: "44px", height: "44px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#F5C518")}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#F5B800")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "#555")}
             >
               <X size={20} />
@@ -707,7 +707,7 @@ function ProfileModal({
         {/* ── MOBILE TOP NAV TABS ── */}
         <div
           className="flex md:hidden"
-          style={{ borderBottom: "1px solid #1A1A1A", flexShrink: 0 }}
+          style={{ borderBottom: "1px solid #111827", flexShrink: 0 }}
         >
           {NAV_ITEMS.map(({ key, label }) => {
             const isActive = activeSection === key;
@@ -718,14 +718,14 @@ function ProfileModal({
                 style={{
                   flex: 1,
                   height: "44px",
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "11px",
                   letterSpacing: "1.5px",
                   textTransform: "uppercase",
-                  color: isActive ? "#F5C518" : "#555",
+                  color: isActive ? "#F5B800" : "#555",
                   background: "transparent",
                   border: "none",
-                  borderBottom: isActive ? "2px solid #F5C518" : "2px solid transparent",
+                  borderBottom: isActive ? "2px solid #F5B800" : "2px solid transparent",
                   cursor: "pointer",
                   textAlign: "center",
                 }}
@@ -743,7 +743,7 @@ function ProfileModal({
             className="hidden md:flex"
             style={{
               width: "160px", flexShrink: 0,
-              background: "#0A0A0A", borderRight: "1px solid #1A1A1A",
+              background: "#0A0E1A", borderRight: "1px solid #111827",
               flexDirection: "column",
             }}
           >
@@ -758,11 +758,11 @@ function ProfileModal({
                     style={{
                       display: "block", width: "100%", textAlign: "left",
                       padding: "20px 20px",
-                      fontFamily: "Bebas Neue, sans-serif", fontSize: "12px", letterSpacing: "2px",
-                      color: isActive ? "#F5C518" : "#444",
-                      background: isActive ? "#141414" : "transparent",
+                      fontFamily: "Barlow Condensed, sans-serif", fontSize: "12px", letterSpacing: "2px",
+                      color: isActive ? "#F5B800" : "#444",
+                      background: isActive ? "#0F172A" : "transparent",
                       border: "none",
-                      borderLeft: isActive ? "3px solid #F5C518" : "3px solid transparent",
+                      borderLeft: isActive ? "3px solid #F5B800" : "3px solid transparent",
                       cursor: "pointer",
                       transition: "color 0.15s, background 0.15s",
                     }}
@@ -776,15 +776,15 @@ function ProfileModal({
             </div>
 
             {/* Profile strength pinned at bottom of nav */}
-            <div style={{ padding: "16px 16px 20px", borderTop: "1px solid #1A1A1A" }}>
-              <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "20px", color: "#F5C518", lineHeight: 1, marginBottom: "4px" }}>
+            <div style={{ padding: "16px 16px 20px", borderTop: "1px solid #111827" }}>
+              <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "20px", color: "#F5B800", lineHeight: 1, marginBottom: "4px" }}>
                 {pct}%
               </div>
-              <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "9px", color: "#555", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "8px" }}>
+              <div style={{ fontFamily: "Inter, sans-serif", fontSize: "9px", color: "#555", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "8px" }}>
                 COMPLETE
               </div>
-              <div style={{ width: "100%", height: "3px", background: "#1A1A1A", borderRadius: "2px" }}>
-                <div style={{ width: `${pct}%`, height: "100%", background: "#F5C518", borderRadius: "2px", transition: "width 0.4s ease" }} />
+              <div style={{ width: "100%", height: "3px", background: "#111827", borderRadius: "2px" }}>
+                <div style={{ width: `${pct}%`, height: "100%", background: "#F5B800", borderRadius: "2px", transition: "width 0.4s ease" }} />
               </div>
             </div>
           </div>
@@ -828,7 +828,7 @@ function ProfileModal({
         <div
           className="flex flex-col md:flex-row md:justify-end"
           style={{
-            borderTop: "1px solid #1A1A1A",
+            borderTop: "1px solid #111827",
             padding: "clamp(14px, 3vw, 18px) clamp(16px, 4vw, 36px)",
             flexShrink: 0,
             gap: "10px",
@@ -839,13 +839,13 @@ function ProfileModal({
             onClick={onClose}
             className="hidden md:block w-full md:w-auto"
             style={{
-              fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", letterSpacing: "1.5px",
+              fontFamily: "Barlow Condensed, sans-serif", fontSize: "13px", letterSpacing: "1.5px",
               height: "44px", padding: "0 24px", borderRadius: "8px",
-              background: "transparent", border: "1px solid #2A2A2A",
+              background: "transparent", border: "1px solid #1E293B",
               color: "#555", cursor: "pointer",
             }}
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#444"; e.currentTarget.style.color = "#888"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#2A2A2A"; e.currentTarget.style.color = "#555"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#1E293B"; e.currentTarget.style.color = "#555"; }}
           >
             CLOSE
           </button>
@@ -855,12 +855,12 @@ function ProfileModal({
             disabled={saving}
             className="w-full md:w-auto"
             style={{
-              fontFamily: "Bebas Neue, sans-serif", fontSize: "16px", letterSpacing: "1.5px",
+              fontFamily: "Barlow Condensed, sans-serif", fontSize: "16px", letterSpacing: "1.5px",
               height: "50px", padding: "0 28px", borderRadius: "8px",
-              background: saving ? "#B89000" : "linear-gradient(90deg, #F5C518 0%, #FFD740 100%)",
-              color: "#0A0A0A", border: "none", cursor: saving ? "not-allowed" : "pointer",
+              background: saving ? "#B89000" : "linear-gradient(90deg, #F5B800 0%, #FFD740 100%)",
+              color: "#0A0E1A", border: "none", cursor: saving ? "not-allowed" : "pointer",
               opacity: saving ? 0.8 : 1,
-              boxShadow: "0 4px 20px rgba(245,197,24,0.3)",
+              boxShadow: "0 4px 20px rgba(245,184,0,0.3)",
             }}
           >
             {saving ? "SAVING…" : "SAVE CHANGES →"}
@@ -941,83 +941,148 @@ export default function Profile() {
     closeModal();
   };
 
+  const fullName = [profileData.firstName, profileData.lastName].filter(Boolean).join(" ");
+  const initials = [profileData.firstName?.[0], profileData.lastName?.[0]].filter(Boolean).join("").toUpperCase() || "?";
+  const strengthPct = calcStrength(profileData);
+
+  const positionBadges: string[] = (() => {
+    if (!profileData.positions) return [];
+    try {
+      const parsed = JSON.parse(profileData.positions);
+      return Array.isArray(parsed) ? parsed : [profileData.positions];
+    } catch {
+      return [profileData.positions];
+    }
+  })();
+  const summaryBadges = [
+    profileData.graduationYear ? `Class of ${profileData.graduationYear}` : null,
+    ...positionBadges,
+    profileData.highSchool || null,
+    profileData.city ? `${profileData.city}${profileData.state ? `, ${profileData.state}` : ""}` : null,
+  ].filter(Boolean) as string[];
+
+  const keyFacts: { label: string; value: string }[] = [
+    { label: "GPA", value: profileData.gpa },
+    { label: "SAT", value: profileData.satScore },
+    { label: "ACT", value: profileData.actScore },
+    { label: "Height", value: profileData.height },
+    { label: "Weight", value: profileData.weight },
+    { label: "Club Team", value: profileData.clubTeam },
+    { label: "Vertical", value: profileData.verticalJump },
+    { label: "Approach", value: profileData.approachJump },
+  ].filter(f => f.value?.trim());
+
   return (
     <>
-      <div className="profile-page-wrapper" style={{ background: "#0A0A0A" }}>
-        {/* ── HERO SECTION ── */}
-        <div
-          className="profile-hero min-h-[40vh] md:min-h-screen flex items-center justify-center relative overflow-hidden"
-          style={{
-            background: "#0A0E1A",
-            backgroundImage: "url('https://d2xsxph8kpxj0f.cloudfront.net/310519663375439833/BnDiRFtcsvRMuQV7pTFbtY/UCLAgym_d9b2f0ed.webp')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundAttachment: "fixed",
-          }}
-        >
-          <div className="absolute inset-0" style={{ background: "rgba(0, 0, 0, 0.65)" }} />
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px)",
-              backgroundSize: "32px 32px",
-            }}
-          />
+      <div className="profile-page-wrapper min-h-screen pb-24 md:pb-8" style={{ background: "#0A0E1A" }}>
+        <div className="max-w-4xl mx-auto px-4 md:px-6 pt-8 md:pt-10">
+          <p className="section-label mb-1">Athlete Profile</p>
+          <h1 className="page-title text-4xl md:text-5xl mb-2">This Is What Coaches See</h1>
+          <p className="text-[#94A3B8] text-sm mb-8" style={{ fontFamily: "Inter, sans-serif" }}>
+            Keep it current — coaches check this before they reply to your emails.
+          </p>
+
+          {/* ── SUMMARY CARD ── */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="profile-hero-content relative z-10 text-center"
+            transition={{ duration: 0.4 }}
+            className="rp-card p-6 md:p-8"
           >
-            <h1
-              className="profile-headline text-[36px] md:text-[120px]"
-              style={{
-                fontFamily: "Bebas Neue, sans-serif",
-                fontWeight: 800,
-                letterSpacing: "-0.03em",
-                color: "#FFFFFF",
-                lineHeight: 1,
-              }}
-            >
-              PROFILE
-            </h1>
-            <p
-              className="text-[12px] md:text-[24px]"
-              style={{
-                fontFamily: "Bebas Neue, sans-serif",
-                fontWeight: 700,
-                color: "#F5B800",
-                marginTop: "16px",
-                letterSpacing: "-0.01em",
-                textTransform: "uppercase",
-              }}
-            >
-              THIS IS WHAT COACHES SEE. MAKE IT COUNT.
-            </p>
-            <div style={{ marginTop: "36px" }}>
+            <div className="flex flex-col sm:flex-row sm:items-start gap-6">
+              {/* Avatar */}
+              <div
+                className="flex-shrink-0 rounded-full flex items-center justify-center overflow-hidden mx-auto sm:mx-0"
+                style={{ width: 88, height: 88, background: "rgba(245,184,0,0.1)", border: "1px solid rgba(245,184,0,0.25)" }}
+              >
+                {profileData.profilePhoto ? (
+                  <img src={profileData.profilePhoto} alt={fullName} className="w-full h-full object-cover" />
+                ) : (
+                  <span style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "32px", color: "#F5B800" }}>{initials}</span>
+                )}
+              </div>
+
+              <div className="flex-1 min-w-0 text-center sm:text-left">
+                <h2 style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "28px", color: "#FFFFFF", lineHeight: 1.1 }}>
+                  {(fullName || "Add your name").toUpperCase()}
+                </h2>
+                <div className="flex flex-wrap gap-2 mt-3 justify-center sm:justify-start">
+                  {summaryBadges.length > 0 ? summaryBadges.map((badge, i) => (
+                    <span
+                      key={i}
+                      className="text-[10px] uppercase tracking-wider rounded-md px-2.5 py-1"
+                      style={{ fontFamily: "Inter, sans-serif", color: "#94A3B8", background: "#0F172A", border: "1px solid #1E293B" }}
+                    >
+                      {badge}
+                    </span>
+                  )) : (
+                    <span className="text-[13px] text-[#94A3B8]" style={{ fontFamily: "Inter, sans-serif" }}>
+                      No details yet — add your grad year, position, and school.
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Profile strength ring */}
+              <div className="flex flex-col items-center flex-shrink-0 mx-auto sm:mx-0">
+                <div
+                  className="relative flex items-center justify-center rounded-full"
+                  style={{
+                    width: 64, height: 64,
+                    background: `conic-gradient(#F5B800 ${strengthPct * 3.6}deg, #1E293B 0deg)`,
+                  }}
+                >
+                  <div className="absolute rounded-full flex items-center justify-center" style={{ inset: 4, background: "#111827" }}>
+                    <span style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "16px", color: "#FFFFFF" }}>{strengthPct}%</span>
+                  </div>
+                </div>
+                <span className="text-[10px] uppercase tracking-wider text-[#94A3B8] mt-2" style={{ fontFamily: "Inter, sans-serif" }}>
+                  Complete
+                </span>
+              </div>
+            </div>
+
+            {/* Key facts grid */}
+            {keyFacts.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8 pt-6" style={{ borderTop: "1px solid #1E293B" }}>
+                {keyFacts.map(fact => (
+                  <div key={fact.label}>
+                    <p className="text-[10px] uppercase tracking-wider text-[#94A3B8]" style={{ fontFamily: "Inter, sans-serif" }}>
+                      {fact.label}
+                    </p>
+                    <p style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "20px", color: "#F8FAFC" }}>
+                      {fact.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="mt-8 flex justify-center sm:justify-start">
               <button
                 onClick={handleOpenModal}
+                className="rounded-lg cursor-pointer"
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: 600,
                   fontSize: "13px",
-                  letterSpacing: "1.5px",
-                  padding: "14px 32px",
-                  borderRadius: "8px",
-                  background: "#F5C518",
-                  color: "#000000",
+                  letterSpacing: "0.04em",
+                  padding: "12px 28px",
+                  background: "#F5B800",
+                  color: "#0A0E1A",
                   border: "none",
-                  cursor: "pointer",
+                  transition: "filter 150ms ease",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "#FFD740")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "#F5C518")}
+                onMouseEnter={(e) => (e.currentTarget.style.filter = "brightness(1.1)")}
+                onMouseLeave={(e) => (e.currentTarget.style.filter = "none")}
               >
-                VIEW &amp; EDIT PROFILE →
+                Edit Profile →
               </button>
             </div>
           </motion.div>
         </div>
 
-        <div className="md:pb-0 pb-24">
+        <div className="mt-12">
           <AppFooter />
         </div>
       </div>

@@ -83,23 +83,23 @@ export default function Affiliates() {
 
   const inputStyle: React.CSSProperties = {
     width: "100%",
-    background: "#0A0A0A",
-    border: "1px solid #2A2A2A",
+    background: "#0A0E1A",
+    border: "1px solid #1E293B",
     borderRadius: "4px",
     padding: "12px 16px",
     color: "#FFFFFF",
-    fontFamily: "DM Sans, sans-serif",
+    fontFamily: "Inter, sans-serif",
     fontSize: "14px",
     outline: "none",
     boxSizing: "border-box",
   };
 
   const labelStyle: React.CSSProperties = {
-    fontFamily: "DM Sans, sans-serif",
+    fontFamily: "Inter, sans-serif",
     fontSize: "11px",
     fontWeight: 700,
     letterSpacing: "0.1em",
-    color: "#6B6B6B",
+    color: "#94A3B8",
     textTransform: "uppercase",
     display: "block",
     marginBottom: "6px",
@@ -120,10 +120,10 @@ export default function Affiliates() {
             <span
               className="px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase"
               style={{
-                border: "1px solid rgba(245,197,24,0.4)",
-                color: "#F5C518",
-                fontFamily: "DM Sans, sans-serif",
-                background: "rgba(245,197,24,0.06)",
+                border: "1px solid rgba(245,184,0,0.4)",
+                color: "#F5B800",
+                fontFamily: "Inter, sans-serif",
+                background: "rgba(245,184,0,0.06)",
               }}
             >
               AFFILIATE PROGRAM
@@ -133,7 +133,7 @@ export default function Affiliates() {
           <h1
             className="mb-6"
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "clamp(48px, 8vw, 80px)",
               color: "#FFFFFF",
               lineHeight: 1,
@@ -141,7 +141,7 @@ export default function Affiliates() {
             }}
           >
             EARN MONEY.{" "}
-            <span style={{ color: "#F5C518" }}>HELP YOUR TEAMMATES</span>
+            <span style={{ color: "#F5B800" }}>HELP YOUR TEAMMATES</span>
             <br />
             GET RECRUITED.
           </h1>
@@ -149,7 +149,7 @@ export default function Affiliates() {
           <p
             className="mb-10 mx-auto"
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "18px",
               color: "#94A3B8",
               maxWidth: "520px",
@@ -163,9 +163,9 @@ export default function Affiliates() {
             onClick={scrollToForm}
             className="px-8 py-4 text-sm font-bold tracking-widest uppercase rounded-sm cursor-pointer"
             style={{
-              background: "#F5C518",
-              color: "#0A0A0A",
-              fontFamily: "DM Sans, sans-serif",
+              background: "#F5B800",
+              color: "#0A0E1A",
+              fontFamily: "Inter, sans-serif",
               border: "none",
               fontSize: "13px",
             }}
@@ -185,11 +185,11 @@ export default function Affiliates() {
             transition={{ duration: 0.5 }}
             className="text-center mb-4"
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "11px",
               fontWeight: 700,
               letterSpacing: "0.18em",
-              color: "#F5C518",
+              color: "#F5B800",
               textTransform: "uppercase",
             }}
           >
@@ -202,7 +202,7 @@ export default function Affiliates() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-center mb-16"
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "clamp(36px, 5vw, 52px)",
               color: "#FFFFFF",
               lineHeight: 1,
@@ -240,9 +240,9 @@ export default function Affiliates() {
                 <div
                   className="absolute top-0 left-0 select-none pointer-events-none"
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "80px",
-                    color: "rgba(245,197,24,0.06)",
+                    color: "rgba(245,184,0,0.06)",
                     lineHeight: 1,
                     letterSpacing: "-0.02em",
                   }}
@@ -251,12 +251,12 @@ export default function Affiliates() {
                 </div>
                 <div
                   className="w-8 mb-5"
-                  style={{ height: "2px", background: "#F5C518" }}
+                  style={{ height: "2px", background: "#F5B800" }}
                 />
                 <h3
                   className="mb-3"
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "24px",
                     color: "#FFFFFF",
                     letterSpacing: "0.04em",
@@ -266,7 +266,7 @@ export default function Affiliates() {
                 </h3>
                 <p
                   style={{
-                    fontFamily: "DM Sans, sans-serif",
+                    fontFamily: "Inter, sans-serif",
                     fontSize: "14px",
                     color: "#64748B",
                     lineHeight: 1.65,
@@ -290,7 +290,7 @@ export default function Affiliates() {
             transition={{ duration: 0.5 }}
             className="text-center mb-12"
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "clamp(32px, 5vw, 48px)",
               color: "#FFFFFF",
               lineHeight: 1,
@@ -328,9 +328,9 @@ export default function Affiliates() {
                 <h3
                   className="mb-3"
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "22px",
-                    color: "#F5C518",
+                    color: "#F5B800",
                     letterSpacing: "0.04em",
                   }}
                 >
@@ -338,7 +338,7 @@ export default function Affiliates() {
                 </h3>
                 <p
                   style={{
-                    fontFamily: "DM Sans, sans-serif",
+                    fontFamily: "Inter, sans-serif",
                     fontSize: "14px",
                     color: "#64748B",
                     lineHeight: 1.65,
@@ -367,7 +367,7 @@ export default function Affiliates() {
             transition={{ duration: 0.5 }}
             className="mb-3"
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "clamp(36px, 5vw, 52px)",
               color: "#FFFFFF",
               lineHeight: 1,
@@ -378,7 +378,7 @@ export default function Affiliates() {
           <p
             className="mb-10"
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "14px",
               color: "#64748B",
               lineHeight: 1.65,
@@ -394,22 +394,22 @@ export default function Affiliates() {
               className="rounded-sm p-10 text-center"
               style={{
                 background: "#111827",
-                border: "1px solid rgba(245,197,24,0.3)",
+                border: "1px solid rgba(245,184,0,0.3)",
               }}
             >
               <div
                 className="mb-4"
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "32px",
-                  color: "#F5C518",
+                  color: "#F5B800",
                 }}
               >
                 APPLICATION RECEIVED
               </div>
               <p
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "15px",
                   color: "#94A3B8",
                   lineHeight: 1.65,
@@ -558,9 +558,9 @@ export default function Affiliates() {
                   <div
                     className="mt-1 text-right"
                     style={{
-                      fontFamily: "DM Sans, sans-serif",
+                      fontFamily: "Inter, sans-serif",
                       fontSize: "11px",
-                      color: form.whyJoin.length >= 180 ? "#F5C518" : "#6B6B6B",
+                      color: form.whyJoin.length >= 180 ? "#F5B800" : "#94A3B8",
                     }}
                   >
                     {form.whyJoin.length}/200
@@ -572,9 +572,9 @@ export default function Affiliates() {
                   disabled={submitApplication.isPending}
                   className="w-full py-4 text-sm font-bold tracking-widest uppercase rounded-sm cursor-pointer"
                   style={{
-                    background: submitApplication.isPending ? "#2A2A2A" : "#F5C518",
-                    color: submitApplication.isPending ? "#6B6B6B" : "#0A0A0A",
-                    fontFamily: "DM Sans, sans-serif",
+                    background: submitApplication.isPending ? "#1E293B" : "#F5B800",
+                    color: submitApplication.isPending ? "#94A3B8" : "#0A0E1A",
+                    fontFamily: "Inter, sans-serif",
                     border: "none",
                     cursor: submitApplication.isPending ? "not-allowed" : "pointer",
                     transition: "background 0.2s",

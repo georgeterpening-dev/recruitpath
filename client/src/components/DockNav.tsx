@@ -206,13 +206,13 @@ function MenuSheet({
                   >
                     <Icon
                       size={20}
-                      style={{ color: isActive ? "#F5C518" : "rgba(255,255,255,0.6)", flexShrink: 0 }}
+                      style={{ color: isActive ? "#F5B800" : "rgba(255,255,255,0.6)", flexShrink: 0 }}
                     />
                     <span
                       style={{
-                        fontFamily: "DM Sans, sans-serif",
+                        fontFamily: "Inter, sans-serif",
                         fontSize: 15,
-                        color: isActive ? "#F5C518" : "#FFFFFF",
+                        color: isActive ? "#F5B800" : "#FFFFFF",
                         fontWeight: isActive ? 600 : 400,
                       }}
                     >
@@ -235,7 +235,7 @@ function MenuSheet({
                 <LogOut size={20} style={{ color: "rgba(255,100,100,0.8)", flexShrink: 0 }} />
                 <span
                   style={{
-                    fontFamily: "DM Sans, sans-serif",
+                    fontFamily: "Inter, sans-serif",
                     fontSize: 15,
                     color: "rgba(255,100,100,0.9)",
                   }}
@@ -297,7 +297,7 @@ export default function DockNav() {
               }}
               aria-label="Close modal"
             >
-              <X size={16} style={{ color: "#F5C518" }} />
+              <X size={16} style={{ color: "#F5B800" }} />
             </motion.button>
           ) : (
             /* Full pill state (modal closed) */

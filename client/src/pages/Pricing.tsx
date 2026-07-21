@@ -81,11 +81,11 @@ export default function Pricing() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "11px",
               fontWeight: 700,
               letterSpacing: "0.18em",
-              color: "#F5C518",
+              color: "#F5B800",
               textTransform: "uppercase",
               marginBottom: "16px",
             }}
@@ -97,7 +97,7 @@ export default function Pricing() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "clamp(48px, 8vw, 72px)",
               color: "#FFFFFF",
               lineHeight: 1,
@@ -111,7 +111,7 @@ export default function Pricing() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "17px",
               color: "#94A3B8",
               maxWidth: "480px",
@@ -140,8 +140,8 @@ export default function Pricing() {
                 onClick={() => setBillingPeriod(period)}
                 className="relative px-5 py-2 rounded-lg text-xs font-semibold tracking-widest uppercase transition-all duration-200"
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
-                  background: billingPeriod === period ? "#F5C518" : "transparent",
+                  fontFamily: "Inter, sans-serif",
+                  background: billingPeriod === period ? "#F5B800" : "transparent",
                   color: billingPeriod === period ? "#0A0E1A" : "#64748B",
                 }}
               >
@@ -151,8 +151,8 @@ export default function Pricing() {
                     <span
                       className="px-1.5 py-0.5 rounded text-[10px] font-bold"
                       style={{
-                        background: billingPeriod === "annual" ? "rgba(10,14,26,0.2)" : "rgba(245,197,24,0.15)",
-                        color: billingPeriod === "annual" ? "#0A0E1A" : "#F5C518",
+                        background: billingPeriod === "annual" ? "rgba(10,14,26,0.2)" : "rgba(245,184,0,0.15)",
+                        color: billingPeriod === "annual" ? "#0A0E1A" : "#F5B800",
                       }}
                     >
                       SAVE ${annualSavings}
@@ -182,14 +182,14 @@ export default function Pricing() {
               <div className="mb-6">
                 <p
                   className="text-xs font-bold tracking-widest uppercase mb-3"
-                  style={{ fontFamily: "DM Sans, sans-serif", color: "#64748B" }}
+                  style={{ fontFamily: "Inter, sans-serif", color: "#64748B" }}
                 >
                   Free
                 </p>
                 <div className="flex items-end gap-2 mb-2">
                   <span
                     style={{
-                      fontFamily: "Bebas Neue, sans-serif",
+                      fontFamily: "Barlow Condensed, sans-serif",
                       fontSize: "52px",
                       color: "#FFFFFF",
                       lineHeight: 1,
@@ -198,7 +198,7 @@ export default function Pricing() {
                     $0
                   </span>
                 </div>
-                <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#64748B" }}>
+                <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#64748B" }}>
                   No credit card required
                 </p>
               </div>
@@ -207,7 +207,7 @@ export default function Pricing() {
                 {FREE_FEATURES.map((feature) => (
                   <li key={feature} className="flex items-center gap-3">
                     <Check size={14} className="flex-shrink-0" style={{ color: "#475569" }} />
-                    <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#94A3B8" }}>
+                    <span style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#94A3B8" }}>
                       {feature}
                     </span>
                   </li>
@@ -223,7 +223,7 @@ export default function Pricing() {
                     background: "transparent",
                     border: "1px solid #1E293B",
                     color: "#64748B",
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "15px",
                     letterSpacing: "0.1em",
                     borderRadius: "8px",
@@ -244,18 +244,18 @@ export default function Pricing() {
               className="rounded-2xl p-8 flex flex-col relative overflow-hidden"
               style={{
                 background: "linear-gradient(135deg, #0F1929 0%, #111827 100%)",
-                border: "1px solid rgba(245,197,24,0.3)",
-                boxShadow: "0 0 40px rgba(245,197,24,0.06)",
+                border: "1px solid rgba(245,184,0,0.3)",
+                boxShadow: "0 0 40px rgba(245,184,0,0.06)",
               }}
             >
               {/* Popular badge */}
               <div
                 className="absolute top-5 right-5 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase flex items-center gap-1"
                 style={{
-                  background: "rgba(245,197,24,0.12)",
-                  color: "#F5C518",
-                  border: "1px solid rgba(245,197,24,0.25)",
-                  fontFamily: "DM Sans, sans-serif",
+                  background: "rgba(245,184,0,0.12)",
+                  color: "#F5B800",
+                  border: "1px solid rgba(245,184,0,0.25)",
+                  fontFamily: "Inter, sans-serif",
                 }}
               >
                 <Zap size={10} strokeWidth={2.5} />
@@ -265,7 +265,7 @@ export default function Pricing() {
               <div className="mb-6">
                 <p
                   className="text-xs font-bold tracking-widest uppercase mb-3"
-                  style={{ fontFamily: "DM Sans, sans-serif", color: "#F5C518" }}
+                  style={{ fontFamily: "Inter, sans-serif", color: "#F5B800" }}
                 >
                   Pro
                 </p>
@@ -274,7 +274,7 @@ export default function Pricing() {
                     <>
                       <span
                         style={{
-                          fontFamily: "Bebas Neue, sans-serif",
+                          fontFamily: "Barlow Condensed, sans-serif",
                           fontSize: "52px",
                           color: "#FFFFFF",
                           lineHeight: 1,
@@ -282,7 +282,7 @@ export default function Pricing() {
                       >
                         ${annualMonthlyEquiv}
                       </span>
-                      <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "15px", color: "#64748B", paddingBottom: "8px" }}>
+                      <span style={{ fontFamily: "Inter, sans-serif", fontSize: "15px", color: "#64748B", paddingBottom: "8px" }}>
                         /month
                       </span>
                     </>
@@ -290,7 +290,7 @@ export default function Pricing() {
                     <>
                       <span
                         style={{
-                          fontFamily: "Bebas Neue, sans-serif",
+                          fontFamily: "Barlow Condensed, sans-serif",
                           fontSize: "52px",
                           color: "#FFFFFF",
                           lineHeight: 1,
@@ -298,13 +298,13 @@ export default function Pricing() {
                       >
                         ${monthlyPrice}
                       </span>
-                      <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "15px", color: "#64748B", paddingBottom: "8px" }}>
+                      <span style={{ fontFamily: "Inter, sans-serif", fontSize: "15px", color: "#64748B", paddingBottom: "8px" }}>
                         /month
                       </span>
                     </>
                   )}
                 </div>
-                <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#64748B" }}>
+                <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#64748B" }}>
                   {billingPeriod === "annual"
                     ? `$${annualPrice}/year — save $${annualSavings} vs monthly`
                     : "Billed monthly. Cancel anytime."}
@@ -317,11 +317,11 @@ export default function Pricing() {
                     <Check
                       size={14}
                       className="flex-shrink-0"
-                      style={{ color: i === 0 ? "#475569" : "#F5C518" }}
+                      style={{ color: i === 0 ? "#475569" : "#F5B800" }}
                     />
                     <span
                       style={{
-                        fontFamily: "DM Sans, sans-serif",
+                        fontFamily: "Inter, sans-serif",
                         fontSize: "14px",
                         color: i === 0 ? "#94A3B8" : "#E2E8F0",
                       }}
@@ -336,12 +336,12 @@ export default function Pricing() {
                 <div
                   className="w-full py-3.5 flex items-center justify-center gap-2 rounded-lg"
                   style={{
-                    background: "rgba(245,197,24,0.1)",
-                    border: "1px solid rgba(245,197,24,0.25)",
-                    fontFamily: "Bebas Neue, sans-serif",
+                    background: "rgba(245,184,0,0.1)",
+                    border: "1px solid rgba(245,184,0,0.25)",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "15px",
                     letterSpacing: "0.1em",
-                    color: "#F5C518",
+                    color: "#F5B800",
                   }}
                 >
                   <Check size={14} strokeWidth={3} />
@@ -355,9 +355,9 @@ export default function Pricing() {
                   disabled={createCheckout.isPending}
                   className="w-full py-3.5 flex items-center justify-center gap-2 rounded-lg font-bold"
                   style={{
-                    background: "#F5C518",
-                    color: "#0A0A0A",
-                    fontFamily: "Bebas Neue, sans-serif",
+                    background: "#F5B800",
+                    color: "#0A0E1A",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "15px",
                     letterSpacing: "0.1em",
                     cursor: createCheckout.isPending ? "not-allowed" : "pointer",
@@ -381,7 +381,7 @@ export default function Pricing() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "14px",
               color: "#94A3B8",
               lineHeight: 1.6,
@@ -402,7 +402,7 @@ export default function Pricing() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.7 }}
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "32px",
               color: "#FFFFFF",
               letterSpacing: "0.04em",
@@ -451,7 +451,7 @@ export default function Pricing() {
             >
               <p
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "16px",
                   color: "#FFFFFF",
                   letterSpacing: "0.04em",
@@ -462,7 +462,7 @@ export default function Pricing() {
               </p>
               <p
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "14px",
                   color: "#64748B",
                   lineHeight: 1.65,

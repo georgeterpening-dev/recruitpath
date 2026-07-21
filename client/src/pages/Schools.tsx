@@ -103,19 +103,19 @@ function OpeningFilterSheet({
           <div style={{ width: 36, height: 4, borderRadius: 999, background: "rgba(255,255,255,0.18)" }} />
         </div>
         <div className="flex items-center justify-between mb-6">
-          <h3 style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "20px", letterSpacing: "0.06em", color: "#FFFFFF" }}>FILTER RESULTS</h3>
-          <button onClick={onClose} style={{ color: "#6B6B6B", background: "none", border: "none", cursor: "pointer" }}><X size={18} /></button>
+          <h3 style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "20px", letterSpacing: "0.06em", color: "#FFFFFF" }}>FILTER RESULTS</h3>
+          <button onClick={onClose} style={{ color: "#94A3B8", background: "none", border: "none", cursor: "pointer" }}><X size={18} /></button>
         </div>
         {/* Sort by */}
         <div className="mb-6">
-          <p style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", letterSpacing: "0.1em", color: "#F5C518", marginBottom: "12px" }}>SORT BY</p>
+          <p style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "13px", letterSpacing: "0.1em", color: "#F5B800", marginBottom: "12px" }}>SORT BY</p>
           <div className="flex flex-col gap-2">
             {(["most", "least", "az"] as const).map((opt) => {
               const labels = { most: "Most openings first", least: "Least openings first", az: "A–Z by school name" };
               return (
-                <button key={opt} onClick={() => setDraftSort(opt)} className="flex items-center gap-3 cursor-pointer" style={{ padding: "12px 16px", borderRadius: "10px", border: draftSort === opt ? "1px solid #F5C518" : "1px solid rgba(255,255,255,0.08)", background: draftSort === opt ? "rgba(245,197,24,0.1)" : "rgba(255,255,255,0.03)", textAlign: "left" }}>
-                  <div style={{ width: 16, height: 16, borderRadius: "50%", border: draftSort === opt ? "2px solid #F5C518" : "2px solid #555", background: draftSort === opt ? "#F5C518" : "transparent", flexShrink: 0 }} />
-                  <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: draftSort === opt ? "#FFFFFF" : "#A3A3A3" }}>{labels[opt]}</span>
+                <button key={opt} onClick={() => setDraftSort(opt)} className="flex items-center gap-3 cursor-pointer" style={{ padding: "12px 16px", borderRadius: "10px", border: draftSort === opt ? "1px solid #F5B800" : "1px solid rgba(255,255,255,0.08)", background: draftSort === opt ? "rgba(245,184,0,0.1)" : "rgba(255,255,255,0.03)", textAlign: "left" }}>
+                  <div style={{ width: 16, height: 16, borderRadius: "50%", border: draftSort === opt ? "2px solid #F5B800" : "2px solid #555", background: draftSort === opt ? "#F5B800" : "transparent", flexShrink: 0 }} />
+                  <span style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: draftSort === opt ? "#FFFFFF" : "#A3A3A3" }}>{labels[opt]}</span>
                 </button>
               );
             })}
@@ -123,14 +123,14 @@ function OpeningFilterSheet({
         </div>
         {/* Division */}
         <div className="mb-8">
-          <p style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", letterSpacing: "0.1em", color: "#F5C518", marginBottom: "12px" }}>DIVISION</p>
+          <p style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "13px", letterSpacing: "0.1em", color: "#F5B800", marginBottom: "12px" }}>DIVISION</p>
           <div className="flex flex-col gap-2">
             {OPENING_DIVISIONS_CONST.map((div) => (
-              <button key={div} onClick={() => toggleDiv(div)} className="flex items-center gap-3 cursor-pointer" style={{ padding: "12px 16px", borderRadius: "10px", border: draftDivisions.includes(div) ? "1px solid #F5C518" : "1px solid rgba(255,255,255,0.08)", background: draftDivisions.includes(div) ? "rgba(245,197,24,0.1)" : "rgba(255,255,255,0.03)", textAlign: "left" }}>
-                <div className="flex items-center justify-center" style={{ width: 16, height: 16, borderRadius: "3px", border: draftDivisions.includes(div) ? "none" : "2px solid #555", background: draftDivisions.includes(div) ? "#F5C518" : "transparent", flexShrink: 0 }}>
-                  {draftDivisions.includes(div) && <Check size={10} style={{ color: "#0A0A0A" }} />}
+              <button key={div} onClick={() => toggleDiv(div)} className="flex items-center gap-3 cursor-pointer" style={{ padding: "12px 16px", borderRadius: "10px", border: draftDivisions.includes(div) ? "1px solid #F5B800" : "1px solid rgba(255,255,255,0.08)", background: draftDivisions.includes(div) ? "rgba(245,184,0,0.1)" : "rgba(255,255,255,0.03)", textAlign: "left" }}>
+                <div className="flex items-center justify-center" style={{ width: 16, height: 16, borderRadius: "3px", border: draftDivisions.includes(div) ? "none" : "2px solid #555", background: draftDivisions.includes(div) ? "#F5B800" : "transparent", flexShrink: 0 }}>
+                  {draftDivisions.includes(div) && <Check size={10} style={{ color: "#0A0E1A" }} />}
                 </div>
-                <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: draftDivisions.includes(div) ? "#FFFFFF" : "#A3A3A3" }}>{div}</span>
+                <span style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: draftDivisions.includes(div) ? "#FFFFFF" : "#A3A3A3" }}>{div}</span>
               </button>
             ))}
           </div>
@@ -140,14 +140,14 @@ function OpeningFilterSheet({
           <button
             onClick={() => { onApply(draftSort, draftDivisions); onClose(); }}
             className="flex-1 cursor-pointer"
-            style={{ height: "48px", background: "#F5C518", color: "#0A0A0A", border: "none", borderRadius: "10px", fontFamily: "Bebas Neue, sans-serif", fontSize: "16px", letterSpacing: "0.08em" }}
+            style={{ height: "48px", background: "#F5B800", color: "#0A0E1A", border: "none", borderRadius: "10px", fontFamily: "Barlow Condensed, sans-serif", fontSize: "16px", letterSpacing: "0.08em" }}
           >
             APPLY
           </button>
           <button
             onClick={() => { setDraftSort("most"); setDraftDivisions(["D1", "D2", "D3", "NAIA", "CC"]); }}
             className="cursor-pointer"
-            style={{ height: "48px", padding: "0 20px", background: "transparent", color: "#A3A3A3", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "10px", fontFamily: "DM Sans, sans-serif", fontSize: "14px", fontWeight: 600 }}
+            style={{ height: "48px", padding: "0 20px", background: "transparent", color: "#A3A3A3", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "10px", fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: 600 }}
           >
             CLEAR
           </button>
@@ -246,8 +246,8 @@ function SchoolCard({
             position: "absolute",
             inset: 0,
             backfaceVisibility: "hidden",
-            background: isAdded ? "rgba(245,197,24,0.05)" : "#141414",
-            border: isAdded ? "2px solid #F5C518" : "1px solid #2A2A2A",
+            background: isAdded ? "rgba(245,184,0,0.05)" : "#0F172A",
+            border: isAdded ? "2px solid #F5B800" : "1px solid #1E293B",
             borderRadius: "4px",
             padding: "20px",
             display: "flex",
@@ -261,8 +261,8 @@ function SchoolCard({
               className="absolute top-3 left-3"
               style={{
                 background: "#F5B800",
-                color: "#0A0A0A",
-                fontFamily: "Bebas Neue, sans-serif",
+                color: "#0A0E1A",
+                fontFamily: "Barlow Condensed, sans-serif",
                 fontSize: "10px",
                 letterSpacing: "0.12em",
                 fontWeight: 700,
@@ -277,14 +277,14 @@ function SchoolCard({
           {isAdded && (
             <div
               className="absolute top-3 right-3 w-5 h-5 rounded-full flex items-center justify-center"
-              style={{ background: "#F5C518" }}
+              style={{ background: "#F5B800" }}
             >
-              <Check size={12} style={{ color: "#0A0A0A" }} />
+              <Check size={12} style={{ color: "#0A0E1A" }} />
             </div>
           )}
           {!school.hasRosterData && !isAdded && (
             <div className="absolute top-3 right-3">
-              <Lock size={14} style={{ color: "#6B6B6B" }} />
+              <Lock size={14} style={{ color: "#94A3B8" }} />
             </div>
           )}
           <div>
@@ -293,26 +293,26 @@ function SchoolCard({
                 <SchoolLogo domain={school.athleticsDomain} brandColor={school.brandColor} size={48} name={school.name} logoUrl={school.logoUrl} />
                 <span
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "11px",
                     letterSpacing: "0.1em",
-                    color: "#6B6B6B",
+                    color: "#94A3B8",
                     padding: "2px 8px",
-                    background: "#1A1A1A",
-                    border: "1px solid #2A2A2A",
+                    background: "#111827",
+                    border: "1px solid #1E293B",
                     borderRadius: "2px",
                   }}
                 >
                   {school.division || "—"}
                 </span>
               </div>
-              <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B" }}>
+              <span style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8" }}>
                 {school.city}, {school.state}
               </span>
             </div>
             <h3
               style={{
-                fontFamily: "Bebas Neue, sans-serif",
+                fontFamily: "Barlow Condensed, sans-serif",
                 fontSize: "20px",
                 fontWeight: 700,
                 color: "#FFFFFF",
@@ -322,26 +322,26 @@ function SchoolCard({
             >
               {school.name.toUpperCase()}
             </h3>
-            <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B" }}>
+            <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8" }}>
               {school.conference || "—"}
             </p>
           </div>
           <div>
             <p
               style={{
-                fontFamily: "Bebas Neue, sans-serif",
+                fontFamily: "Barlow Condensed, sans-serif",
                 fontSize: "12px",
                 letterSpacing: "0.1em",
-                color: "#F5C518",
+                color: "#F5B800",
                 marginBottom: "4px",
               }}
             >
               MEN'S VOLLEYBALL
             </p>
-            <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#FFFFFF" }}>
+            <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#FFFFFF" }}>
               {school.coachName || "Coach TBD"}
             </p>
-            <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B" }}>
+            <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8" }}>
               {school.coachTitle || "Head Coach"}
             </p>
           </div>
@@ -354,8 +354,8 @@ function SchoolCard({
             inset: 0,
             backfaceVisibility: "hidden",
             transform: "rotateY(180deg)",
-            background: "#141414",
-            border: "1px solid #F5C518",
+            background: "#0F172A",
+            border: "1px solid #F5B800",
             borderRadius: "4px",
             padding: "20px",
             display: "flex",
@@ -369,7 +369,7 @@ function SchoolCard({
               <div>
                 <h3
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "18px",
                     fontWeight: 700,
                     color: "#FFFFFF",
@@ -378,16 +378,16 @@ function SchoolCard({
                 >
                   {(school.coachName || "Coach TBD").toUpperCase()}
                 </h3>
-                <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B" }}>
+                <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8" }}>
                   {school.coachTitle || "Head Coach"} · {school.name}
                 </p>
               </div>
             </div>
             <div className="mt-2">
-              <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", marginBottom: "2px" }}>
+              <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8", marginBottom: "2px" }}>
                 {school.conference} · {school.division}
               </p>
-              <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B" }}>
+              <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8" }}>
                 {school.city}, {school.state}
               </p>
             </div>
@@ -398,11 +398,11 @@ function SchoolCard({
               disabled={isPending}
               className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-bold tracking-wider uppercase"
               style={{
-                background: isAdded ? "transparent" : "#F5C518",
-                color: isAdded ? "#F5C518" : "#0A0A0A",
-                border: isAdded ? "1px solid #F5C518" : "none",
+                background: isAdded ? "transparent" : "#F5B800",
+                color: isAdded ? "#F5B800" : "#0A0E1A",
+                border: isAdded ? "1px solid #F5B800" : "none",
                 borderRadius: "0px",
-                fontFamily: "Bebas Neue, sans-serif",
+                fontFamily: "Barlow Condensed, sans-serif",
                 letterSpacing: "0.1em",
                 cursor: isPending ? "wait" : "pointer",
                 opacity: isPending ? 0.6 : 1,
@@ -418,9 +418,9 @@ function SchoolCard({
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
                 className="flex items-center justify-center w-9"
-                style={{ border: "1px solid #2A2A2A", borderRadius: "0px" }}
+                style={{ border: "1px solid #1E293B", borderRadius: "0px" }}
               >
-                <ExternalLink size={14} style={{ color: "#6B6B6B" }} />
+                <ExternalLink size={14} style={{ color: "#94A3B8" }} />
               </a>
             )}
           </div>
@@ -453,23 +453,23 @@ export default function Schools() {
   const { openModal, closeModal } = useModal();
   const [, navigate] = useLocation();
 
-  // ── Profile completeness check ────────────────────────────────────────────
+  // ── Profile completeness check — sourced from the real saved profile ──────
+  const { data: dbAthleteProfile, isLoading: athleteProfileLoading } = trpc.athleteProfile.get.useQuery(
+    undefined,
+    { enabled: isAuthenticated, retry: false }
+  );
   const missingProfileFields = useMemo(() => {
-    if (!isAuthenticated) return []; // only check for logged-in users
-    try {
-      const raw = localStorage.getItem(ATHLETE_STORAGE_KEY);
-      const profile = raw ? JSON.parse(raw) : {};
-      const missing: string[] = [];
-      if (!profile.firstName?.trim()) missing.push("First Name");
-      if (!profile.lastName?.trim()) missing.push("Last Name");
-      if (!profile.graduationYear?.trim()) missing.push("Graduation Year");
-      if (!profile.positions?.trim()) missing.push("Position");
-      if (!profile.highSchool?.trim()) missing.push("High School");
-      return missing;
-    } catch {
-      return [];
-    }
-  }, [isAuthenticated]);
+    if (!isAuthenticated || athleteProfileLoading) return []; // don't gate while loading or logged out
+    const profile: Partial<Record<"firstName" | "lastName" | "graduationYear" | "positions" | "highSchool", string | null>> =
+      dbAthleteProfile ?? {};
+    const missing: string[] = [];
+    if (!profile.firstName?.trim()) missing.push("First Name");
+    if (!profile.lastName?.trim()) missing.push("Last Name");
+    if (!profile.graduationYear?.trim()) missing.push("Graduation Year");
+    if (!profile.positions?.trim()) missing.push("Position");
+    if (!profile.highSchool?.trim()) missing.push("High School");
+    return missing;
+  }, [isAuthenticated, athleteProfileLoading, dbAthleteProfile]);
   const utils = trpc.useUtils();
 
   // Load all volleyball schools from DB
@@ -622,17 +622,17 @@ export default function Schools() {
                   width: 72,
                   height: 72,
                   borderRadius: "50%",
-                  background: "rgba(245,197,24,0.1)",
-                  border: "1px solid rgba(245,197,24,0.25)",
+                  background: "rgba(245,184,0,0.1)",
+                  border: "1px solid rgba(245,184,0,0.25)",
                 }}
               >
-                <Lock size={32} color="#F5C518" />
+                <Lock size={32} color="#F5B800" />
               </div>
 
               {/* Headline */}
               <h2
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "clamp(32px, 6vw, 48px)",
                   color: "#FFFFFF",
                   letterSpacing: "0.02em",
@@ -646,7 +646,7 @@ export default function Schools() {
               {/* Body */}
               <p
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "15px",
                   color: "#94A3B8",
                   lineHeight: 1.65,
@@ -662,14 +662,14 @@ export default function Schools() {
                   <span
                     key={field}
                     style={{
-                      fontFamily: "DM Sans, sans-serif",
+                      fontFamily: "Inter, sans-serif",
                       fontSize: "11px",
                       fontWeight: 600,
                       letterSpacing: "0.08em",
                       textTransform: "uppercase",
-                      color: "#F5C518",
-                      background: "rgba(245,197,24,0.1)",
-                      border: "1px solid rgba(245,197,24,0.3)",
+                      color: "#F5B800",
+                      background: "rgba(245,184,0,0.1)",
+                      border: "1px solid rgba(245,184,0,0.3)",
                       borderRadius: "4px",
                       padding: "4px 10px",
                     }}
@@ -685,11 +685,11 @@ export default function Schools() {
                 whileTap={{ scale: 0.97 }}
                 onClick={() => navigate("/profile")}
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "18px",
                   letterSpacing: "0.1em",
-                  color: "#0A0A0A",
-                  background: "#F5C518",
+                  color: "#0A0E1A",
+                  background: "#F5B800",
                   border: "none",
                   borderRadius: "6px",
                   padding: "14px 36px",
@@ -716,8 +716,8 @@ export default function Schools() {
               <span
                 className="hidden md:block text-[14px] md:text-[18px]"
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
-                  color: "#F5C518",
+                  fontFamily: "Barlow Condensed, sans-serif",
+                  color: "#F5B800",
                   letterSpacing: "0.05em",
                   lineHeight: 1.3,
                 }}
@@ -729,9 +729,9 @@ export default function Schools() {
                 <button
                   className="shrink-0 hidden md:block font-bold tracking-widest uppercase cursor-pointer"
                   style={{
-                    background: "#F5C518",
-                    color: "#0A0A0A",
-                    fontFamily: "Bebas Neue, sans-serif",
+                    background: "#F5B800",
+                    color: "#0A0E1A",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     letterSpacing: "0.1em",
                     border: "none",
                     borderRadius: "0px",
@@ -762,17 +762,17 @@ export default function Schools() {
               <span
                 className="hidden md:block"
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "13px",
                   letterSpacing: "0.15em",
-                  color: "#6B6B6B",
+                  color: "#94A3B8",
                 }}
               >
                 MEN'S VOLLEYBALL — COACH DIRECTORY
               </span>
               <h1
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "clamp(22px, 5vw, 48px)",
                   fontWeight: 700,
                   color: "#FFFFFF",
@@ -787,9 +787,9 @@ export default function Schools() {
               <span
                 className="hidden md:block"
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "18px",
-                  color: isAtLimit ? "#FF4444" : "#F5C518",
+                  color: isAtLimit ? "#FF4444" : "#F5B800",
                   letterSpacing: "0.05em",
                 }}
               >
@@ -801,11 +801,11 @@ export default function Schools() {
                 onClick={() => setShowTargetList(!showTargetList)}
                 className="flex items-center gap-2 px-4 py-2 text-xs font-bold tracking-wider uppercase cursor-pointer"
                 style={{
-                  background: schoolsUsed > 0 ? "#F5C518" : "transparent",
-                  color: schoolsUsed > 0 ? "#0A0A0A" : "#FFFFFF",
-                  border: schoolsUsed > 0 ? "none" : "1px solid #2A2A2A",
+                  background: schoolsUsed > 0 ? "#F5B800" : "transparent",
+                  color: schoolsUsed > 0 ? "#0A0E1A" : "#FFFFFF",
+                  border: schoolsUsed > 0 ? "none" : "1px solid #1E293B",
                   borderRadius: "0px",
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   letterSpacing: "0.1em",
                 }}
               >
@@ -822,8 +822,8 @@ export default function Schools() {
           onClick={() => setShowFindOpeningsModal(true)}
           className="w-full mb-6 text-left cursor-pointer"
           style={{
-            background: "linear-gradient(135deg, rgba(245,197,24,0.1), rgba(245,197,24,0.04))",
-            border: "1px solid rgba(245,197,24,0.35)",
+            background: "linear-gradient(135deg, rgba(245,184,0,0.1), rgba(245,184,0,0.04))",
+            border: "1px solid rgba(245,184,0,0.35)",
             borderRadius: "8px",
             padding: "18px 20px",
           }}
@@ -832,10 +832,10 @@ export default function Schools() {
             <div>
               <div
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "clamp(22px, 3vw, 28px)",
                   letterSpacing: "0.05em",
-                  color: "#F5C518",
+                  color: "#F5B800",
                   lineHeight: 1,
                   display: "flex",
                   alignItems: "center",
@@ -843,12 +843,12 @@ export default function Schools() {
                 }}
               >
                 <span>FIND MY OPENING →</span>
-                {!hasPaidAccess && <Lock size={16} style={{ color: "#F5C518" }} />}
+                {!hasPaidAccess && <Lock size={16} style={{ color: "#F5B800" }} />}
               </div>
               <p
                 style={{
                   marginTop: "8px",
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "14px",
                   color: "#A3A3A3",
                   lineHeight: 1.5,
@@ -863,10 +863,10 @@ export default function Schools() {
                 width: 48,
                 height: 48,
                 borderRadius: 999,
-                background: "rgba(245,197,24,0.12)",
-                border: "1px solid rgba(245,197,24,0.2)",
-                color: "#F5C518",
-                fontFamily: "Bebas Neue, sans-serif",
+                background: "rgba(245,184,0,0.12)",
+                border: "1px solid rgba(245,184,0,0.2)",
+                color: "#F5B800",
+                fontFamily: "Barlow Condensed, sans-serif",
                 fontSize: "18px",
               }}
             >
@@ -876,7 +876,7 @@ export default function Schools() {
         </button>
         {/* Search bar */}
         <div className="relative mb-6">
-          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: "#6B6B6B" }} />
+          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: "#94A3B8" }} />
           <input
             type="text"
             value={searchQuery}
@@ -884,10 +884,10 @@ export default function Schools() {
             placeholder="Search by school, coach, or city..."
             className="w-full pl-10 pr-4 py-3"
             style={{
-              background: "#1A1A1A",
-              border: "1px solid #2A2A2A",
+              background: "#111827",
+              border: "1px solid #1E293B",
               borderRadius: "4px",
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "15px",
               color: "#FFFFFF",
               outline: "none",
@@ -905,14 +905,14 @@ export default function Schools() {
                 flexShrink: 0,
                 padding: '6px 14px',
                 borderRadius: '20px',
-                fontFamily: 'DM Sans, sans-serif',
+                fontFamily: 'Inter, sans-serif',
                 fontSize: '12px',
                 fontWeight: 600,
                 letterSpacing: '0.5px',
                 cursor: 'pointer',
-                background: selectedDivisions.includes(div) ? '#F5C518' : '#1A1A1A',
-                color: selectedDivisions.includes(div) ? '#0A0A0A' : '#A3A3A3',
-                border: selectedDivisions.includes(div) ? 'none' : '1px solid #2A2A2A',
+                background: selectedDivisions.includes(div) ? '#F5B800' : '#111827',
+                color: selectedDivisions.includes(div) ? '#0A0E1A' : '#A3A3A3',
+                border: selectedDivisions.includes(div) ? 'none' : '1px solid #1E293B',
                 whiteSpace: 'nowrap',
               }}
             >
@@ -926,8 +926,8 @@ export default function Schools() {
           <aside className="hidden lg:block lg:w-56 flex-shrink-0">
             <div
               style={{
-                background: "#141414",
-                border: "1px solid #2A2A2A",
+                background: "#0F172A",
+                border: "1px solid #1E293B",
                 borderRadius: "4px",
                 padding: "20px",
               }}
@@ -935,7 +935,7 @@ export default function Schools() {
               <div className="flex items-center justify-between mb-4">
                 <h3
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "13px",
                     letterSpacing: "0.15em",
                     color: "#FFFFFF",
@@ -947,9 +947,9 @@ export default function Schools() {
                   <button
                     onClick={() => { setSelectedDivisions([]); setSelectedState(""); }}
                     style={{
-                      fontFamily: "DM Sans, sans-serif",
+                      fontFamily: "Inter, sans-serif",
                       fontSize: "12px",
-                      color: "#F5C518",
+                      color: "#F5B800",
                       background: "none",
                       border: "none",
                       cursor: "pointer",
@@ -964,10 +964,10 @@ export default function Schools() {
               <div className="mb-5">
                 <p
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "13px",
                     letterSpacing: "0.15em",
-                    color: "#6B6B6B",
+                    color: "#94A3B8",
                     marginBottom: "12px",
                   }}
                 >
@@ -980,17 +980,17 @@ export default function Schools() {
                         onClick={() => toggleDivision(div)}
                         className="w-4 h-4 flex items-center justify-center flex-shrink-0"
                         style={{
-                          background: selectedDivisions.includes(div) ? "#F5C518" : "transparent",
-                          border: selectedDivisions.includes(div) ? "none" : "1px solid #2A2A2A",
+                          background: selectedDivisions.includes(div) ? "#F5B800" : "transparent",
+                          border: selectedDivisions.includes(div) ? "none" : "1px solid #1E293B",
                           borderRadius: "2px",
                           cursor: "pointer",
                         }}
                       >
-                        {selectedDivisions.includes(div) && <Check size={10} style={{ color: "#0A0A0A" }} />}
+                        {selectedDivisions.includes(div) && <Check size={10} style={{ color: "#0A0E1A" }} />}
                       </div>
                       <span
                         style={{
-                          fontFamily: "DM Sans, sans-serif",
+                          fontFamily: "Inter, sans-serif",
                           fontSize: "14px",
                           color: selectedDivisions.includes(div) ? "#FFFFFF" : "#A3A3A3",
                         }}
@@ -1006,10 +1006,10 @@ export default function Schools() {
               <div>
                 <p
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "13px",
                     letterSpacing: "0.15em",
-                    color: "#6B6B6B",
+                    color: "#94A3B8",
                     marginBottom: "12px",
                   }}
                 >
@@ -1021,12 +1021,12 @@ export default function Schools() {
                   style={{
                     width: "100%",
                     padding: "8px 12px",
-                    background: "#1A1A1A",
-                    border: "1px solid #2A2A2A",
+                    background: "#111827",
+                    border: "1px solid #1E293B",
                     borderRadius: "4px",
-                    fontFamily: "DM Sans, sans-serif",
+                    fontFamily: "Inter, sans-serif",
                     fontSize: "14px",
-                    color: selectedState ? "#FFFFFF" : "#6B6B6B",
+                    color: selectedState ? "#FFFFFF" : "#94A3B8",
                     outline: "none",
                   }}
                 >
@@ -1040,10 +1040,10 @@ export default function Schools() {
           {/* School card grid */}
           <main className="flex-1 min-w-0">
             <div className="hidden md:flex items-center justify-between mb-4">
-              <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#6B6B6B" }}>
+              <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#94A3B8" }}>
                 Showing <span style={{ color: "#FFFFFF", fontWeight: 500 }}>{filteredSchools.filter(s => !s.isTestSchool).length}</span> programs
                 {" · "}
-                <span style={{ color: "#F5C518" }}>Men's Volleyball</span>
+                <span style={{ color: "#F5B800" }}>Men's Volleyball</span>
               </p>
             </div>
 
@@ -1053,16 +1053,16 @@ export default function Schools() {
                   <div
                     key={i}
                     className="h-56 animate-pulse"
-                    style={{ background: "#141414", border: "1px solid #2A2A2A", borderRadius: "4px" }}
+                    style={{ background: "#0F172A", border: "1px solid #1E293B", borderRadius: "4px" }}
                   />
                 ))}
               </div>
             ) : filteredSchools.length === 0 ? (
               <div
                 className="p-12 text-center"
-                style={{ background: "#141414", border: "1px solid #2A2A2A", borderRadius: "4px" }}
+                style={{ background: "#0F172A", border: "1px solid #1E293B", borderRadius: "4px" }}
               >
-                <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#6B6B6B" }}>
+                <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#94A3B8" }}>
                   No programs match your filters. Try adjusting your search.
                 </p>
               </div>
@@ -1097,15 +1097,15 @@ export default function Schools() {
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="fixed right-0 top-0 bottom-0 w-80 z-40 flex flex-col"
             style={{
-              background: "#141414",
-              borderLeft: "1px solid #2A2A2A",
+              background: "#0F172A",
+              borderLeft: "1px solid #1E293B",
               boxShadow: "-8px 0 32px rgba(0,0,0,0.5)",
             }}
           >
-            <div className="flex items-center justify-between p-5" style={{ borderBottom: "1px solid #2A2A2A" }}>
+            <div className="flex items-center justify-between p-5" style={{ borderBottom: "1px solid #1E293B" }}>
               <h2
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "24px",
                   fontWeight: 700,
                   color: "#FFFFFF",
@@ -1115,7 +1115,7 @@ export default function Schools() {
               </h2>
               <button
                 onClick={() => setShowTargetList(false)}
-                style={{ color: "#6B6B6B", background: "none", border: "none", cursor: "pointer" }}
+                style={{ color: "#94A3B8", background: "none", border: "none", cursor: "pointer" }}
               >
                 <X size={20} />
               </button>
@@ -1123,7 +1123,7 @@ export default function Schools() {
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
               {!outreachData || outreachData.length === 0 ? (
                 <div className="text-center py-12">
-                  <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#6B6B6B" }}>
+                  <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#94A3B8" }}>
                     No schools added yet. Hover a card and click "Add to List".
                   </p>
                 </div>
@@ -1134,28 +1134,28 @@ export default function Schools() {
                     <div
                       key={item.schoolId}
                       className="flex items-start justify-between p-3"
-                      style={{ background: "#0A0A0A", border: "1px solid #2A2A2A", borderRadius: "4px" }}
+                      style={{ background: "#0A0E1A", border: "1px solid #1E293B", borderRadius: "4px" }}
                     >
                       <div className="flex items-start gap-3">
                         {dbEntry && (
                           <SchoolLogo domain={dbEntry.athleticsDomain} brandColor={dbEntry.brandColor} size={40} name={dbEntry.name} logoUrl={dbEntry.logoUrl} />
                         )}
                         <div>
-                          <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#FFFFFF", fontWeight: 500 }}>
+                          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#FFFFFF", fontWeight: 500 }}>
                             {item.schoolName || dbEntry?.name || "Unknown School"}
                           </p>
-                          <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B" }}>
+                          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8" }}>
                             {item.coachName || dbEntry?.coachName || ""} · Men's Volleyball
                           </p>
                           <span
                             style={{
-                              fontFamily: "Bebas Neue, sans-serif",
+                              fontFamily: "Barlow Condensed, sans-serif",
                               fontSize: "11px",
                               letterSpacing: "0.1em",
-                              color: "#6B6B6B",
+                              color: "#94A3B8",
                               padding: "1px 6px",
-                              background: "#1A1A1A",
-                              border: "1px solid #2A2A2A",
+                              background: "#111827",
+                              border: "1px solid #1E293B",
                               borderRadius: "2px",
                               display: "inline-block",
                               marginTop: "4px",
@@ -1167,7 +1167,7 @@ export default function Schools() {
                       </div>
                       <button
                         onClick={() => removeFromOutreach.mutate({ schoolId: item.schoolId })}
-                        style={{ color: "#6B6B6B", background: "none", border: "none", cursor: "pointer", marginTop: "2px" }}
+                        style={{ color: "#94A3B8", background: "none", border: "none", cursor: "pointer", marginTop: "2px" }}
                       >
                         <X size={14} />
                       </button>
@@ -1177,13 +1177,13 @@ export default function Schools() {
               )}
             </div>
             {outreachData && outreachData.length > 0 && (
-              <div className="p-4" style={{ borderTop: "1px solid #2A2A2A" }}>
+              <div className="p-4" style={{ borderTop: "1px solid #1E293B" }}>
                 <button
                   className="w-full py-3 text-sm font-bold tracking-widest uppercase cursor-pointer"
                   style={{
-                    background: "#F5C518",
-                    color: "#0A0A0A",
-                    fontFamily: "Bebas Neue, sans-serif",
+                    background: "#F5B800",
+                    color: "#0A0E1A",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     letterSpacing: "0.1em",
                     border: "none",
                     borderRadius: "0px",
@@ -1215,8 +1215,8 @@ export default function Schools() {
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
               style={{
-                background: "#141414",
-                border: "2px solid #F5C518",
+                background: "#0F172A",
+                border: "2px solid #F5B800",
                 borderRadius: "4px",
                 padding: "32px",
                 maxWidth: "480px",
@@ -1226,7 +1226,7 @@ export default function Schools() {
               <div className="flex items-start justify-between mb-6">
                 <h3
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "36px",
                     fontWeight: 700,
                     color: "#FFFFFF",
@@ -1237,14 +1237,14 @@ export default function Schools() {
                 <button
                   onClick={() => setShowUpgradeModal(false)}
                   className="text-2xl cursor-pointer"
-                  style={{ color: "#6B6B6B", background: "none", border: "none" }}
+                  style={{ color: "#94A3B8", background: "none", border: "none" }}
                 >
                   ×
                 </button>
               </div>
               <p
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "15px",
                   color: "#A3A3A3",
                   marginBottom: "24px",
@@ -1255,9 +1255,9 @@ export default function Schools() {
               </p>
               <p
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "12px",
-                  color: "#6B6B6B",
+                  color: "#94A3B8",
                   marginBottom: "20px",
                   fontStyle: "italic",
                 }}
@@ -1269,9 +1269,9 @@ export default function Schools() {
                   <button
                     className="w-full py-3 text-sm font-bold tracking-widest uppercase cursor-pointer"
                     style={{
-                      background: "#F5C518",
-                      color: "#0A0A0A",
-                      fontFamily: "Bebas Neue, sans-serif",
+                      background: "#F5B800",
+                      color: "#0A0E1A",
+                      fontFamily: "Barlow Condensed, sans-serif",
                       letterSpacing: "0.1em",
                       border: "none",
                       borderRadius: "0px",
@@ -1286,7 +1286,7 @@ export default function Schools() {
                   style={{
                     background: "transparent",
                     color: "#FFFFFF",
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     letterSpacing: "0.1em",
                     border: "1px solid #FFFFFF",
                     borderRadius: "0px",
@@ -1331,10 +1331,10 @@ export default function Schools() {
               </div>
               <div className="flex items-start justify-between gap-4 mb-6">
                 <div>
-                  <h2 style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "22px", letterSpacing: "0.05em", color: "#FFFFFF" }}>
+                  <h2 style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "22px", letterSpacing: "0.05em", color: "#FFFFFF" }}>
                     FIND YOUR ROSTER OPENING
                   </h2>
-                  <p style={{ marginTop: "8px", fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#94A3B8", lineHeight: 1.6, maxWidth: "640px" }}>
+                  <p style={{ marginTop: "8px", fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#94A3B8", lineHeight: 1.6, maxWidth: "640px" }}>
                     Tell us your position and graduation year &mdash; we&apos;ll find every program with a real opening for you.
                   </p>
                 </div>
@@ -1344,12 +1344,12 @@ export default function Schools() {
               </div>
 
               <div className="mb-5">
-                <p style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", letterSpacing: "0.08em", color: "#F5C518", marginBottom: "12px" }}>POSITION</p>
+                <p style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "13px", letterSpacing: "0.08em", color: "#F5B800", marginBottom: "12px" }}>POSITION</p>
                 <div className="flex flex-wrap gap-2">
                   {OPENING_POSITIONS.map((position) => {
                     const active = selectedOpeningPositions.includes(position);
                     return (
-                      <button key={position} onClick={() => toggleOpeningPosition(position)} className="cursor-pointer" style={{ padding: "10px 14px", borderRadius: 999, border: active ? "1px solid #F5C518" : "1px solid #2A2A2A", background: active ? "#F5C518" : "#141414", color: active ? "#0A0A0A" : "#FFFFFF", fontFamily: "DM Sans, sans-serif", fontSize: "13px", fontWeight: 600 }}>
+                      <button key={position} onClick={() => toggleOpeningPosition(position)} className="cursor-pointer" style={{ padding: "10px 14px", borderRadius: 999, border: active ? "1px solid #F5B800" : "1px solid #1E293B", background: active ? "#F5B800" : "#0F172A", color: active ? "#0A0E1A" : "#FFFFFF", fontFamily: "Inter, sans-serif", fontSize: "13px", fontWeight: 600 }}>
                         {position} &middot; {OPENING_POSITION_LABELS[position]}
                       </button>
                     );
@@ -1358,12 +1358,12 @@ export default function Schools() {
               </div>
 
               <div className="mb-6">
-                <p style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", letterSpacing: "0.08em", color: "#F5C518", marginBottom: "12px" }}>GRADUATION YEAR</p>
+                <p style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "13px", letterSpacing: "0.08em", color: "#F5B800", marginBottom: "12px" }}>GRADUATION YEAR</p>
                 <div className="flex flex-wrap gap-2">
                   {OPENING_YEARS.map((year) => {
                     const active = selectedOpeningGradYear === year;
                     return (
-                      <button key={year} onClick={() => setSelectedOpeningGradYear(year)} className="cursor-pointer" style={{ padding: "10px 16px", borderRadius: 999, border: active ? "1px solid #F5C518" : "1px solid #2A2A2A", background: active ? "#F5C518" : "#141414", color: active ? "#0A0A0A" : "#FFFFFF", fontFamily: "DM Sans, sans-serif", fontSize: "13px", fontWeight: 600 }}>
+                      <button key={year} onClick={() => setSelectedOpeningGradYear(year)} className="cursor-pointer" style={{ padding: "10px 16px", borderRadius: 999, border: active ? "1px solid #F5B800" : "1px solid #1E293B", background: active ? "#F5B800" : "#0F172A", color: active ? "#0A0E1A" : "#FFFFFF", fontFamily: "Inter, sans-serif", fontSize: "13px", fontWeight: 600 }}>
                         {year}
                       </button>
                     );
@@ -1371,7 +1371,7 @@ export default function Schools() {
                 </div>
               </div>
 
-              <button onClick={handleFindOpenings} className="w-full cursor-pointer" style={{ height: "48px", background: "#F5C518", color: "#0A0A0A", borderRadius: "8px", border: "none", fontFamily: "Bebas Neue, sans-serif", fontSize: "16px", letterSpacing: "0.08em" }}>
+              <button onClick={handleFindOpenings} className="w-full cursor-pointer" style={{ height: "48px", background: "#F5B800", color: "#0A0E1A", borderRadius: "8px", border: "none", fontFamily: "Barlow Condensed, sans-serif", fontSize: "16px", letterSpacing: "0.08em" }}>
                 FIND MY OPENINGS →
               </button>
 
@@ -1380,7 +1380,7 @@ export default function Schools() {
                   {/* Filter button row */}
                   {!rosterOpeningsLoading && rosterOpeningResults.length > 0 && (
                     <div className="flex items-center justify-between mb-4">
-                      <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#94A3B8" }}>
+                      <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#94A3B8" }}>
                         {(() => {
                           const filtered = rosterOpeningResults
                             .filter(r => openingDivisionFilter.length === 0 || openingDivisionFilter.includes(r.division || ""))
@@ -1391,21 +1391,21 @@ export default function Schools() {
                       <button
                         onClick={() => setShowOpeningFilterSheet(true)}
                         className="flex items-center gap-1.5 cursor-pointer relative"
-                        style={{ padding: "7px 14px", borderRadius: 999, border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.05)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", fontFamily: "DM Sans, sans-serif", fontSize: "12px", fontWeight: 600, color: "#FFFFFF", letterSpacing: "0.04em" }}
+                        style={{ padding: "7px 14px", borderRadius: 999, border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.05)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 600, color: "#FFFFFF", letterSpacing: "0.04em" }}
                       >
                         <SlidersHorizontal size={13} />
                         FILTER
                         {isOpeningFilterActive && (
-                          <span style={{ position: "absolute", top: 5, right: 5, width: 7, height: 7, borderRadius: "50%", background: "#F5C518", border: "1.5px solid #10131D" }} />
+                          <span style={{ position: "absolute", top: 5, right: 5, width: 7, height: 7, borderRadius: "50%", background: "#F5B800", border: "1.5px solid #10131D" }} />
                         )}
                       </button>
                     </div>
                   )}
                   <div style={{ filter: !hasPaidAccess ? "blur(10px)" : "none", opacity: !hasPaidAccess ? 0.55 : 1, transition: "filter 0.2s ease, opacity 0.2s ease" }}>
                     {rosterOpeningsLoading ? (
-                      <div style={{ padding: "24px 0", fontFamily: "DM Sans, sans-serif", color: "#94A3B8" }}>Finding roster openings...</div>
+                      <div style={{ padding: "24px 0", fontFamily: "Inter, sans-serif", color: "#94A3B8" }}>Finding roster openings...</div>
                     ) : rosterOpeningResults.length === 0 ? (
-                      <div style={{ marginTop: "8px", background: "#141414", border: "1px solid #2A2A2A", borderRadius: "12px", padding: "20px", fontFamily: "DM Sans, sans-serif", color: "#CBD5E1" }}>
+                      <div style={{ marginTop: "8px", background: "#0F172A", border: "1px solid #1E293B", borderRadius: "12px", padding: "20px", fontFamily: "Inter, sans-serif", color: "#CBD5E1" }}>
                         No openings found for your criteria. Try a different position or year.
                       </div>
                     ) : (() => {
@@ -1413,7 +1413,7 @@ export default function Schools() {
                         .filter(r => openingDivisionFilter.length === 0 || openingDivisionFilter.includes(r.division || ""))
                         .sort((a, b) => openingSortBy === "most" ? b.positionOpenings - a.positionOpenings : openingSortBy === "least" ? a.positionOpenings - b.positionOpenings : (a.schoolName || "").localeCompare(b.schoolName || ""));
                       return displayResults.length === 0 ? (
-                        <div style={{ marginTop: "8px", background: "#141414", border: "1px solid #2A2A2A", borderRadius: "12px", padding: "20px", fontFamily: "DM Sans, sans-serif", color: "#CBD5E1" }}>
+                        <div style={{ marginTop: "8px", background: "#0F172A", border: "1px solid #1E293B", borderRadius: "12px", padding: "20px", fontFamily: "Inter, sans-serif", color: "#CBD5E1" }}>
                           No programs match your current filters.
                         </div>
                       ) : (
@@ -1422,24 +1422,24 @@ export default function Schools() {
                             const school = schoolsData?.find((entry) => entry.id === result.schoolId);
                             if (!school) return null;
                             return (
-                              <div key={result.schoolId} style={{ background: "#141414", border: "1px solid #2A2A2A", borderRadius: "12px", padding: "18px" }}>
+                              <div key={result.schoolId} style={{ background: "#0F172A", border: "1px solid #1E293B", borderRadius: "12px", padding: "18px" }}>
                                 <div className="flex items-start justify-between gap-4 mb-4">
                                   <div className="flex items-center gap-3 min-w-0">
                                     <SchoolLogo domain={school.athleticsDomain} brandColor={school.brandColor} size={44} name={school.name} logoUrl={school.logoUrl} />
                                     <div className="min-w-0">
-                                      <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "20px", color: "#FFFFFF", lineHeight: 1 }}>{school.name}</div>
-                                      <div style={{ marginTop: "4px", fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#94A3B8" }}>{school.division || "—"}</div>
+                                      <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "20px", color: "#FFFFFF", lineHeight: 1 }}>{school.name}</div>
+                                      <div style={{ marginTop: "4px", fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8" }}>{school.division || "—"}</div>
                                     </div>
                                   </div>
-                                  <div style={{ minWidth: "80px", textAlign: "center", background: "rgba(245,197,24,0.12)", border: "1px solid rgba(245,197,24,0.24)", borderRadius: "999px", padding: "8px 10px" }}>
-                                    <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "18px", color: "#F5C518", lineHeight: 1 }}>{result.positionOpenings}</div>
-                                    <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "10px", color: "#F5C518", marginTop: "2px" }}>OPENINGS</div>
+                                  <div style={{ minWidth: "80px", textAlign: "center", background: "rgba(245,184,0,0.12)", border: "1px solid rgba(245,184,0,0.24)", borderRadius: "999px", padding: "8px 10px" }}>
+                                    <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "18px", color: "#F5B800", lineHeight: 1 }}>{result.positionOpenings}</div>
+                                    <div style={{ fontFamily: "Inter, sans-serif", fontSize: "10px", color: "#F5B800", marginTop: "2px" }}>OPENINGS</div>
                                   </div>
                                 </div>
                                 <button
                                   onClick={() => { setSelectedOpeningSchool(school); setShowFindOpeningsModal(false); openModal(); }}
                                   className="w-full cursor-pointer"
-                                  style={{ height: "42px", borderRadius: "8px", background: "transparent", border: "1px solid #F5C518", color: "#F5C518", fontFamily: "Bebas Neue, sans-serif", fontSize: "14px", letterSpacing: "0.08em" }}
+                                  style={{ height: "42px", borderRadius: "8px", background: "transparent", border: "1px solid #F5B800", color: "#F5B800", fontFamily: "Barlow Condensed, sans-serif", fontSize: "14px", letterSpacing: "0.08em" }}
                                 >
                                   VIEW SCHOOL →
                                 </button>
@@ -1489,7 +1489,7 @@ export default function Schools() {
             coachTitle: selectedOpeningSchool.coachTitle || "Head Coach",
             coachEmail: selectedOpeningSchool.coachEmail || "",
             athleticsDomain: selectedOpeningSchool.athleticsDomain || "",
-            brandColor: selectedOpeningSchool.brandColor || "#F5C518",
+            brandColor: selectedOpeningSchool.brandColor || "#F5B800",
             hasRosterData: !!selectedOpeningSchool.hasRosterData,
             logoUrl: selectedOpeningSchool.logoUrl || null,
           }}

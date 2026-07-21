@@ -15,6 +15,8 @@ export const MOCK_USER = {
   gmailConnectedEmail: "alex.johnson@gmail.com",
   gmailConnectedAt: new Date("2026-01-15"),
   hasSeenWelcome: true,
+  hasSeenWalkthrough: true,
+  hasCompletedOnboarding: true,
   googleAuthUser: true,
   emailsSent: 12,
   createdAt: new Date("2025-11-01"),
@@ -25,6 +27,14 @@ export const MOCK_USER = {
 export const MOCK_SUBSCRIPTION_STATUS = {
   hasPaidAccess: true,
   interestedInPro: false,
+  plan: "pro" as const,
+  subscriptionType: "monthly",
+  subscriptionStatus: "active",
+  schoolsUsed: 5,
+  schoolsLimit: -1,
+  stripeCustomerId: "cus_mock123",
+  stripeSubscriptionId: "sub_mock123",
+  totalSchoolsAdded: 8,
 };
 
 export const MOCK_SCHOOLS = [
@@ -230,17 +240,17 @@ export const MOCK_SCHOOLS = [
   },
 ];
 
-export const MOCK_OPENING_COUNTS: Record<string, number> = {
-  "ucla": 2,
-  "byu": 1,
-  "long-beach-state": 3,
-  "pepperdine": 2,
-  "hawaii": 4,
-  "ohio-state": 2,
-  "ucsb": 1,
-  "stanford": 0,
-  "cal-poly": 3,
-  "grand-canyon": 2,
+export const MOCK_OPENING_COUNTS: Record<string, { total: number; atPosition: number }> = {
+  "ucla": { total: 4, atPosition: 2 },
+  "byu": { total: 3, atPosition: 1 },
+  "long-beach-state": { total: 5, atPosition: 3 },
+  "pepperdine": { total: 3, atPosition: 2 },
+  "hawaii": { total: 6, atPosition: 4 },
+  "ohio-state": { total: 4, atPosition: 2 },
+  "ucsb": { total: 2, atPosition: 1 },
+  "stanford": { total: 1, atPosition: 0 },
+  "cal-poly": { total: 4, atPosition: 3 },
+  "grand-canyon": { total: 3, atPosition: 2 },
 };
 
 export const MOCK_OUTREACH_LIST = [
@@ -357,6 +367,8 @@ export const MOCK_ATHLETE_PROFILE = {
   city: "Austin",
   state: "TX",
   zipCode: "78701",
+  highSchool: "Westlake High School",
+  dateOfBirth: "2009-03-14",
   graduationYear: "2027",
   gpa: "3.8",
   satScore: "1380",
@@ -389,6 +401,8 @@ export const MOCK_ATHLETE_PROFILE = {
 export const MOCK_GMAIL_STATUS = {
   connected: true,
   email: "alex.johnson@gmail.com",
+  emailsSent: 12,
+  connectedAt: new Date("2026-01-15"),
 };
 
 export const MOCK_COACHES = [
@@ -435,6 +449,42 @@ I would welcome the opportunity to speak with you about your program and recruit
 Respectfully,
 Alex Johnson
 (512) 555-0187 | alex.johnson@gmail.com`;
+
+export const MOCK_SCHOOL_GAP = {
+  players: [
+    { id: 1, schoolId: "ucla", name: "Merrick McHenry", position: "Outside Hitter", year: "Senior", graduationYear: 2027, height: "6'5\"", number: "1" },
+    { id: 2, schoolId: "ucla", name: "Ethan Champlin", position: "Middle Blocker", year: "Senior", graduationYear: 2027, height: "6'7\"", number: "3" },
+    { id: 3, schoolId: "ucla", name: "Cole Striplin", position: "Setter", year: "Junior", graduationYear: 2028, height: "6'4\"", number: "10" },
+    { id: 4, schoolId: "ucla", name: "Ryan Coenen", position: "Libero", year: "Sophomore", graduationYear: 2029, height: "5'11\"", number: "17" },
+    { id: 5, schoolId: "ucla", name: "Daenan Gyimah", position: "Middle Blocker", year: "Senior", graduationYear: 2027, height: "6'8\"", number: "5" },
+  ],
+  gradYear: 2027,
+  athletePositions: ["MIDDLE BLOCKER", "OUTSIDE HITTER"],
+  gap: {
+    total: 3,
+    atPosition: 2,
+    graduatingNames: ["Merrick McHenry", "Ethan Champlin", "Daenan Gyimah"],
+    positionGraduatingNames: ["Ethan Champlin", "Daenan Gyimah"],
+  },
+};
+
+export const MOCK_COMMITS = [
+  { id: 1, schoolId: "ucla", name: "Jaylen Torres", position: "Setter", gradYear: 2027, hometown: "San Diego, CA", club: "Coast VBC" },
+  { id: 2, schoolId: "ucla", name: "Owen Blake", position: "Libero", gradYear: 2027, hometown: "Chicago, IL", club: "Adversity VBC" },
+];
+
+export const MOCK_ROSTER_OPENINGS = [
+  { schoolId: "hawaii", schoolName: "Hawaiʻi Warriors", division: "D1", logoUrl: "https://img.logo.dev/hawaiiathletics.com?token=pk_gvrfOoFzSV6KQEC6yVGwpA", logoBackgroundColor: null, logoMixBlendMode: null, brandColor: "#024731", positionOpenings: 4, totalOpenings: 6 },
+  { schoolId: "long-beach-state", schoolName: "Long Beach State 49ers", division: "D1", logoUrl: "https://img.logo.dev/longbeachstate.com?token=pk_gvrfOoFzSV6KQEC6yVGwpA", logoBackgroundColor: null, logoMixBlendMode: null, brandColor: "#231F20", positionOpenings: 3, totalOpenings: 5 },
+  { schoolId: "cal-poly", schoolName: "Cal Poly Mustangs", division: "D1", logoUrl: "https://img.logo.dev/gopoly.com?token=pk_gvrfOoFzSV6KQEC6yVGwpA", logoBackgroundColor: null, logoMixBlendMode: null, brandColor: "#154734", positionOpenings: 3, totalOpenings: 4 },
+  { schoolId: "ucla", schoolName: "UCLA Bruins", division: "D1", logoUrl: "https://img.logo.dev/uclabruins.com?token=pk_gvrfOoFzSV6KQEC6yVGwpA", logoBackgroundColor: null, logoMixBlendMode: null, brandColor: "#2D68C4", positionOpenings: 2, totalOpenings: 4 },
+  { schoolId: "pepperdine", schoolName: "Pepperdine Waves", division: "D1", logoUrl: "https://img.logo.dev/pepperdinewaves.com?token=pk_gvrfOoFzSV6KQEC6yVGwpA", logoBackgroundColor: null, logoMixBlendMode: null, brandColor: "#00205B", positionOpenings: 2, totalOpenings: 3 },
+];
+
+export const MOCK_AFFILIATE_CONVERSIONS = [
+  { id: 1, affiliateId: 1, referredEmail: "jordan@example.com", plan: "monthly", status: "paid", commissionCents: 500, createdAt: new Date("2026-05-02") },
+  { id: 2, affiliateId: 1, referredEmail: "casey@example.com", plan: "annual", status: "pending", commissionCents: 1500, createdAt: new Date("2026-05-20") },
+];
 
 export const MOCK_FOLLOW_UP_EMAIL = `Dear Coach Speraw,
 

@@ -52,7 +52,7 @@ function divisionBadgeStyle(division: string): React.CSSProperties {
   return {
     background: map[division] ?? "#1a1f2e",
     color: "#94A3B8",
-    fontFamily: "Bebas Neue, sans-serif",
+    fontFamily: "Barlow Condensed, sans-serif",
     fontSize: "10px",
     letterSpacing: "0.12em",
     padding: "2px 7px",
@@ -88,7 +88,7 @@ function RosterDisplay({ schoolId, schoolName }: { schoolId: string; schoolName:
 
   if (isLoading) {
     return (
-      <div style={{ padding: "48px 0", textAlign: "center", color: "#4a5568", fontFamily: "DM Sans, sans-serif", fontSize: "14px" }}>
+      <div style={{ padding: "48px 0", textAlign: "center", color: "#4a5568", fontFamily: "Inter, sans-serif", fontSize: "14px" }}>
         Loading roster...
       </div>
     );
@@ -97,7 +97,7 @@ function RosterDisplay({ schoolId, schoolName }: { schoolId: string; schoolName:
   if (!players || players.length === 0) {
     return (
       <div style={{ padding: "64px 0", textAlign: "center" }}>
-        <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#4a5568" }}>
+        <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#4a5568" }}>
           Roster data coming soon for this program
         </p>
       </div>
@@ -125,7 +125,7 @@ function RosterDisplay({ schoolId, schoolName }: { schoolId: string; schoolName:
         <div key={yr} style={{ marginBottom: "28px" }}>
           {/* Year section header */}
           <div style={{
-            fontFamily: "Bebas Neue, sans-serif",
+            fontFamily: "Barlow Condensed, sans-serif",
             fontSize: "11px",
             letterSpacing: "0.14em",
             color: "#4a5568",
@@ -149,10 +149,10 @@ function RosterDisplay({ schoolId, schoolName }: { schoolId: string; schoolName:
                   background: i % 2 === 0 ? "rgba(255,255,255,0.02)" : "transparent",
                 }}
               >
-                <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#E2E8F0" }}>
+                <span style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#E2E8F0" }}>
                   {p.name ?? "—"}
                 </span>
-                <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#64748B" }}>
+                <span style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#64748B" }}>
                   {p.position ?? "—"}
                 </span>
               </div>
@@ -217,21 +217,18 @@ export default function RosterPage() {
   return (
     <>
       <div style={{ minHeight: "100vh", paddingBottom: "32px", background: "#0A0E1A", display: "flex", flexDirection: "column" }}>
-        <div className="mx-auto" style={{ maxWidth: 860, paddingTop: "clamp(24px, 5vw, 64px)", paddingLeft: "clamp(16px, 4vw, 40px)", paddingRight: "clamp(16px, 4vw, 40px)", paddingBottom: "clamp(80px, 12vw, 32px)", flex: 1 }}>
+        <div className="mx-auto" style={{ maxWidth: 1080, paddingTop: "clamp(24px, 5vw, 56px)", paddingLeft: "clamp(16px, 4vw, 40px)", paddingRight: "clamp(16px, 4vw, 40px)", paddingBottom: "clamp(80px, 12vw, 32px)", flex: 1 }}>
 
           {/* ── PAGE HEADER ── */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-            style={{ marginBottom: "40px" }}
+            style={{ marginBottom: "32px" }}
           >
-            <h1 style={{ fontFamily: "Bebas Neue, sans-serif", lineHeight: 0.95, marginBottom: "12px" }}>
-              <span style={{ display: "block", fontSize: "clamp(56px, 8vw, 80px)", color: "#F8FAFC" }}>
-                ROSTER SEARCH
-              </span>
-            </h1>
-            <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "16px", color: "#94A3B8", lineHeight: 1.5 }}>
+            <p className="section-label mb-1">Recruiting</p>
+            <h1 className="page-title text-4xl md:text-5xl mb-2">Roster Search</h1>
+            <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#94A3B8", lineHeight: 1.5 }}>
               Search any program to view their current roster.
             </p>
           </motion.div>
@@ -273,14 +270,14 @@ export default function RosterPage() {
                   border: "1px solid rgba(255,255,255,0.08)",
                   borderRadius: "12px",
                   padding: "0 44px 0 48px",
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "14px",
                   color: "#F8FAFC",
                   outline: "none",
                   transition: "border-color 0.15s ease",
                   boxSizing: "border-box",
                 }}
-                onFocusCapture={e => (e.currentTarget.style.borderColor = "#F5C518")}
+                onFocusCapture={e => (e.currentTarget.style.borderColor = "#F5B800")}
                 onBlurCapture={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)")}
               />
               {query && (
@@ -351,10 +348,10 @@ export default function RosterPage() {
                         size={28}
                       />
                       <div>
-                        <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#E2E8F0" }}>
+                        <div style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#E2E8F0" }}>
                           {s.name}
                         </div>
-                        <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#64748B" }}>
+                        <div style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#64748B" }}>
                           {s.city}, {s.state} · {s.division}
                         </div>
                       </div>
@@ -376,10 +373,10 @@ export default function RosterPage() {
                 transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
               >
                 <div style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "11px",
                   letterSpacing: "2px",
-                  color: "#F5C518",
+                  color: "#F5B800",
                   marginBottom: "16px",
                 }}>
                   POPULAR PROGRAMS
@@ -408,7 +405,7 @@ export default function RosterPage() {
                         transition: "border-color 0.15s ease, background 0.15s ease",
                       }}
                       onMouseEnter={e => {
-                        (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(245,197,24,0.3)";
+                        (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(245,184,0,0.3)";
                         (e.currentTarget as HTMLDivElement).style.background = "#1e2535";
                       }}
                       onMouseLeave={e => {
@@ -425,7 +422,7 @@ export default function RosterPage() {
                       />
                       <div style={{ minWidth: 0 }}>
                         <div style={{
-                          fontFamily: "DM Sans, sans-serif",
+                          fontFamily: "Inter, sans-serif",
                           fontSize: "14px",
                           fontWeight: 500,
                           color: "#E2E8F0",
@@ -466,7 +463,7 @@ export default function RosterPage() {
                   />
                   <div>
                     <div style={{
-                      fontFamily: "Bebas Neue, sans-serif",
+                      fontFamily: "Barlow Condensed, sans-serif",
                       fontSize: "28px",
                       letterSpacing: "0.04em",
                       color: "#F8FAFC",
@@ -477,7 +474,7 @@ export default function RosterPage() {
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                       <span style={divisionBadgeStyle(selectedSchool.division ?? "")}>{selectedSchool.division}</span>
-                      <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#64748B" }}>
+                      <span style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#64748B" }}>
                         {selectedSchool.city}, {selectedSchool.state} · {selectedSchool.conference}
                       </span>
                     </div>
@@ -488,18 +485,18 @@ export default function RosterPage() {
                     style={{
                       marginLeft: "auto",
                       background: "transparent",
-                      border: "1px solid rgba(245,197,24,0.3)",
+                      border: "1px solid rgba(245,184,0,0.3)",
                       borderRadius: "8px",
                       padding: "8px 16px",
-                      fontFamily: "Bebas Neue, sans-serif",
+                      fontFamily: "Barlow Condensed, sans-serif",
                       fontSize: "12px",
                       letterSpacing: "0.1em",
-                      color: "#F5C518",
+                      color: "#F5B800",
                       cursor: "pointer",
                       transition: "background 0.15s ease",
                       flexShrink: 0,
                     }}
-                    onMouseEnter={e => (e.currentTarget.style.background = "rgba(245,197,24,0.08)")}
+                    onMouseEnter={e => (e.currentTarget.style.background = "rgba(245,184,0,0.08)")}
                     onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                   >
                     VIEW FULL PROFILE →

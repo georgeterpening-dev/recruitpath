@@ -16,17 +16,17 @@ const SLIDES = [
     icon: (
       <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Volleyball icon */}
-        <circle cx="60" cy="60" r="50" stroke="#F5C518" strokeWidth="3" fill="none" opacity="0.15" />
-        <circle cx="60" cy="60" r="36" stroke="#F5C518" strokeWidth="2.5" fill="none" opacity="0.3" />
-        <circle cx="60" cy="60" r="22" fill="#F5C518" opacity="0.9" />
+        <circle cx="60" cy="60" r="50" stroke="#F5B800" strokeWidth="3" fill="none" opacity="0.15" />
+        <circle cx="60" cy="60" r="36" stroke="#F5B800" strokeWidth="2.5" fill="none" opacity="0.3" />
+        <circle cx="60" cy="60" r="22" fill="#F5B800" opacity="0.9" />
         <path d="M60 38 L60 82" stroke="#0d1117" strokeWidth="2.5" strokeLinecap="round" />
         <path d="M42 49 L78 71" stroke="#0d1117" strokeWidth="2.5" strokeLinecap="round" />
         <path d="M42 71 L78 49" stroke="#0d1117" strokeWidth="2.5" strokeLinecap="round" />
         {/* Stars */}
-        <circle cx="20" cy="25" r="2" fill="#F5C518" opacity="0.5" />
-        <circle cx="100" cy="30" r="1.5" fill="#F5C518" opacity="0.4" />
-        <circle cx="15" cy="80" r="1.5" fill="#F5C518" opacity="0.3" />
-        <circle cx="105" cy="85" r="2" fill="#F5C518" opacity="0.5" />
+        <circle cx="20" cy="25" r="2" fill="#F5B800" opacity="0.5" />
+        <circle cx="100" cy="30" r="1.5" fill="#F5B800" opacity="0.4" />
+        <circle cx="15" cy="80" r="1.5" fill="#F5B800" opacity="0.3" />
+        <circle cx="105" cy="85" r="2" fill="#F5B800" opacity="0.5" />
       </svg>
     ),
     headline: "WELCOME TO RECRUITPATH.",
@@ -36,17 +36,17 @@ const SLIDES = [
     icon: (
       <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Search/target icon */}
-        <circle cx="60" cy="55" r="32" stroke="#F5C518" strokeWidth="3" fill="none" opacity="0.2" />
-        <circle cx="60" cy="55" r="20" stroke="#F5C518" strokeWidth="2.5" fill="none" opacity="0.4" />
-        <circle cx="60" cy="55" r="8" fill="#F5C518" opacity="0.9" />
+        <circle cx="60" cy="55" r="32" stroke="#F5B800" strokeWidth="3" fill="none" opacity="0.2" />
+        <circle cx="60" cy="55" r="20" stroke="#F5B800" strokeWidth="2.5" fill="none" opacity="0.4" />
+        <circle cx="60" cy="55" r="8" fill="#F5B800" opacity="0.9" />
         {/* Crosshair lines */}
-        <line x1="60" y1="15" x2="60" y2="35" stroke="#F5C518" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
-        <line x1="60" y1="75" x2="60" y2="95" stroke="#F5C518" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
-        <line x1="20" y1="55" x2="40" y2="55" stroke="#F5C518" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
-        <line x1="80" y1="55" x2="100" y2="55" stroke="#F5C518" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
+        <line x1="60" y1="15" x2="60" y2="35" stroke="#F5B800" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
+        <line x1="60" y1="75" x2="60" y2="95" stroke="#F5B800" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
+        <line x1="20" y1="55" x2="40" y2="55" stroke="#F5B800" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
+        <line x1="80" y1="55" x2="100" y2="55" stroke="#F5B800" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
         {/* Opening badge */}
-        <rect x="72" y="72" width="36" height="20" rx="10" fill="#F5C518" />
-        <text x="90" y="86" textAnchor="middle" fill="#0d1117" fontSize="9" fontFamily="Bebas Neue, sans-serif" letterSpacing="0.5">OPEN</text>
+        <rect x="72" y="72" width="36" height="20" rx="10" fill="#F5B800" />
+        <text x="90" y="86" textAnchor="middle" fill="#0d1117" fontSize="9" fontFamily="Barlow Condensed, sans-serif" letterSpacing="0.5">OPEN</text>
       </svg>
     ),
     headline: "FIND YOUR OPENING.",
@@ -56,12 +56,12 @@ const SLIDES = [
     icon: (
       <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Email/send icon */}
-        <rect x="15" y="30" width="90" height="60" rx="10" stroke="#F5C518" strokeWidth="3" fill="none" opacity="0.2" />
-        <rect x="15" y="30" width="90" height="60" rx="10" fill="#F5C518" opacity="0.06" />
+        <rect x="15" y="30" width="90" height="60" rx="10" stroke="#F5B800" strokeWidth="3" fill="none" opacity="0.2" />
+        <rect x="15" y="30" width="90" height="60" rx="10" fill="#F5B800" opacity="0.06" />
         {/* Envelope flap */}
-        <path d="M15 40 L60 68 L105 40" stroke="#F5C518" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.6" />
+        <path d="M15 40 L60 68 L105 40" stroke="#F5B800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.6" />
         {/* Send arrow */}
-        <circle cx="88" cy="32" r="16" fill="#F5C518" opacity="0.9" />
+        <circle cx="88" cy="32" r="16" fill="#F5B800" opacity="0.9" />
         <path d="M80 32 L96 32 M90 26 L96 32 L90 38" stroke="#0d1117" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
       </svg>
     ),
@@ -145,8 +145,8 @@ export default function MobileWalkthrough({ onComplete, onSkip }: MobileWalkthro
                   width: "200px",
                   height: "200px",
                   borderRadius: "50%",
-                  background: "rgba(245,197,24,0.06)",
-                  border: "1px solid rgba(245,197,24,0.12)",
+                  background: "rgba(245,184,0,0.06)",
+                  border: "1px solid rgba(245,184,0,0.12)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -160,7 +160,7 @@ export default function MobileWalkthrough({ onComplete, onSkip }: MobileWalkthro
             <div className="text-center">
               <h1
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "32px",
                   letterSpacing: "0.04em",
                   color: "#FFFFFF",
@@ -172,7 +172,7 @@ export default function MobileWalkthrough({ onComplete, onSkip }: MobileWalkthro
               </h1>
               <p
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "16px",
                   color: "rgba(255,255,255,0.55)",
                   lineHeight: 1.6,
@@ -208,7 +208,7 @@ export default function MobileWalkthrough({ onComplete, onSkip }: MobileWalkthro
                 width: i === currentSlide ? "20px" : "6px",
                 height: "6px",
                 borderRadius: "999px",
-                background: i === currentSlide ? "#F5C518" : "rgba(255,255,255,0.2)",
+                background: i === currentSlide ? "#F5B800" : "rgba(255,255,255,0.2)",
                 border: "none",
                 cursor: "pointer",
                 transition: "all 0.25s ease",
@@ -226,7 +226,7 @@ export default function MobileWalkthrough({ onComplete, onSkip }: MobileWalkthro
               background: "transparent",
               border: "none",
               cursor: "pointer",
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "13px",
               color: "rgba(255,255,255,0.3)",
               padding: "4px 8px",
@@ -243,14 +243,14 @@ export default function MobileWalkthrough({ onComplete, onSkip }: MobileWalkthro
             width: "100%",
             height: "52px",
             borderRadius: "999px",
-            background: "#F5C518",
+            background: "#F5B800",
             border: "none",
             cursor: "pointer",
-            fontFamily: "Bebas Neue, sans-serif",
+            fontFamily: "Barlow Condensed, sans-serif",
             fontSize: "14px",
             letterSpacing: "0.12em",
             color: "#0d1117",
-            boxShadow: "0 4px 20px rgba(245,197,24,0.3)",
+            boxShadow: "0 4px 20px rgba(245,184,0,0.3)",
           }}
         >
           {isLast ? "LET'S GO →" : "NEXT →"}

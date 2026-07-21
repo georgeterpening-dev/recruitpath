@@ -464,7 +464,7 @@ function WaitlistSection() {
     >
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "22px", letterSpacing: "0.06em", color: "#F5B800", marginBottom: "2px" }}>WAITLIST</h2>
+          <h2 style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "22px", letterSpacing: "0.06em", color: "#F5B800", marginBottom: "2px" }}>WAITLIST</h2>
           <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#64748B" }}>
             {isLoading ? "Loading..." : `${sorted.length} total signup${sorted.length !== 1 ? "s" : ""}`}
           </p>

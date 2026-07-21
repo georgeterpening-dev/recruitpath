@@ -21,9 +21,9 @@ function StatCard({ label, value }: { label: string; value: string }) {
     >
       <div
         style={{
-          fontFamily: "Bebas Neue, sans-serif",
+          fontFamily: "Barlow Condensed, sans-serif",
           fontSize: "32px",
-          color: "#F5C518",
+          color: "#F5B800",
           lineHeight: 1,
           marginBottom: "6px",
         }}
@@ -32,11 +32,11 @@ function StatCard({ label, value }: { label: string; value: string }) {
       </div>
       <div
         style={{
-          fontFamily: "DM Sans, sans-serif",
+          fontFamily: "Inter, sans-serif",
           fontSize: "10px",
           fontWeight: 700,
           letterSpacing: "0.12em",
-          color: "#6B6B6B",
+          color: "#94A3B8",
           textTransform: "uppercase",
         }}
       >
@@ -88,7 +88,7 @@ export default function AffiliateDashboard() {
           <div style={{ fontSize: "32px", marginBottom: "16px" }}>⚠️</div>
           <div
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "28px",
               color: "#E24B4A",
               letterSpacing: "0.05em",
@@ -99,23 +99,23 @@ export default function AffiliateDashboard() {
           </div>
           <div
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "14px",
-              color: "#6B6B6B",
+              color: "#94A3B8",
               maxWidth: "400px",
               lineHeight: 1.6,
               marginBottom: "24px",
             }}
           >
             Your affiliate account has been deactivated. If you believe this is a mistake, reach out to{" "}
-            <a href="mailto:contact.recruitpath@gmail.com" style={{ color: "#F5C518", textDecoration: "none" }}>
+            <a href="mailto:contact.recruitpath@gmail.com" style={{ color: "#F5B800", textDecoration: "none" }}>
               contact.recruitpath@gmail.com
             </a>.
           </div>
           <Link href="/dashboard">
             <span
               style={{
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 fontSize: "12px",
                 fontWeight: 600,
                 letterSpacing: "0.1em",
@@ -152,9 +152,9 @@ export default function AffiliateDashboard() {
         <div className="flex items-center justify-center h-64">
           <div
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "13px",
-              color: "#6B6B6B",
+              color: "#94A3B8",
               letterSpacing: "0.1em",
             }}
           >
@@ -173,7 +173,7 @@ export default function AffiliateDashboard() {
           <div
             className="mb-4"
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "28px",
               color: "#FFFFFF",
             }}
@@ -183,7 +183,7 @@ export default function AffiliateDashboard() {
           <p
             className="mb-6"
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "14px",
               color: "#64748B",
               maxWidth: "360px",
@@ -196,9 +196,9 @@ export default function AffiliateDashboard() {
             <button
               className="px-6 py-3 text-sm font-bold tracking-widest uppercase rounded-sm cursor-pointer"
               style={{
-                background: "#F5C518",
-                color: "#0A0A0A",
-                fontFamily: "DM Sans, sans-serif",
+                background: "#F5B800",
+                color: "#0A0E1A",
+                fontFamily: "Inter, sans-serif",
                 border: "none",
               }}
             >
@@ -230,11 +230,11 @@ export default function AffiliateDashboard() {
         >
           <p
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "11px",
               fontWeight: 700,
               letterSpacing: "0.18em",
-              color: "#F5C518",
+              color: "#F5B800",
               textTransform: "uppercase",
               marginBottom: "8px",
             }}
@@ -243,7 +243,7 @@ export default function AffiliateDashboard() {
           </p>
           <h1
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "40px",
               color: "#FFFFFF",
               lineHeight: 1,
@@ -264,11 +264,11 @@ export default function AffiliateDashboard() {
           <p
             className="mb-3"
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "11px",
               fontWeight: 700,
               letterSpacing: "0.12em",
-              color: "#6B6B6B",
+              color: "#94A3B8",
               textTransform: "uppercase",
             }}
           >
@@ -277,9 +277,9 @@ export default function AffiliateDashboard() {
           <div
             className="mb-2"
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "clamp(48px, 8vw, 72px)",
-              color: "#F5C518",
+              color: "#F5B800",
               letterSpacing: "0.08em",
               lineHeight: 1,
             }}
@@ -289,7 +289,7 @@ export default function AffiliateDashboard() {
           <p
             className="mb-6"
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "12px",
               color: "#475569",
             }}
@@ -302,10 +302,10 @@ export default function AffiliateDashboard() {
               onClick={() => copyToClipboard(affiliate.couponCode, "code")}
               className="px-5 py-2.5 text-xs font-bold tracking-widest uppercase rounded-sm cursor-pointer"
               style={{
-                background: copied === "code" ? "rgba(245,197,24,0.12)" : "transparent",
-                color: "#F5C518",
-                fontFamily: "DM Sans, sans-serif",
-                border: "1px solid rgba(245,197,24,0.35)",
+                background: copied === "code" ? "rgba(245,184,0,0.12)" : "transparent",
+                color: "#F5B800",
+                fontFamily: "Inter, sans-serif",
+                border: "1px solid rgba(245,184,0,0.35)",
                 transition: "background 0.2s",
               }}
             >
@@ -315,10 +315,10 @@ export default function AffiliateDashboard() {
               onClick={() => copyToClipboard(affiliateLink, "link")}
               className="px-5 py-2.5 text-xs font-bold tracking-widest uppercase rounded-sm cursor-pointer"
               style={{
-                background: copied === "link" ? "rgba(245,197,24,0.12)" : "transparent",
-                color: "#F5C518",
-                fontFamily: "DM Sans, sans-serif",
-                border: "1px solid rgba(245,197,24,0.35)",
+                background: copied === "link" ? "rgba(245,184,0,0.12)" : "transparent",
+                color: "#F5B800",
+                fontFamily: "Inter, sans-serif",
+                border: "1px solid rgba(245,184,0,0.35)",
                 transition: "background 0.2s",
               }}
             >
@@ -328,7 +328,7 @@ export default function AffiliateDashboard() {
           <p
             className="mt-3"
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "11px",
               color: "#334155",
               wordBreak: "break-all",
@@ -358,19 +358,19 @@ export default function AffiliateDashboard() {
           transition={{ duration: 0.4, delay: 0.15 }}
           className="mb-6 px-5 py-3 rounded-sm"
           style={{
-            background: "rgba(245,197,24,0.05)",
-            border: "1px solid rgba(245,197,24,0.15)",
+            background: "rgba(245,184,0,0.05)",
+            border: "1px solid rgba(245,184,0,0.15)",
           }}
         >
           <span
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "13px",
               color: "#94A3B8",
             }}
           >
             Commission rates:{" "}
-            <strong style={{ color: "#F5C518" }}>
+            <strong style={{ color: "#F5B800" }}>
               $3 per monthly signup · $5 per annual signup
             </strong>
           </span>
@@ -390,11 +390,11 @@ export default function AffiliateDashboard() {
           >
             <span
               style={{
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 fontSize: "11px",
                 fontWeight: 700,
                 letterSpacing: "0.12em",
-                color: "#6B6B6B",
+                color: "#94A3B8",
                 textTransform: "uppercase",
               }}
             >
@@ -406,9 +406,9 @@ export default function AffiliateDashboard() {
             <div
               className="px-6 py-8 text-center"
               style={{
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 fontSize: "13px",
-                color: "#6B6B6B",
+                color: "#94A3B8",
               }}
             >
               Loading...
@@ -417,7 +417,7 @@ export default function AffiliateDashboard() {
             <div
               className="px-6 py-10 text-center"
               style={{
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 fontSize: "14px",
                 color: "#475569",
                 lineHeight: 1.65,
@@ -435,7 +435,7 @@ export default function AffiliateDashboard() {
                         key={h}
                         className="px-6 py-3 text-left"
                         style={{
-                          fontFamily: "DM Sans, sans-serif",
+                          fontFamily: "Inter, sans-serif",
                           fontSize: "10px",
                           fontWeight: 700,
                           letterSpacing: "0.12em",
@@ -457,7 +457,7 @@ export default function AffiliateDashboard() {
                       <td
                         className="px-6 py-4"
                         style={{
-                          fontFamily: "DM Sans, sans-serif",
+                          fontFamily: "Inter, sans-serif",
                           fontSize: "13px",
                           color: "#94A3B8",
                         }}
@@ -471,7 +471,7 @@ export default function AffiliateDashboard() {
                       <td
                         className="px-6 py-4"
                         style={{
-                          fontFamily: "DM Sans, sans-serif",
+                          fontFamily: "Inter, sans-serif",
                           fontSize: "13px",
                           color: "#FFFFFF",
                           textTransform: "capitalize",
@@ -482,9 +482,9 @@ export default function AffiliateDashboard() {
                       <td
                         className="px-6 py-4"
                         style={{
-                          fontFamily: "DM Sans, sans-serif",
+                          fontFamily: "Inter, sans-serif",
                           fontSize: "13px",
-                          color: "#F5C518",
+                          color: "#F5B800",
                           fontWeight: 700,
                         }}
                       >
@@ -494,13 +494,13 @@ export default function AffiliateDashboard() {
                         <span
                           className="px-2 py-1 rounded-sm text-xs font-bold uppercase"
                           style={{
-                            fontFamily: "DM Sans, sans-serif",
+                            fontFamily: "Inter, sans-serif",
                             letterSpacing: "0.08em",
                             background: c.paid
                               ? "rgba(34,197,94,0.1)"
-                              : "rgba(245,197,24,0.1)",
-                            color: c.paid ? "#22C55E" : "#F5C518",
-                            border: `1px solid ${c.paid ? "rgba(34,197,94,0.2)" : "rgba(245,197,24,0.2)"}`,
+                              : "rgba(245,184,0,0.1)",
+                            color: c.paid ? "#22C55E" : "#F5B800",
+                            border: `1px solid ${c.paid ? "rgba(34,197,94,0.2)" : "rgba(245,184,0,0.2)"}`,
                           }}
                         >
                           {c.paid ? "Paid" : "Pending"}
@@ -525,11 +525,11 @@ export default function AffiliateDashboard() {
           <p
             className="mb-1"
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "11px",
               fontWeight: 700,
               letterSpacing: "0.12em",
-              color: "#6B6B6B",
+              color: "#94A3B8",
               textTransform: "uppercase",
             }}
           >
@@ -537,7 +537,7 @@ export default function AffiliateDashboard() {
           </p>
           <p
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: "14px",
               color: "#64748B",
               lineHeight: 1.65,
@@ -546,7 +546,7 @@ export default function AffiliateDashboard() {
             Commissions are paid monthly via Venmo or PayPal once you reach a $10 minimum. Email{" "}
             <a
               href="mailto:contact.recruitpath@gmail.com"
-              style={{ color: "#F5C518", textDecoration: "none" }}
+              style={{ color: "#F5B800", textDecoration: "none" }}
             >
               contact.recruitpath@gmail.com
             </a>{" "}

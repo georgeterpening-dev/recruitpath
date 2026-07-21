@@ -86,7 +86,7 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
               background: "rgba(245, 184, 0, 0.12)",
               border: "1px solid rgba(245, 184, 0, 0.35)",
               color: "#F5B800",
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
             }}
           >
             WELCOME TO RECRUITPATH
@@ -96,7 +96,7 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
           <h1
             className="text-white text-center mb-4 leading-none"
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "Barlow Condensed, sans-serif",
               fontSize: "clamp(44px, 8vw, 64px)",
               letterSpacing: "0.01em",
             }}
@@ -108,7 +108,7 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
           <p
             className="text-center mb-8"
             style={{
-              fontFamily: "DM Sans, sans-serif",
+              fontFamily: "Inter, sans-serif",
               fontSize: 15,
               color: "#94A3B8",
               lineHeight: 1.6,
@@ -124,8 +124,8 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
           <div
             className="w-full mb-6"
             style={{
-              background: "#1A1A1A",
-              border: "1px solid #2A2A2A",
+              background: "#111827",
+              border: "1px solid #1E293B",
               borderRadius: 14,
               overflow: "hidden",
             }}
@@ -135,13 +135,13 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
                 key={step.num}
                 className="flex items-center gap-4 px-5 py-4"
                 style={{
-                  borderBottom: i < steps.length - 1 ? "1px solid #2A2A2A" : "none",
+                  borderBottom: i < steps.length - 1 ? "1px solid #1E293B" : "none",
                 }}
               >
                 {/* Yellow step number */}
                 <span
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: 22,
                     color: "#F5B800",
                     lineHeight: 1,
@@ -156,7 +156,7 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
                 <div className="flex flex-col gap-0.5">
                   <span
                     style={{
-                      fontFamily: "DM Sans, sans-serif",
+                      fontFamily: "Inter, sans-serif",
                       fontSize: 13,
                       fontWeight: 700,
                       color: "#F8FAFC",
@@ -168,7 +168,7 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "DM Sans, sans-serif",
+                      fontFamily: "Inter, sans-serif",
                       fontSize: 12,
                       color: "#64748B",
                     }}
@@ -192,7 +192,7 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
               style={{
                 background: "#F5B800",
                 color: "#0A0E1A",
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 letterSpacing: "0.06em",
               }}
             >
@@ -207,10 +207,10 @@ export default function WelcomeOverlay({ onDismiss }: WelcomeOverlayProps) {
               disabled={dismissWelcome.isPending}
               className="w-full py-3 text-sm font-semibold tracking-wider uppercase rounded-xl border"
               style={{
-                borderColor: "#2A2A2A",
+                borderColor: "#1E293B",
                 color: "#64748B",
                 background: "transparent",
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 letterSpacing: "0.04em",
               }}
             >

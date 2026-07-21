@@ -123,8 +123,8 @@ export default function MobileBottomTabBar() {
                 <Icon
                   size={22}
                   style={{
-                    color: isActive ? "#F5C518" : "rgba(255,255,255,0.5)",
-                    filter: isActive ? "drop-shadow(0 0 6px rgba(245,197,24,0.6))" : "none",
+                    color: isActive ? "#F5B800" : "rgba(255,255,255,0.5)",
+                    filter: isActive ? "drop-shadow(0 0 6px rgba(245,184,0,0.6))" : "none",
                     transition: "color 0.2s ease, filter 0.2s ease",
                     flexShrink: 0,
                   }}
@@ -141,8 +141,8 @@ export default function MobileBottomTabBar() {
                       width: "4px",
                       height: "4px",
                       borderRadius: "50%",
-                      background: "#F5C518",
-                      boxShadow: "0 0 6px rgba(245,197,24,0.8)",
+                      background: "#F5B800",
+                      boxShadow: "0 0 6px rgba(245,184,0,0.8)",
                     }}
                   />
                 )}
@@ -162,8 +162,8 @@ export default function MobileBottomTabBar() {
           <MoreHorizontal
             size={22}
             style={{
-              color: isMoreActive ? "#F5C518" : "rgba(255,255,255,0.5)",
-              filter: isMoreActive ? "drop-shadow(0 0 6px rgba(245,197,24,0.6))" : "none",
+              color: isMoreActive ? "#F5B800" : "rgba(255,255,255,0.5)",
+              filter: isMoreActive ? "drop-shadow(0 0 6px rgba(245,184,0,0.6))" : "none",
               transition: "color 0.2s ease, filter 0.2s ease",
               flexShrink: 0,
             }}
@@ -179,8 +179,8 @@ export default function MobileBottomTabBar() {
                 width: "4px",
                 height: "4px",
                 borderRadius: "50%",
-                background: "#F5C518",
-                boxShadow: "0 0 6px rgba(245,197,24,0.8)",
+                background: "#F5B800",
+                boxShadow: "0 0 6px rgba(245,184,0,0.8)",
               }}
             />
           )}
@@ -257,12 +257,12 @@ export default function MobileBottomTabBar() {
                       >
                         <Icon
                           size={20}
-                          style={{ color: isActive ? "#F5C518" : "rgba(255,255,255,0.5)", flexShrink: 0 }}
+                          style={{ color: isActive ? "#F5B800" : "rgba(255,255,255,0.5)", flexShrink: 0 }}
                           strokeWidth={1.75}
                         />
                         <span
                           style={{
-                            fontFamily: "'DM Sans', sans-serif",
+                            fontFamily: "'Inter', sans-serif",
                             fontSize: "15px",
                             color: isActive ? "#F8FAFC" : "#94A3B8",
                             fontWeight: isActive ? 500 : 400,
@@ -291,7 +291,7 @@ export default function MobileBottomTabBar() {
                   <LogOut size={20} style={{ color: "#E24B4A", flexShrink: 0 }} strokeWidth={1.75} />
                   <span
                     style={{
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "'Inter', sans-serif",
                       fontSize: "15px",
                       color: "#E24B4A",
                       fontWeight: 400,

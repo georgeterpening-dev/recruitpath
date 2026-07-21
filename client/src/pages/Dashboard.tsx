@@ -1,13 +1,13 @@
 /*
  * RecruitPath — Dashboard Page
  * Design: Unified UI — matches Schools/Profile/Emails design system exactly
- * Colors: #0A0E1A bg, #141414 cards, #2A2A2A borders, #F5C518 gold, #6B6B6B muted
+ * Colors: #0A0E1A bg, #0F172A cards, #1E293B borders, #F5B800 gold, #94A3B8 muted
  * Fonts: Bebas Neue headlines, DM Sans body
  * Features: Live stats, target schools with gap analysis, full-screen school detail modal
  */
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
-import { ChevronRight, X, Copy, Check, ArrowRight, Plus, RefreshCw, Lock, Mail, Eye, EyeOff, ChevronDown, Star, Filter, SlidersHorizontal } from "lucide-react";
+import { ChevronRight, X, Copy, Check, ArrowRight, Plus, RefreshCw, Lock, Mail, Eye, EyeOff, ChevronDown, Star, Filter, SlidersHorizontal, DoorOpen, Send, Target, Gauge, type LucideIcon } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
@@ -31,52 +31,53 @@ import { rosterDatabase, calculateRosterGap } from "@shared/rosterData.js";
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 // ─── StatBlock component ──────────────────────────────────────────────────────
-function StatBlock({ value, label, onClick }: { value: string | number; label: string; onClick: () => void }) {
-  const [hovered, setHovered] = useState(false);
+function StatBlock({
+  value,
+  label,
+  onClick,
+  icon: Icon,
+}: {
+  value: string | number;
+  label: string;
+  onClick: () => void;
+  icon: LucideIcon;
+}) {
   return (
-    <div
+    <button
       onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        background: hovered
-          ? "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)"
-          : "linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
-        border: hovered ? "1px solid rgba(245,197,24,0.3)" : "1px solid rgba(255,255,255,0.06)",
-        borderRadius: "4px",
-        padding: "clamp(14px, 3vw, 20px) clamp(12px, 2vw, 16px)",
-        minHeight: 0,
-        cursor: "pointer",
-        transform: hovered ? "translateY(-2px)" : "translateY(0)",
-        boxShadow: hovered
-          ? "0 8px 32px rgba(245,197,24,0.12), inset 0 1px 0 rgba(255,255,255,0.05)"
-          : "none",
-        transition: "all 0.2s ease",
-      }}
+      className="rp-card-interactive text-left w-full"
+      style={{ padding: "clamp(14px, 3vw, 20px)" }}
     >
+      <div className="flex items-start justify-between mb-3">
+        <div
+          className="flex items-center justify-center rounded-lg"
+          style={{ width: 32, height: 32, background: "rgba(245,184,0,0.1)" }}
+        >
+          <Icon size={16} strokeWidth={2} className="text-[#F5B800]" />
+        </div>
+      </div>
       <div
         style={{
-          fontFamily: "Bebas Neue, sans-serif",
-          fontSize: "clamp(26px, 5vw, 40px)",
+          fontFamily: "Barlow Condensed, sans-serif",
+          fontSize: "clamp(26px, 5vw, 38px)",
           color: "#FFFFFF",
           lineHeight: 1,
           marginBottom: "6px",
-          textShadow: "0 0 30px rgba(255,255,255,0.15)",
         }}
       >
         {value}
       </div>
       <div
         style={{
-          fontFamily: "DM Sans, sans-serif",
+          fontFamily: "Inter, sans-serif",
           fontSize: "11px",
-          color: "#6B6B6B",
-          letterSpacing: "0.08em",
+          color: "#94A3B8",
+          letterSpacing: "0.06em",
         }}
       >
         {label}
       </div>
-    </div>
+    </button>
   );
 }
 
@@ -126,15 +127,15 @@ function getGapForSchool(school: OutreachSchool): GapResult | null {
 }
 
 function getStatusBadge(gap: GapResult | null): { label: string; color: string; bg: string; border: string } {
-  if (!gap) return { label: "UNKNOWN", color: "#6B6B6B", bg: "rgba(107,107,107,0.1)", border: "rgba(107,107,107,0.3)" };
+  if (!gap) return { label: "UNKNOWN", color: "#94A3B8", bg: "rgba(107,107,107,0.1)", border: "rgba(107,107,107,0.3)" };
   if (gap.netOpenings > 1) return { label: "OPEN", color: "#22C55E", bg: "rgba(34,197,94,0.1)", border: "rgba(34,197,94,0.3)" };
-  if (gap.netOpenings === 1) return { label: "LIMITED", color: "#F5C518", bg: "rgba(245,197,24,0.1)", border: "rgba(245,197,24,0.3)" };
+  if (gap.netOpenings === 1) return { label: "LIMITED", color: "#F5B800", bg: "rgba(245,184,0,0.1)", border: "rgba(245,184,0,0.3)" };
   return { label: "CLOSED", color: "#EF4444", bg: "rgba(239,68,68,0.1)", border: "rgba(239,68,68,0.3)" };
 }
 
 function getOpeningsColor(netOpenings: number): string {
   if (netOpenings > 1) return "#22C55E";
-  if (netOpenings === 1) return "#F5C518";
+  if (netOpenings === 1) return "#F5B800";
   return "#EF4444";
 }
 
@@ -166,14 +167,14 @@ function MatchScoreRing({ score, size = 88 }: { score: number; size?: number }) 
   const radius = (size / 2) - 6;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (score / 100) * circumference;
-  const color = score >= 60 ? "#22C55E" : score >= 30 ? "#F5C518" : "#EF4444";
+  const color = score >= 60 ? "#22C55E" : score >= 30 ? "#F5B800" : "#EF4444";
   const cx = size / 2;
   const cy = size / 2;
 
   return (
     <div className="relative flex-shrink-0" style={{ width: size, height: size }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-        <circle cx={cx} cy={cy} r={radius} fill="none" stroke="#2A2A2A" strokeWidth="6" />
+        <circle cx={cx} cy={cy} r={radius} fill="none" stroke="#1E293B" strokeWidth="6" />
         <circle
           cx={cx}
           cy={cy}
@@ -189,7 +190,7 @@ function MatchScoreRing({ score, size = 88 }: { score: number; size?: number }) 
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
-        <span style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: size * 0.25, color }}>
+        <span style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: size * 0.25, color }}>
           {score}%
         </span>
       </div>
@@ -314,8 +315,8 @@ Respectfully,
             width: "90vw",
             height: "90vh",
             maxWidth: 720,
-            background: "#141414",
-            border: "1px solid #2A2A2A",
+            background: "#0F172A",
+            border: "1px solid #1E293B",
             borderRadius: "28px",
             boxShadow: "0 32px 80px rgba(0,0,0,0.6)",
             overflow: "hidden",
@@ -325,7 +326,7 @@ Respectfully,
           {/* ── MODAL HEADER (non-scrollable) ── */}
           <div
             className="flex-shrink-0 p-7"
-            style={{ borderBottom: "1px solid #2A2A2A" }}
+            style={{ borderBottom: "1px solid #1E293B" }}
           >
             {/* Top row: logo + name + close */}
             <div className="flex items-start justify-between gap-4 mb-5">
@@ -342,7 +343,7 @@ Respectfully,
                 <div>
                   <h2
                     style={{
-                      fontFamily: "Bebas Neue, sans-serif",
+                      fontFamily: "Barlow Condensed, sans-serif",
                       fontSize: "clamp(22px, 4vw, 32px)",
                       color: "#FFFFFF",
                       lineHeight: 1,
@@ -351,7 +352,7 @@ Respectfully,
                   >
                     {(entry?.school || school.schoolName || "Unknown").toUpperCase()}
                   </h2>
-                  <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#6B6B6B" }}>
+                  <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#94A3B8" }}>
                     {entry ? `${entry.city}, ${entry.state} · ${entry.conference} · ${entry.division}` : ""}
                   </p>
                 </div>
@@ -363,10 +364,10 @@ Respectfully,
                 style={{
                   width: 32,
                   height: 32,
-                  background: "#1A1A1A",
-                  border: "1px solid #2A2A2A",
+                  background: "#111827",
+                  border: "1px solid #1E293B",
                   borderRadius: "50%",
-                  color: "#6B6B6B",
+                  color: "#94A3B8",
                   cursor: "pointer",
                 }}
               >
@@ -378,7 +379,7 @@ Respectfully,
             <div className="flex items-center gap-2 flex-wrap">
               <span
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "11px",
                   letterSpacing: "0.1em",
                   color: status.color,
@@ -393,7 +394,7 @@ Respectfully,
               {entry?.conference && (
                 <span
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "11px",
                     letterSpacing: "0.1em",
                     color: "#94A3B8",
@@ -409,7 +410,7 @@ Respectfully,
               {entry?.division && (
                 <span
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "11px",
                     letterSpacing: "0.1em",
                     color: "#94A3B8",
@@ -436,18 +437,18 @@ Respectfully,
               {/* ── SECTION 1: ROSTER GAP ANALYSIS ── */}
               <div
                 style={{
-                  background: "#1A1A1A",
-                  border: "1px solid #2A2A2A",
+                  background: "#111827",
+                  border: "1px solid #1E293B",
                   borderRadius: "12px",
                   padding: "24px",
                 }}
               >
                 <p
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "11px",
                     letterSpacing: "0.15em",
-                    color: "#6B6B6B",
+                    color: "#94A3B8",
                     marginBottom: "20px",
                   }}
                 >
@@ -458,12 +459,12 @@ Respectfully,
                     {/* Three columns with dividers */}
                     <div
                       className="grid grid-cols-3"
-                      style={{ borderBottom: "1px solid #2A2A2A", paddingBottom: "20px", marginBottom: "16px" }}
+                      style={{ borderBottom: "1px solid #1E293B", paddingBottom: "20px", marginBottom: "16px" }}
                     >
-                      <div className="text-center" style={{ borderRight: "1px solid #2A2A2A" }}>
+                      <div className="text-center" style={{ borderRight: "1px solid #1E293B" }}>
                         <div
                           style={{
-                            fontFamily: "Bebas Neue, sans-serif",
+                            fontFamily: "Barlow Condensed, sans-serif",
                             fontSize: "48px",
                             color: "#FFFFFF",
                             lineHeight: 1,
@@ -474,20 +475,20 @@ Respectfully,
                         </div>
                         <div
                           style={{
-                            fontFamily: "DM Sans, sans-serif",
+                            fontFamily: "Inter, sans-serif",
                             fontSize: "10px",
                             letterSpacing: "0.1em",
-                            color: "#6B6B6B",
+                            color: "#94A3B8",
                             textTransform: "uppercase",
                           }}
                         >
                           Graduating
                         </div>
                       </div>
-                      <div className="text-center" style={{ borderRight: "1px solid #2A2A2A" }}>
+                      <div className="text-center" style={{ borderRight: "1px solid #1E293B" }}>
                         <div
                           style={{
-                            fontFamily: "Bebas Neue, sans-serif",
+                            fontFamily: "Barlow Condensed, sans-serif",
                             fontSize: "48px",
                             color: "#EF4444",
                             lineHeight: 1,
@@ -498,10 +499,10 @@ Respectfully,
                         </div>
                         <div
                           style={{
-                            fontFamily: "DM Sans, sans-serif",
+                            fontFamily: "Inter, sans-serif",
                             fontSize: "10px",
                             letterSpacing: "0.1em",
-                            color: "#6B6B6B",
+                            color: "#94A3B8",
                             textTransform: "uppercase",
                           }}
                         >
@@ -511,7 +512,7 @@ Respectfully,
                       <div className="text-center">
                         <div
                           style={{
-                            fontFamily: "Bebas Neue, sans-serif",
+                            fontFamily: "Barlow Condensed, sans-serif",
                             fontSize: "48px",
                             color: getOpeningsColor(gap.netOpenings),
                             lineHeight: 1,
@@ -522,10 +523,10 @@ Respectfully,
                         </div>
                         <div
                           style={{
-                            fontFamily: "DM Sans, sans-serif",
+                            fontFamily: "Inter, sans-serif",
                             fontSize: "10px",
                             letterSpacing: "0.1em",
-                            color: "#6B6B6B",
+                            color: "#94A3B8",
                             textTransform: "uppercase",
                           }}
                         >
@@ -533,12 +534,12 @@ Respectfully,
                         </div>
                       </div>
                     </div>
-                    <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#94A3B8", lineHeight: 1.6 }}>
+                    <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#94A3B8", lineHeight: 1.6 }}>
                       {gap.reason}
                     </p>
                   </>
                 ) : (
-                  <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#6B6B6B" }}>
+                  <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#94A3B8" }}>
                     No roster data available for this school yet.
                   </p>
                 )}
@@ -548,18 +549,18 @@ Respectfully,
               {gap && (
                 <div
                   style={{
-                    background: "#1A1A1A",
-                    border: "1px solid #2A2A2A",
+                    background: "#111827",
+                    border: "1px solid #1E293B",
                     borderRadius: "12px",
                     padding: "24px",
                   }}
                 >
                   <p
                     style={{
-                      fontFamily: "Bebas Neue, sans-serif",
+                      fontFamily: "Barlow Condensed, sans-serif",
                       fontSize: "11px",
                       letterSpacing: "0.15em",
-                      color: "#6B6B6B",
+                      color: "#94A3B8",
                       marginBottom: "20px",
                     }}
                   >
@@ -570,7 +571,7 @@ Respectfully,
                     <div>
                       <p
                         style={{
-                          fontFamily: "Bebas Neue, sans-serif",
+                          fontFamily: "Barlow Condensed, sans-serif",
                           fontSize: "22px",
                           color: "#FFFFFF",
                           lineHeight: 1.2,
@@ -579,7 +580,7 @@ Respectfully,
                       >
                         {gap.matchScore >= 60 ? "STRONG OPPORTUNITY" : gap.matchScore >= 30 ? "LIMITED OPENING" : "POSITION FILLED"}
                       </p>
-                      <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#6B6B6B", lineHeight: 1.6 }}>
+                      <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#94A3B8", lineHeight: 1.6 }}>
                         {gap.matchScore >= 60
                           ? "This program has real roster needs at your position. Now is the time to reach out."
                           : gap.matchScore >= 30
@@ -594,18 +595,18 @@ Respectfully,
               {/* ── SECTION 3: GENERATE EMAIL (OUTREACH) ── */}
               <div
                 style={{
-                  background: "#1A1A1A",
-                  border: "1px solid #2A2A2A",
+                  background: "#111827",
+                  border: "1px solid #1E293B",
                   borderRadius: "12px",
                   padding: "24px",
                 }}
               >
                 <p
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "11px",
                     letterSpacing: "0.15em",
-                    color: "#6B6B6B",
+                    color: "#94A3B8",
                     marginBottom: "20px",
                   }}
                 >
@@ -619,10 +620,10 @@ Respectfully,
                     style={{
                       width: 44,
                       height: 44,
-                      background: "#F5C518",
-                      fontFamily: "Bebas Neue, sans-serif",
+                      background: "#F5B800",
+                      fontFamily: "Barlow Condensed, sans-serif",
                       fontSize: "18px",
-                      color: "#0A0A0A",
+                      color: "#0A0E1A",
                       fontWeight: 700,
                     }}
                   >
@@ -636,7 +637,7 @@ Respectfully,
                   <div className="flex-1 min-w-0">
                     <p
                       style={{
-                        fontFamily: "Bebas Neue, sans-serif",
+                        fontFamily: "Barlow Condensed, sans-serif",
                         fontSize: "18px",
                         color: "#FFFFFF",
                         lineHeight: 1.1,
@@ -644,7 +645,7 @@ Respectfully,
                     >
                       {(entry?.coachName || school.coachName || "Head Coach").toUpperCase()}
                     </p>
-                    <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B" }}>
+                    <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8" }}>
                       {entry?.coachTitle || "Head Coach"}
                     </p>
                     {entry?.coachEmail && (
@@ -655,9 +656,9 @@ Respectfully,
                       >
                         <span
                           style={{
-                            fontFamily: "DM Sans, sans-serif",
+                            fontFamily: "Inter, sans-serif",
                             fontSize: "12px",
-                            color: emailCopied ? "#22C55E" : "#F5C518",
+                            color: emailCopied ? "#22C55E" : "#F5B800",
                             transition: "color 0.2s",
                           }}
                         >
@@ -666,7 +667,7 @@ Respectfully,
                         {emailCopied ? (
                           <Check size={12} style={{ color: "#22C55E" }} />
                         ) : (
-                          <Copy size={12} style={{ color: "#F5C518" }} />
+                          <Copy size={12} style={{ color: "#F5B800" }} />
                         )}
                       </button>
                     )}
@@ -680,11 +681,11 @@ Respectfully,
                     disabled={isGenerating}
                     className="flex items-center justify-center gap-2 w-full"
                     style={{
-                      fontFamily: "Bebas Neue, sans-serif",
+                      fontFamily: "Barlow Condensed, sans-serif",
                       fontSize: "14px",
                       letterSpacing: "0.08em",
-                      background: isGenerating ? "rgba(245,197,24,0.4)" : "#F5C518",
-                      color: "#0A0A0A",
+                      background: isGenerating ? "rgba(245,184,0,0.4)" : "#F5B800",
+                      color: "#0A0E1A",
                       border: "none",
                       borderRadius: "10px",
                       padding: "14px 20px",
@@ -715,10 +716,10 @@ Respectfully,
                       style={{
                         width: "100%",
                         background: "#111111",
-                        border: "1px solid #2A2A2A",
+                        border: "1px solid #1E293B",
                         borderRadius: "8px",
                         padding: "14px 16px",
-                        fontFamily: "DM Sans, sans-serif",
+                        fontFamily: "Inter, sans-serif",
                         fontSize: "13px",
                         color: "#F8FAFC",
                         lineHeight: 1.7,
@@ -734,11 +735,11 @@ Respectfully,
                         }}
                         className="flex items-center gap-2 flex-1 justify-center"
                         style={{
-                          fontFamily: "Bebas Neue, sans-serif",
+                          fontFamily: "Barlow Condensed, sans-serif",
                           fontSize: "13px",
                           letterSpacing: "0.08em",
-                          background: "#F5C518",
-                          color: "#0A0A0A",
+                          background: "#F5B800",
+                          color: "#0A0E1A",
                           border: "none",
                           borderRadius: "8px",
                           padding: "11px 16px",
@@ -751,12 +752,12 @@ Respectfully,
                         onClick={() => { setEmailGenerated(null); handleGenerateEmail(); }}
                         className="flex items-center gap-2 justify-center"
                         style={{
-                          fontFamily: "Bebas Neue, sans-serif",
+                          fontFamily: "Barlow Condensed, sans-serif",
                           fontSize: "13px",
                           letterSpacing: "0.08em",
                           background: "transparent",
-                          color: "#6B6B6B",
-                          border: "1px solid #2A2A2A",
+                          color: "#94A3B8",
+                          border: "1px solid #1E293B",
                           borderRadius: "8px",
                           padding: "11px 16px",
                           cursor: "pointer",
@@ -772,8 +773,8 @@ Respectfully,
               {/* ── SECTION 4: ROSTER INTEL (Pro only) ── */}
               <div
                 style={{
-                  background: "#1A1A1A",
-                  border: "1px solid #2A2A2A",
+                  background: "#111827",
+                  border: "1px solid #1E293B",
                   borderRadius: "12px",
                   padding: "24px",
                   position: "relative",
@@ -782,10 +783,10 @@ Respectfully,
               >
                 <p
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "11px",
                     letterSpacing: "0.15em",
-                    color: "#6B6B6B",
+                    color: "#94A3B8",
                     marginBottom: "20px",
                   }}
                 >
@@ -796,7 +797,7 @@ Respectfully,
                 <div style={{ filter: isPro ? "none" : "blur(6px)", pointerEvents: isPro ? "auto" : "none", userSelect: isPro ? "auto" : "none" }}>
                   {rosterAtPosition.length > 0 ? (
                     <div className="mb-5">
-                      <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", letterSpacing: "0.08em", marginBottom: "10px", textTransform: "uppercase" }}>
+                      <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8", letterSpacing: "0.08em", marginBottom: "10px", textTransform: "uppercase" }}>
                         Current {athletePosition}s on Roster
                       </p>
                       <div className="flex flex-col gap-2">
@@ -806,20 +807,20 @@ Respectfully,
                             className="flex items-center justify-between"
                             style={{
                               background: "#111111",
-                              border: "1px solid #2A2A2A",
+                              border: "1px solid #1E293B",
                               borderRadius: "6px",
                               padding: "10px 14px",
                             }}
                           >
-                            <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#F8FAFC" }}>
+                            <span style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#F8FAFC" }}>
                               {player.name}
                             </span>
                             <span
                               style={{
-                                fontFamily: "Bebas Neue, sans-serif",
+                                fontFamily: "Barlow Condensed, sans-serif",
                                 fontSize: "11px",
                                 letterSpacing: "0.1em",
-                                color: player.graduationYear === 2026 ? "#EF4444" : "#6B6B6B",
+                                color: player.graduationYear === 2026 ? "#EF4444" : "#94A3B8",
                                 padding: "2px 8px",
                                 background: player.graduationYear === 2026 ? "rgba(239,68,68,0.1)" : "rgba(107,107,107,0.1)",
                                 border: `1px solid ${player.graduationYear === 2026 ? "rgba(239,68,68,0.3)" : "rgba(107,107,107,0.3)"}`,
@@ -833,14 +834,14 @@ Respectfully,
                       </div>
                     </div>
                   ) : (
-                    <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#6B6B6B", marginBottom: "16px" }}>
+                    <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#94A3B8", marginBottom: "16px" }}>
                       No current {athletePosition}s on roster.
                     </p>
                   )}
 
                   {commitsAtPosition.length > 0 && (
                     <div>
-                      <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", letterSpacing: "0.08em", marginBottom: "10px", textTransform: "uppercase" }}>
+                      <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8", letterSpacing: "0.08em", marginBottom: "10px", textTransform: "uppercase" }}>
                         Committed Recruits at {athletePosition}
                       </p>
                       <div className="flex flex-col gap-2">
@@ -850,23 +851,23 @@ Respectfully,
                             className="flex items-center justify-between"
                             style={{
                               background: "#111111",
-                              border: "1px solid rgba(245,197,24,0.2)",
+                              border: "1px solid rgba(245,184,0,0.2)",
                               borderRadius: "6px",
                               padding: "10px 14px",
                             }}
                           >
-                            <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#F8FAFC" }}>
+                            <span style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#F8FAFC" }}>
                               {commit.name}
                             </span>
                             <span
                               style={{
-                                fontFamily: "Bebas Neue, sans-serif",
+                                fontFamily: "Barlow Condensed, sans-serif",
                                 fontSize: "11px",
                                 letterSpacing: "0.1em",
-                                color: "#F5C518",
+                                color: "#F5B800",
                                 padding: "2px 8px",
-                                background: "rgba(245,197,24,0.1)",
-                                border: "1px solid rgba(245,197,24,0.3)",
+                                background: "rgba(245,184,0,0.1)",
+                                border: "1px solid rgba(245,184,0,0.3)",
                                 borderRadius: "4px",
                               }}
                             >
@@ -879,7 +880,7 @@ Respectfully,
                   )}
 
                   {rosterAtPosition.length === 0 && commitsAtPosition.length === 0 && (
-                    <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#6B6B6B" }}>
+                    <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#94A3B8" }}>
                       No roster intel available for this school yet.
                     </p>
                   )}
@@ -894,10 +895,10 @@ Respectfully,
                       backdropFilter: "blur(2px)",
                     }}
                   >
-                    <Lock size={24} style={{ color: "#F5C518", marginBottom: "12px" }} />
+                    <Lock size={24} style={{ color: "#F5B800", marginBottom: "12px" }} />
                     <p
                       style={{
-                        fontFamily: "Bebas Neue, sans-serif",
+                        fontFamily: "Barlow Condensed, sans-serif",
                         fontSize: "16px",
                         letterSpacing: "0.08em",
                         color: "#FFFFFF",
@@ -910,11 +911,11 @@ Respectfully,
                     <Link href="/pricing">
                       <button
                         style={{
-                          fontFamily: "Bebas Neue, sans-serif",
+                          fontFamily: "Barlow Condensed, sans-serif",
                           fontSize: "13px",
                           letterSpacing: "0.08em",
-                          background: "#F5C518",
-                          color: "#0A0A0A",
+                          background: "#F5B800",
+                          color: "#0A0E1A",
                           border: "none",
                           borderRadius: "8px",
                           padding: "10px 20px",
@@ -937,18 +938,18 @@ Respectfully,
           {/* ── MODAL FOOTER (non-scrollable) ── */}
           <div
             className="flex-shrink-0 flex items-center gap-3 px-7 py-5"
-            style={{ borderTop: "1px solid #2A2A2A" }}
+            style={{ borderTop: "1px solid #1E293B" }}
           >
             <button
               onClick={emailGenerated ? () => { setEmailGenerated(null); handleGenerateEmail(); } : handleGenerateEmail}
               disabled={isGenerating}
               className="flex items-center justify-center gap-2 flex-1"
               style={{
-                fontFamily: "Bebas Neue, sans-serif",
+                fontFamily: "Barlow Condensed, sans-serif",
                 fontSize: "14px",
                 letterSpacing: "0.08em",
-                background: isGenerating ? "rgba(245,197,24,0.4)" : "#F5C518",
-                color: "#0A0A0A",
+                background: isGenerating ? "rgba(245,184,0,0.4)" : "#F5B800",
+                color: "#0A0E1A",
                 border: "none",
                 borderRadius: "14px",
                 height: "48px",
@@ -967,7 +968,7 @@ Respectfully,
             <button
               onClick={onRemove}
               style={{
-                fontFamily: "Bebas Neue, sans-serif",
+                fontFamily: "Barlow Condensed, sans-serif",
                 fontSize: "14px",
                 letterSpacing: "0.08em",
                 background: "transparent",
@@ -1013,7 +1014,7 @@ function SchoolRow({
   const netOpenings = liveOpenings != null ? liveOpenings : (getGapForSchool(school)?.netOpenings ?? 0);
   const status = useMemo(() => {
     if (netOpenings > 1) return { label: "OPEN", color: "#22C55E", bg: "rgba(34,197,94,0.1)", border: "rgba(34,197,94,0.3)" };
-    if (netOpenings === 1) return { label: "LIMITED", color: "#F5C518", bg: "rgba(245,197,24,0.1)", border: "rgba(245,197,24,0.3)" };
+    if (netOpenings === 1) return { label: "LIMITED", color: "#F5B800", bg: "rgba(245,184,0,0.1)", border: "rgba(245,184,0,0.3)" };
     return { label: "CLOSED", color: "#EF4444", bg: "rgba(239,68,68,0.1)", border: "rgba(239,68,68,0.3)" };
   }, [netOpenings]);
 
@@ -1023,34 +1024,16 @@ function SchoolRow({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: 0.4 + index * 0.05, ease: [0.4, 0, 0.2, 1] }}
       onClick={onClick}
-      className="school-card flex items-center gap-3 cursor-pointer group"
+      className="school-card rp-card-interactive flex items-center gap-3 cursor-pointer group"
       style={{
-        background: "rgba(255,255,255,0.02)",
-        border: "1px solid rgba(255,255,255,0.04)",
-        borderRadius: "4px",
         padding: "clamp(12px, 2vw, 16px) clamp(12px, 2vw, 20px)",
-        transition: "all 0.2s ease",
-      }}
-      onMouseEnter={(e) => {
-        const el = e.currentTarget as HTMLElement;
-        el.style.borderColor = "rgba(255,255,255,0.08)";
-        el.style.background = "rgba(255,255,255,0.04)";
-        el.style.transform = "translateY(-1px)";
-        el.style.boxShadow = "0 8px 24px rgba(0,0,0,0.3)";
-      }}
-      onMouseLeave={(e) => {
-        const el = e.currentTarget as HTMLElement;
-        el.style.borderColor = "rgba(255,255,255,0.04)";
-        el.style.background = "rgba(255,255,255,0.02)";
-        el.style.transform = "translateY(0)";
-        el.style.boxShadow = "none";
       }}
     >
       {/* Logo with optional active dot */}
       <div className="relative flex-shrink-0">
         <SchoolLogo
           domain={dbSchool?.athleticsDomain || entry?.athleticsDomain || ""}
-          brandColor={dbSchool?.brandColor || entry?.brandColor || "#F5C518"}
+          brandColor={dbSchool?.brandColor || entry?.brandColor || "#F5B800"}
           name={dbSchool?.name || entry?.school || school.schoolName || "?"}
           size={48}
           logoUrl={dbSchool?.logoUrl || entry?.logoUrl}
@@ -1066,7 +1049,7 @@ function SchoolRow({
               height: 10,
               borderRadius: "50%",
               background: "#22C55E",
-              border: "2px solid #141414",
+              border: "2px solid #0F172A",
             }}
           />
         )}
@@ -1077,14 +1060,14 @@ function SchoolRow({
         <h3
           className="text-[13px] md:text-[17px]"
           style={{
-            fontFamily: "Bebas Neue, sans-serif",
+            fontFamily: "Barlow Condensed, sans-serif",
             color: "#FFFFFF",
             lineHeight: 1.1,
           }}
         >
           {(entry?.school || school.schoolName || "Unknown").toUpperCase()}
         </h3>
-        <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "10px", color: "#6B6B6B" }}>
+        <p style={{ fontFamily: "Inter, sans-serif", fontSize: "10px", color: "#94A3B8" }}>
           {entry ? `${entry.city} · ${entry.conference}` : school.division || ""}
         </p>
       </div>
@@ -1093,7 +1076,7 @@ function SchoolRow({
       <div className="text-right flex-shrink-0" style={{ minWidth: 48 }}>
         <div
           style={{
-            fontFamily: "Bebas Neue, sans-serif",
+            fontFamily: "Barlow Condensed, sans-serif",
             fontSize: "26px",
             color: getOpeningsColor(netOpenings),
             lineHeight: 1,
@@ -1101,7 +1084,7 @@ function SchoolRow({
         >
           {netOpenings}
         </div>
-        <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "9px", color: "#6B6B6B", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+        <div style={{ fontFamily: "Inter, sans-serif", fontSize: "9px", color: "#94A3B8", letterSpacing: "0.08em", textTransform: "uppercase" }}>
           openings
         </div>
       </div>
@@ -1110,7 +1093,7 @@ function SchoolRow({
       <span
         className="flex-shrink-0"
         style={{
-          fontFamily: "Bebas Neue, sans-serif",
+          fontFamily: "Barlow Condensed, sans-serif",
           fontSize: "11px",
           letterSpacing: "0.1em",
           color: status.color,
@@ -1123,7 +1106,7 @@ function SchoolRow({
           boxShadow: status.label === "OPEN"
             ? "0 0 8px rgba(29,158,117,0.3)"
             : status.label === "LIMITED"
-            ? "0 0 8px rgba(245,197,24,0.3)"
+            ? "0 0 8px rgba(245,184,0,0.3)"
             : "0 0 8px rgba(226,75,74,0.3)",
         }}
       >
@@ -1146,31 +1129,31 @@ function SchoolRow({
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: school.starred ? "#F5C518" : "#2A2A2A",
+            color: school.starred ? "#F5B800" : "#1E293B",
             transition: "color 0.15s",
           }}
           onMouseEnter={(e) => {
             const el = e.currentTarget as HTMLElement;
             if (!school.starred) el.style.color = "#888";
             const starEl = el.querySelector('svg');
-            if (starEl) (starEl as SVGElement).style.filter = "drop-shadow(0 0 4px rgba(245,197,24,0.6))";
+            if (starEl) (starEl as SVGElement).style.filter = "drop-shadow(0 0 4px rgba(245,184,0,0.6))";
           }}
           onMouseLeave={(e) => {
             const el = e.currentTarget as HTMLElement;
-            if (!school.starred) el.style.color = "#2A2A2A";
+            if (!school.starred) el.style.color = "#1E293B";
             const starEl = el.querySelector('svg');
             if (starEl) (starEl as SVGElement).style.filter = "none";
           }}
         >
-          <Star size={18} fill={school.starred ? "#F5C518" : "none"} stroke={school.starred ? "#F5C518" : "#2A2A2A"} strokeWidth={1.5} />
+          <Star size={18} fill={school.starred ? "#F5B800" : "none"} stroke={school.starred ? "#F5B800" : "#1E293B"} strokeWidth={1.5} />
         </button>
       )}
 
       {/* Arrow */}
       <ChevronRight
         size={14}
-        style={{ color: "#6B6B6B", flexShrink: 0, transition: "transform 0.15s, color 0.15s" }}
-        className="group-hover:translate-x-0.5 group-hover:text-[#F5C518]"
+        style={{ color: "#94A3B8", flexShrink: 0, transition: "transform 0.15s, color 0.15s" }}
+        className="group-hover:translate-x-0.5 group-hover:text-[#F5B800]"
       />
     </motion.div>
   );
@@ -1518,7 +1501,7 @@ export default function Dashboard() {
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "#0A0E1A" }}>
-        <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "20px", color: "#6B6B6B", letterSpacing: "0.1em" }}>
+        <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "20px", color: "#94A3B8", letterSpacing: "0.1em" }}>
           LOADING...
         </div>
       </div>
@@ -1530,9 +1513,9 @@ export default function Dashboard() {
 
   return (
     <>
-    <div className="min-h-screen pb-8 md:pb-8 pb-24 dashboard-fade-in" style={{ background: "linear-gradient(135deg, #0a0f1e 0%, #0d1628 50%, #0a1020 100%)" }}>
+    <div className="min-h-screen pb-8 md:pb-8 pb-24 dashboard-fade-in" style={{ background: "#0A0E1A" }}>
       {/* Main content column */}
-      <div className="mx-auto" style={{ maxWidth: 860, paddingTop: "clamp(24px, 5vw, 64px)", paddingLeft: "clamp(16px, 4vw, 40px)", paddingRight: "clamp(16px, 4vw, 40px)" }}>
+      <div className="mx-auto" style={{ maxWidth: 1080, paddingTop: "clamp(24px, 5vw, 56px)", paddingLeft: "clamp(16px, 4vw, 40px)", paddingRight: "clamp(16px, 4vw, 40px)" }}>
 
         {/* ── SECTION 1: HERO HEADER ── */}
         <motion.div
@@ -1547,16 +1530,16 @@ export default function Dashboard() {
             <Link href="/how-it-works">
               <span
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "12px",
                   letterSpacing: "0.12em",
-                  color: "#6B6B6B",
+                  color: "#94A3B8",
                   cursor: "pointer",
                   textDecoration: "none",
                   transition: "color 0.15s",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#F5C518")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#6B6B6B")}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#F5B800")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "#94A3B8")}
               >
                 HOW IT WORKS →
               </span>
@@ -1564,19 +1547,19 @@ export default function Dashboard() {
           </div>
 
           {/* Two-line headline */}
-          <h1 style={{ fontFamily: "Bebas Neue, sans-serif", lineHeight: 0.95, marginBottom: "16px" }}>
-            <span className="block text-[28px] md:text-[clamp(28px,8vw,80px)]" style={{ color: "#6B6B6B" }}>
+          <h1 style={{ fontFamily: "Barlow Condensed, sans-serif", lineHeight: 0.95, marginBottom: "16px" }}>
+            <span className="block text-[28px] md:text-[clamp(28px,8vw,80px)]" style={{ color: "#94A3B8" }}>
               YOUR MOVE,
             </span>
-            <span className="block text-[36px] md:text-[clamp(28px,8vw,80px)]" style={{ color: "#F5C518" }}>
+            <span className="block text-[36px] md:text-[clamp(28px,8vw,80px)]" style={{ color: "#F5B800" }}>
               {firstName.toUpperCase()}.
             </span>
           </h1>
 
           {/* Subtitle */}
-          <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#94A3B8", lineHeight: 1.5 }}>
+          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#94A3B8", lineHeight: 1.5 }}>
             You have{" "}
-            <span style={{ color: "#22C55E", fontWeight: 600, textShadow: "0 0 12px rgba(245,197,24,0.6)" }}>{openWindows}</span>{" "}
+            <span style={{ color: "#22C55E", fontWeight: 600, textShadow: "0 0 12px rgba(245,184,0,0.6)" }}>{openWindows}</span>{" "}
             open roster window{openWindows !== 1 ? "s" : ""} at your target schools
             {userPositions.length > 0 ? (
               <> at your position{userPositions.length > 1 ? "s" : ""}</>
@@ -1596,24 +1579,28 @@ export default function Dashboard() {
           <StatBlock
             value={openWindows}
             label="OPEN WINDOWS"
+            icon={DoorOpen}
             onClick={() => setShowOpenWindowsModal(true)}
           />
           {/* EMAILS SENT — navigates to /outreach */}
           <StatBlock
             value={emailsSent}
             label="EMAILS SENT"
+            icon={Send}
             onClick={() => navigate("/outreach")}
           />
           {/* SCHOOLS TARGETED — opens modal */}
           <StatBlock
             value={schoolsTargeted}
             label="SCHOOLS TARGETED"
+            icon={Target}
             onClick={() => setShowSchoolsTargetedModal(true)}
           />
           {/* PROFILE STRENGTH — navigates to /profile */}
           <StatBlock
             value={`${profileStrength}%`}
             label="PROFILE STRENGTH"
+            icon={Gauge}
             onClick={() => navigate("/profile")}
           />
         </motion.div>
@@ -1625,8 +1612,8 @@ export default function Dashboard() {
           transition={{ duration: 0.5, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
           className="flex items-center justify-between gap-3 mb-8 md:mb-14"
           style={{
-            background: "rgba(245,197,24,0.05)",
-            border: "1px solid rgba(245,197,24,0.25)",
+            background: "rgba(245,184,0,0.05)",
+            border: "1px solid rgba(245,184,0,0.25)",
             borderRadius: "4px",
             padding: "clamp(14px, 3vw, 22px) clamp(14px, 3vw, 28px)",
           }}
@@ -1634,28 +1621,28 @@ export default function Dashboard() {
           <div className="flex-1 min-w-0">
             <span
               style={{
-                fontFamily: "Bebas Neue, sans-serif",
+                fontFamily: "Barlow Condensed, sans-serif",
                 fontSize: "11px",
                 letterSpacing: "0.15em",
-                color: "#F5C518",
+                color: "#F5B800",
                 display: "block",
                 marginBottom: "4px",
               }}
             >
               NEXT STEP
             </span>
-            <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "clamp(13px, 2vw, 14px)", color: "#F8FAFC", lineHeight: 1.5 }}>
+            <p style={{ fontFamily: "Inter, sans-serif", fontSize: "clamp(13px, 2vw, 14px)", color: "#F8FAFC", lineHeight: 1.5 }}>
               {nextAction}
             </p>
           </div>
           <Link href="/schools">
             <button
               style={{
-                fontFamily: "Bebas Neue, sans-serif",
+                fontFamily: "Barlow Condensed, sans-serif",
                 fontSize: "13px",
                 letterSpacing: "0.08em",
-                background: "linear-gradient(135deg, #F5C518 0%, #FFD700 100%)",
-                color: "#0A0A0A",
+                background: "linear-gradient(135deg, #F5B800 0%, #FFD700 100%)",
+                color: "#0A0E1A",
                 border: "none",
                 borderRadius: "4px",
                 padding: "10px 18px",
@@ -1665,11 +1652,11 @@ export default function Dashboard() {
                 alignItems: "center",
                 gap: "6px",
                 whiteSpace: "nowrap",
-                boxShadow: "0 4px 20px rgba(245,197,24,0.35)",
+                boxShadow: "0 4px 20px rgba(245,184,0,0.35)",
                 transition: "box-shadow 0.2s ease",
               }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 28px rgba(245,197,24,0.5)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 20px rgba(245,197,24,0.35)"; }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 28px rgba(245,184,0,0.5)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 20px rgba(245,184,0,0.35)"; }}
             >
               ADD SCHOOLS <ArrowRight size={13} />
             </button>
@@ -1688,12 +1675,12 @@ export default function Dashboard() {
             <span
               className="text-[13px] md:text-[12px]"
               style={{
-                fontFamily: "Bebas Neue, sans-serif",
+                fontFamily: "Barlow Condensed, sans-serif",
                 letterSpacing: "0.15em",
-                color: "#6B6B6B",
+                color: "#94A3B8",
                 paddingBottom: "6px",
                 borderBottom: "1px solid",
-                borderImage: "linear-gradient(90deg, rgba(245,197,24,0.5) 0%, transparent 100%) 1",
+                borderImage: "linear-gradient(90deg, rgba(245,184,0,0.5) 0%, transparent 100%) 1",
               }}
             >
               TARGET SCHOOLS
@@ -1702,12 +1689,12 @@ export default function Dashboard() {
               <button
                 className="flex items-center gap-1.5"
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "12px",
                   letterSpacing: "0.1em",
-                  color: "#F5C518",
+                  color: "#F5B800",
                   background: "transparent",
-                  border: "1px solid rgba(245,197,24,0.3)",
+                  border: "1px solid rgba(245,184,0,0.3)",
                   borderRadius: "4px",
                   padding: "5px 12px",
                   cursor: "pointer",
@@ -1721,20 +1708,20 @@ export default function Dashboard() {
           {/* Mobile FILTER pill button — only on mobile */}
           {outreachList.length > 0 && (
             <div className="flex md:hidden items-center justify-between mb-4">
-              <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#6B6B6B" }}>
+              <span style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#94A3B8" }}>
                 {displayedSchools.length} of {outreachList.length} schools
               </span>
               <button
                 onClick={() => setMobileFilterSheetOpen(true)}
                 className="flex items-center gap-1.5"
                 style={{
-                  fontFamily: "DM Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                   fontSize: "12px",
-                  color: hasActiveFilter ? "#F5C518" : "#FFFFFF",
+                  color: hasActiveFilter ? "#F5B800" : "#FFFFFF",
                   background: "rgba(255,255,255,0.04)",
                   backdropFilter: "blur(8px)",
                   WebkitBackdropFilter: "blur(8px)",
-                  border: `1px solid ${hasActiveFilter ? "rgba(245,197,24,0.4)" : "rgba(255,255,255,0.12)"}`,
+                  border: `1px solid ${hasActiveFilter ? "rgba(245,184,0,0.4)" : "rgba(255,255,255,0.12)"}`,
                   borderRadius: "999px",
                   padding: "8px 18px",
                   cursor: "pointer",
@@ -1750,13 +1737,13 @@ export default function Dashboard() {
           {outreachList.length > 0 && (
             <div className="hidden md:flex items-center justify-between mb-4" style={{ gap: "8px" }}>
               {/* Results count */}
-              <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#6B6B6B" }}>
+              <span style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#94A3B8" }}>
                 Showing {displayedSchools.length} of {outreachList.length} schools
               </span>
 
               <div className="flex items-center gap-2">
                 {/* ALL OPENINGS / MY POSITION toggle */}
-                <div className="flex items-center" style={{ gap: "2px", background: "#0A0A0A", border: "1px solid #2A2A2A", borderRadius: "6px", padding: "2px" }}>
+                <div className="flex items-center" style={{ gap: "2px", background: "#0A0E1A", border: "1px solid #1E293B", borderRadius: "6px", padding: "2px" }}>
                   {(["all", "position"] as const).map((mode) => {
                     const label = mode === "all" ? "ALL OPENINGS" : "MY POSITION";
                     const isActive = openingsMode === mode;
@@ -1768,11 +1755,11 @@ export default function Dashboard() {
                             if (!noPositions) setOpeningsMode(mode);
                           }}
                           style={{
-                            fontFamily: "Bebas Neue, sans-serif",
+                            fontFamily: "Barlow Condensed, sans-serif",
                             fontSize: "10px",
                             letterSpacing: "0.08em",
-                            background: isActive ? "#F5C518" : "#1A1A1A",
-                            border: `1px solid ${isActive ? "#F5C518" : "#2A2A2A"}`,
+                            background: isActive ? "#F5B800" : "#111827",
+                            border: `1px solid ${isActive ? "#F5B800" : "#1E293B"}`,
                             borderRadius: "4px",
                             color: isActive ? "#000" : "#888",
                             padding: "4px 8px",
@@ -1789,13 +1776,13 @@ export default function Dashboard() {
                             position: "absolute",
                             bottom: "calc(100% + 6px)",
                             right: 0,
-                            background: "#1A1A1A",
-                            border: "1px solid #2A2A2A",
+                            background: "#111827",
+                            border: "1px solid #1E293B",
                             borderRadius: "6px",
                             padding: "6px 10px",
                             fontSize: "11px",
                             color: "#888",
-                            fontFamily: "DM Sans, sans-serif",
+                            fontFamily: "Inter, sans-serif",
                             whiteSpace: "nowrap",
                             pointerEvents: "none",
                             opacity: 0,
@@ -1815,11 +1802,11 @@ export default function Dashboard() {
                   value={sortMode}
                   onChange={(e) => setSortMode(e.target.value as typeof sortMode)}
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "11px",
                     letterSpacing: "0.08em",
-                    background: "#141414",
-                    border: "1px solid #2A2A2A",
+                    background: "#0F172A",
+                    border: "1px solid #1E293B",
                     borderRadius: "4px",
                     color: "#888",
                     padding: "5px 8px",
@@ -1841,13 +1828,13 @@ export default function Dashboard() {
                     onClick={() => setFilterOpen((v) => !v)}
                     className="flex items-center gap-1.5"
                     style={{
-                      fontFamily: "Bebas Neue, sans-serif",
+                      fontFamily: "Barlow Condensed, sans-serif",
                       fontSize: "11px",
                       letterSpacing: "0.08em",
-                      background: "#141414",
-                      border: `1px solid ${hasActiveFilter ? "#F5C518" : "#2A2A2A"}`,
+                      background: "#0F172A",
+                      border: `1px solid ${hasActiveFilter ? "#F5B800" : "#1E293B"}`,
                       borderRadius: "4px",
-                      color: hasActiveFilter ? "#F5C518" : "#888",
+                      color: hasActiveFilter ? "#F5B800" : "#888",
                       padding: "5px 10px",
                       cursor: "pointer",
                       position: "relative",
@@ -1863,7 +1850,7 @@ export default function Dashboard() {
                         width: "7px",
                         height: "7px",
                         borderRadius: "50%",
-                        background: "#F5C518",
+                        background: "#F5B800",
                         border: "1px solid #0A0E1A",
                       }} />
                     )}
@@ -1877,8 +1864,8 @@ export default function Dashboard() {
                         top: "calc(100% + 6px)",
                         right: 0,
                         zIndex: 100,
-                        background: "#1A1A1A",
-                        border: "1px solid #2A2A2A",
+                        background: "#111827",
+                        border: "1px solid #1E293B",
                         borderRadius: "12px",
                         padding: "20px",
                         minWidth: "240px",
@@ -1887,7 +1874,7 @@ export default function Dashboard() {
                     >
                       {/* Division */}
                       <div style={{ marginBottom: "16px" }}>
-                        <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#6B6B6B", marginBottom: "8px" }}>DIVISION</div>
+                        <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#94A3B8", marginBottom: "8px" }}>DIVISION</div>
                         {["D1", "D2", "D3", "NAIA", "CC"].map((div) => (
                           <label key={div} className="flex items-center gap-2" style={{ cursor: "pointer", marginBottom: "6px" }}>
                             <input
@@ -1897,9 +1884,9 @@ export default function Dashboard() {
                                 if (e.target.checked) setFilterDivisions((prev) => [...prev, div]);
                                 else setFilterDivisions((prev) => prev.filter((d) => d !== div));
                               }}
-                              style={{ accentColor: "#F5C518", cursor: "pointer" }}
+                              style={{ accentColor: "#F5B800", cursor: "pointer" }}
                             />
-                            <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#CCC" }}>{div}</span>
+                            <span style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#CCC" }}>{div}</span>
                           </label>
                         ))}
                       </div>
@@ -1907,13 +1894,13 @@ export default function Dashboard() {
                       {/* State */}
                       {uniqueStates.length > 0 && (
                         <div style={{ marginBottom: "16px" }}>
-                          <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#6B6B6B", marginBottom: "8px" }}>STATE</div>
+                          <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#94A3B8", marginBottom: "8px" }}>STATE</div>
                           <select
                             value={filterState}
                             onChange={(e) => setFilterState(e.target.value)}
                             style={{
                               width: "100%",
-                              fontFamily: "DM Sans, sans-serif",
+                              fontFamily: "Inter, sans-serif",
                               fontSize: "13px",
                               background: "#111",
                               border: "1px solid #333",
@@ -1936,23 +1923,23 @@ export default function Dashboard() {
                             type="checkbox"
                             checked={filterHasRoster}
                             onChange={(e) => setFilterHasRoster(e.target.checked)}
-                            style={{ accentColor: "#F5C518", cursor: "pointer" }}
+                            style={{ accentColor: "#F5B800", cursor: "pointer" }}
                           />
-                          <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#CCC" }}>Only schools with roster data</span>
+                          <span style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#CCC" }}>Only schools with roster data</span>
                         </label>
                         <label className="flex items-center gap-2" style={{ cursor: "pointer" }}>
                           <input
                             type="checkbox"
                             checked={filterStarredOnly}
                             onChange={(e) => setFilterStarredOnly(e.target.checked)}
-                            style={{ accentColor: "#F5C518", cursor: "pointer" }}
+                            style={{ accentColor: "#F5B800", cursor: "pointer" }}
                           />
-                          <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#CCC" }}>Only starred schools</span>
+                          <span style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#CCC" }}>Only starred schools</span>
                         </label>
                       </div>
 
                       {/* Footer */}
-                      <div className="flex items-center justify-between" style={{ borderTop: "1px solid #2A2A2A", paddingTop: "12px" }}>
+                      <div className="flex items-center justify-between" style={{ borderTop: "1px solid #1E293B", paddingTop: "12px" }}>
                         <button
                           onClick={() => {
                             setFilterDivisions([]);
@@ -1960,18 +1947,18 @@ export default function Dashboard() {
                             setFilterHasRoster(false);
                             setFilterStarredOnly(false);
                           }}
-                          style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}
+                          style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}
                         >
                           CLEAR ALL
                         </button>
                         <button
                           onClick={() => setFilterOpen(false)}
                           style={{
-                            fontFamily: "Bebas Neue, sans-serif",
+                            fontFamily: "Barlow Condensed, sans-serif",
                             fontSize: "12px",
                             letterSpacing: "0.08em",
-                            background: "#F5C518",
-                            color: "#0A0A0A",
+                            background: "#F5B800",
+                            color: "#0A0E1A",
                             border: "none",
                             borderRadius: "4px",
                             padding: "7px 16px",
@@ -1993,32 +1980,32 @@ export default function Dashboard() {
             <div
               className="text-center py-20"
               style={{
-                background: "#141414",
-                border: "1px solid #2A2A2A",
+                background: "#0F172A",
+                border: "1px solid #1E293B",
                 borderRadius: "4px",
               }}
             >
               <p
                 style={{
-                  fontFamily: "Bebas Neue, sans-serif",
+                  fontFamily: "Barlow Condensed, sans-serif",
                   fontSize: "24px",
-                  color: "#6B6B6B",
+                  color: "#94A3B8",
                   marginBottom: "8px",
                 }}
               >
                 NO SCHOOLS ADDED YET
               </p>
-              <p style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#6B6B6B", marginBottom: "24px" }}>
+              <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#94A3B8", marginBottom: "24px" }}>
                 Add your target schools to start tracking roster gaps.
               </p>
               <Link href="/schools">
                 <button
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "13px",
                     letterSpacing: "0.08em",
-                    background: "#F5C518",
-                    color: "#0A0A0A",
+                    background: "#F5B800",
+                    color: "#0A0E1A",
                     border: "none",
                     borderRadius: "4px",
                     padding: "10px 20px",
@@ -2032,12 +2019,12 @@ export default function Dashboard() {
           ) : displayedSchools.length === 0 ? (
             <div
               className="text-center py-12"
-              style={{ background: "#141414", border: "1px solid #2A2A2A", borderRadius: "4px" }}
+              style={{ background: "#0F172A", border: "1px solid #1E293B", borderRadius: "4px" }}
             >
-              <p style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "18px", color: "#6B6B6B" }}>NO SCHOOLS MATCH YOUR FILTERS</p>
+              <p style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "18px", color: "#94A3B8" }}>NO SCHOOLS MATCH YOUR FILTERS</p>
               <button
                 onClick={() => { setFilterDivisions([]); setFilterState(""); setFilterHasRoster(false); setFilterStarredOnly(false); }}
-                style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#F5C518", background: "none", border: "none", cursor: "pointer", marginTop: "8px", textDecoration: "underline" }}
+                style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#F5B800", background: "none", border: "none", cursor: "pointer", marginTop: "8px", textDecoration: "underline" }}
               >
                 Clear filters
               </button>
@@ -2047,7 +2034,7 @@ export default function Dashboard() {
               {/* Starred group */}
               {starredSchools.length > 0 && (
                 <>
-                  <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#F5C518", marginBottom: "4px", marginTop: "2px" }}>STARRED</div>
+                  <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#F5B800", marginBottom: "4px", marginTop: "2px" }}>STARRED</div>
                   {starredSchools.map((school, i) => (
                     <SchoolRow
                       key={school.id}
@@ -2067,7 +2054,7 @@ export default function Dashboard() {
               {nonStarredSchools.length > 0 && (
                 <>
                   {starredSchools.length > 0 && (
-                    <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#444", marginBottom: "4px", marginTop: "8px" }}>ALL SCHOOLS</div>
+                    <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#444", marginBottom: "4px", marginTop: "8px" }}>ALL SCHOOLS</div>
                   )}
                   {nonStarredSchools.map((school, i) => (
                     <SchoolRow
@@ -2106,7 +2093,7 @@ export default function Dashboard() {
               coachTitle: dbSchool?.coachTitle || "Head Coach",
               coachEmail: dbSchool?.coachEmail || "",
               athleticsDomain: dbSchool?.athleticsDomain || "",
-              brandColor: dbSchool?.brandColor || "#F5C518",
+              brandColor: dbSchool?.brandColor || "#F5B800",
               hasRosterData: !!dbSchool?.hasRosterData,
               logoUrl: dbSchool?.logoUrl || null,
             }}
@@ -2124,14 +2111,14 @@ export default function Dashboard() {
     {showOnboarding && (
       <div
         className="fixed inset-0 z-[150] flex items-center justify-center"
-        style={{ background: "rgba(10,10,10,0.97)" }}
+        style={{ background: "rgba(10,14,26,0.97)" }}
       >
         <div className="text-center px-6 max-w-lg">
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(48px, 8vw, 72px)", color: "#F8FAFC", lineHeight: 1, marginBottom: "16px" }}
+            style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "clamp(40px, 7vw, 64px)", color: "#F8FAFC", lineHeight: 1, marginBottom: "16px" }}
           >
             LET'S FIND YOUR SCHOOLS.
           </motion.h1>
@@ -2139,7 +2126,7 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            style={{ fontFamily: "DM Sans, sans-serif", fontSize: "16px", color: "#888888", marginBottom: "36px" }}
+            style={{ fontFamily: "Inter, sans-serif", fontSize: "15px", color: "#94A3B8", marginBottom: "36px" }}
           >
             Answer 8 quick questions and we'll match you with the right programs.
           </motion.p>
@@ -2149,7 +2136,7 @@ export default function Dashboard() {
             transition={{ duration: 0.5, delay: 0.2 }}
             onClick={startOnboardingQuiz}
             className="px-10 py-4 rounded-xl font-bold block mx-auto mb-5"
-            style={{ background: "#F5C518", color: "#0A0A0A", fontFamily: "DM Sans, sans-serif", fontSize: "15px", letterSpacing: "0.08em", cursor: "pointer" }}
+            style={{ background: "#F5B800", color: "#0A0E1A", fontFamily: "Inter, sans-serif", fontSize: "15px", letterSpacing: "0.08em", cursor: "pointer" }}
           >
             GET STARTED →
           </motion.button>
@@ -2158,7 +2145,7 @@ export default function Dashboard() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.35 }}
             onClick={dismissOnboarding}
-            style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#555555", background: "none", border: "none", cursor: "pointer" }}
+            style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#64748B", background: "none", border: "none", cursor: "pointer" }}
           >
             Skip for now
           </motion.button>
@@ -2216,11 +2203,11 @@ export default function Dashboard() {
               <div style={{ width: "36px", height: "4px", borderRadius: "2px", background: "rgba(255,255,255,0.15)" }} />
             </div>
             <div style={{ padding: "16px 20px" }}>
-              <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "16px", letterSpacing: "0.1em", color: "#FFFFFF", marginBottom: "20px" }}>FILTER &amp; SORT</div>
+              <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "16px", letterSpacing: "0.1em", color: "#FFFFFF", marginBottom: "20px" }}>FILTER &amp; SORT</div>
 
               {/* Openings mode */}
               <div style={{ marginBottom: "16px" }}>
-                <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#6B6B6B", marginBottom: "8px" }}>OPENINGS</div>
+                <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#94A3B8", marginBottom: "8px" }}>OPENINGS</div>
                 <div className="flex gap-2">
                   {(["all", "position"] as const).map((mode) => {
                     const label = mode === "all" ? "ALL OPENINGS" : "MY POSITION";
@@ -2232,11 +2219,11 @@ export default function Dashboard() {
                         onClick={() => { if (!noPositions) setOpeningsMode(mode); }}
                         style={{
                           flex: 1,
-                          fontFamily: "Bebas Neue, sans-serif",
+                          fontFamily: "Barlow Condensed, sans-serif",
                           fontSize: "11px",
                           letterSpacing: "0.08em",
-                          background: isActive ? "#F5C518" : "#1A1A1A",
-                          border: `1px solid ${isActive ? "#F5C518" : "#2A2A2A"}`,
+                          background: isActive ? "#F5B800" : "#111827",
+                          border: `1px solid ${isActive ? "#F5B800" : "#1E293B"}`,
                           borderRadius: "6px",
                           color: isActive ? "#000" : "#888",
                           padding: "8px",
@@ -2253,13 +2240,13 @@ export default function Dashboard() {
 
               {/* Sort */}
               <div style={{ marginBottom: "16px" }}>
-                <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#6B6B6B", marginBottom: "8px" }}>SORT BY</div>
+                <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#94A3B8", marginBottom: "8px" }}>SORT BY</div>
                 <select
                   value={sortMode}
                   onChange={(e) => setSortMode(e.target.value as typeof sortMode)}
                   style={{
                     width: "100%",
-                    fontFamily: "DM Sans, sans-serif",
+                    fontFamily: "Inter, sans-serif",
                     fontSize: "13px",
                     background: "#111",
                     border: "1px solid #333",
@@ -2280,7 +2267,7 @@ export default function Dashboard() {
 
               {/* Division */}
               <div style={{ marginBottom: "16px" }}>
-                <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#6B6B6B", marginBottom: "8px" }}>DIVISION</div>
+                <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#94A3B8", marginBottom: "8px" }}>DIVISION</div>
                 <div className="flex gap-2 flex-wrap">
                   {["D1", "D2", "D3", "NAIA", "CC"].map((div) => (
                     <button
@@ -2290,11 +2277,11 @@ export default function Dashboard() {
                         else setFilterDivisions((prev) => [...prev, div]);
                       }}
                       style={{
-                        fontFamily: "Bebas Neue, sans-serif",
+                        fontFamily: "Barlow Condensed, sans-serif",
                         fontSize: "12px",
                         letterSpacing: "0.08em",
-                        background: filterDivisions.includes(div) ? "#F5C518" : "#1A1A1A",
-                        border: `1px solid ${filterDivisions.includes(div) ? "#F5C518" : "#2A2A2A"}`,
+                        background: filterDivisions.includes(div) ? "#F5B800" : "#111827",
+                        border: `1px solid ${filterDivisions.includes(div) ? "#F5B800" : "#1E293B"}`,
                         borderRadius: "6px",
                         color: filterDivisions.includes(div) ? "#000" : "#888",
                         padding: "6px 14px",
@@ -2310,12 +2297,12 @@ export default function Dashboard() {
               {/* Toggles */}
               <div style={{ marginBottom: "16px" }}>
                 <label className="flex items-center gap-2" style={{ cursor: "pointer", marginBottom: "8px" }}>
-                  <input type="checkbox" checked={filterHasRoster} onChange={(e) => setFilterHasRoster(e.target.checked)} style={{ accentColor: "#F5C518", cursor: "pointer" }} />
-                  <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#CCC" }}>Only schools with roster data</span>
+                  <input type="checkbox" checked={filterHasRoster} onChange={(e) => setFilterHasRoster(e.target.checked)} style={{ accentColor: "#F5B800", cursor: "pointer" }} />
+                  <span style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#CCC" }}>Only schools with roster data</span>
                 </label>
                 <label className="flex items-center gap-2" style={{ cursor: "pointer" }}>
-                  <input type="checkbox" checked={filterStarredOnly} onChange={(e) => setFilterStarredOnly(e.target.checked)} style={{ accentColor: "#F5C518", cursor: "pointer" }} />
-                  <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: "13px", color: "#CCC" }}>Only starred schools</span>
+                  <input type="checkbox" checked={filterStarredOnly} onChange={(e) => setFilterStarredOnly(e.target.checked)} style={{ accentColor: "#F5B800", cursor: "pointer" }} />
+                  <span style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "#CCC" }}>Only starred schools</span>
                 </label>
               </div>
 
@@ -2323,18 +2310,18 @@ export default function Dashboard() {
               <div className="flex items-center justify-between" style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "12px" }}>
                 <button
                   onClick={() => { setFilterDivisions([]); setFilterState(""); setFilterHasRoster(false); setFilterStarredOnly(false); }}
-                  style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}
+                  style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}
                 >
                   CLEAR ALL
                 </button>
                 <button
                   onClick={() => setMobileFilterSheetOpen(false)}
                   style={{
-                    fontFamily: "Bebas Neue, sans-serif",
+                    fontFamily: "Barlow Condensed, sans-serif",
                     fontSize: "13px",
                     letterSpacing: "0.08em",
-                    background: "#F5C518",
-                    color: "#0A0A0A",
+                    background: "#F5B800",
+                    color: "#0A0E1A",
                     border: "none",
                     borderRadius: "6px",
                     padding: "10px 24px",
@@ -2388,8 +2375,8 @@ export default function Dashboard() {
             transition={{ duration: 0.25 }}
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: "#1A1A1A",
-              border: "1px solid #2A2A2A",
+              background: "#111827",
+              border: "1px solid #1E293B",
               borderRadius: "16px",
               width: "100%",
               maxWidth: "600px",
@@ -2401,14 +2388,14 @@ export default function Dashboard() {
             }}
           >
             {/* Modal header */}
-            <div style={{ padding: "24px 24px 16px", borderBottom: "1px solid #2A2A2A", display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
+            <div style={{ padding: "24px 24px 16px", borderBottom: "1px solid #1E293B", display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
               <div>
-                <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "22px", color: "#FFFFFF", letterSpacing: "0.05em" }}>OPEN ROSTER WINDOWS</div>
-                <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", marginTop: 4 }}>Schools with the most openings at your position{userPositions.length > 1 ? "s" : ""} — email these first.</div>
+                <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "22px", color: "#FFFFFF", letterSpacing: "0.05em" }}>OPEN ROSTER WINDOWS</div>
+                <div style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8", marginTop: 4 }}>Schools with the most openings at your position{userPositions.length > 1 ? "s" : ""} — email these first.</div>
               </div>
               <button
                 onClick={() => setShowOpenWindowsModal(false)}
-                style={{ background: "none", border: "none", cursor: "pointer", color: "#6B6B6B", padding: 4, flexShrink: 0 }}
+                style={{ background: "none", border: "none", cursor: "pointer", color: "#94A3B8", padding: 4, flexShrink: 0 }}
               >
                 <X size={18} />
               </button>
@@ -2416,7 +2403,7 @@ export default function Dashboard() {
             {/* Modal body */}
             <div style={{ overflowY: "auto", flex: 1, padding: "16px 24px 24px" }}>
               {outreachList.length === 0 ? (
-                <div style={{ textAlign: "center", padding: "40px 0", color: "#6B6B6B", fontFamily: "DM Sans, sans-serif", fontSize: "14px" }}>
+                <div style={{ textAlign: "center", padding: "40px 0", color: "#94A3B8", fontFamily: "Inter, sans-serif", fontSize: "14px" }}>
                   No schools added yet. Add schools to see roster windows.
                 </div>
               ) : (() => {
@@ -2443,7 +2430,7 @@ export default function Dashboard() {
                       alignItems: "center",
                       gap: 14,
                       padding: "14px 0",
-                      borderBottom: "1px solid #2A2A2A",
+                      borderBottom: "1px solid #1E293B",
                     }}
                   >
                     <SchoolLogoImg
@@ -2454,19 +2441,19 @@ export default function Dashboard() {
                       size={40}
                     />
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#FFFFFF", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      <div style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#FFFFFF", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                         {s.schoolName || s.schoolId}
                       </div>
-                      <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#6B6B6B", marginTop: 2 }}>
+                      <div style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#94A3B8", marginTop: 2 }}>
                         {s.division || s.dbSchool?.division || ""}
                       </div>
                     </div>
                     {s.openings != null ? (
-                      <div style={{ background: "rgba(245,197,24,0.12)", border: "1px solid rgba(245,197,24,0.3)", borderRadius: 6, padding: "4px 10px", fontFamily: "Bebas Neue, sans-serif", fontSize: "13px", color: "#F5C518", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>
+                      <div style={{ background: "rgba(245,184,0,0.12)", border: "1px solid rgba(245,184,0,0.3)", borderRadius: 6, padding: "4px 10px", fontFamily: "Barlow Condensed, sans-serif", fontSize: "13px", color: "#F5B800", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>
                         {s.openings} OPEN
                       </div>
                     ) : (
-                      <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#4A4A4A", fontStyle: "italic" }}>Roster data coming soon</div>
+                      <div style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#4A4A4A", fontStyle: "italic" }}>Roster data coming soon</div>
                     )}
                     <button
                       onClick={() => {
@@ -2474,7 +2461,7 @@ export default function Dashboard() {
                         const school = outreachList.find((o) => o.schoolId === s.schoolId);
                         if (school) { setModalInitialTab("school"); setSelectedSchool(school); openModal(); }
                       }}
-                      style={{ background: "none", border: "1px solid #3A3A3A", borderRadius: 6, padding: "5px 10px", fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#888888", cursor: "pointer", whiteSpace: "nowrap", letterSpacing: "0.05em" }}
+                      style={{ background: "none", border: "1px solid #1E293B", borderRadius: 6, padding: "5px 10px", fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#94A3B8", cursor: "pointer", whiteSpace: "nowrap", letterSpacing: "0.05em" }}
                     >
                       VIEW →
                     </button>
@@ -2505,8 +2492,8 @@ export default function Dashboard() {
             transition={{ duration: 0.25 }}
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: "#1A1A1A",
-              border: "1px solid #2A2A2A",
+              background: "#111827",
+              border: "1px solid #1E293B",
               borderRadius: "16px",
               width: "100%",
               maxWidth: "600px",
@@ -2518,23 +2505,23 @@ export default function Dashboard() {
             }}
           >
             {/* Modal header */}
-            <div style={{ padding: "24px 24px 16px", borderBottom: "1px solid #2A2A2A", display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
+            <div style={{ padding: "24px 24px 16px", borderBottom: "1px solid #1E293B", display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
               <div style={{ flex: 1 }}>
-                <div style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "22px", color: "#FFFFFF", letterSpacing: "0.05em" }}>YOUR TARGET SCHOOLS</div>
-                <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "12px", color: "#6B6B6B", marginTop: 4 }}>Track which programs you've reached out to.</div>
+                <div style={{ fontFamily: "Barlow Condensed, sans-serif", fontSize: "22px", color: "#FFFFFF", letterSpacing: "0.05em" }}>YOUR TARGET SCHOOLS</div>
+                <div style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#94A3B8", marginTop: 4 }}>Track which programs you've reached out to.</div>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
                 <Link href="/schools">
                   <button
                     onClick={() => setShowSchoolsTargetedModal(false)}
-                    style={{ background: "#F5C518", border: "none", borderRadius: 6, padding: "6px 12px", fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#0A0A0A", fontWeight: 700, cursor: "pointer", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
+                    style={{ background: "#F5B800", border: "none", borderRadius: 6, padding: "6px 12px", fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#0A0E1A", fontWeight: 700, cursor: "pointer", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
                   >
                     ADD MORE SCHOOLS →
                   </button>
                 </Link>
                 <button
                   onClick={() => setShowSchoolsTargetedModal(false)}
-                  style={{ background: "none", border: "none", cursor: "pointer", color: "#6B6B6B", padding: 4 }}
+                  style={{ background: "none", border: "none", cursor: "pointer", color: "#94A3B8", padding: 4 }}
                 >
                   <X size={18} />
                 </button>
@@ -2543,7 +2530,7 @@ export default function Dashboard() {
             {/* Modal body */}
             <div style={{ overflowY: "auto", flex: 1, padding: "16px 24px 24px" }}>
               {outreachList.length === 0 ? (
-                <div style={{ textAlign: "center", padding: "40px 0", color: "#6B6B6B", fontFamily: "DM Sans, sans-serif", fontSize: "14px" }}>
+                <div style={{ textAlign: "center", padding: "40px 0", color: "#94A3B8", fontFamily: "Inter, sans-serif", fontSize: "14px" }}>
                   No schools added yet.
                 </div>
               ) : (() => {
@@ -2566,7 +2553,7 @@ export default function Dashboard() {
                         alignItems: "center",
                         gap: 14,
                         padding: "14px 0",
-                        borderBottom: "1px solid #2A2A2A",
+                        borderBottom: "1px solid #1E293B",
                       }}
                     >
                       <SchoolLogoImg
@@ -2577,19 +2564,19 @@ export default function Dashboard() {
                         size={40}
                       />
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "14px", color: "#FFFFFF", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        <div style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#FFFFFF", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                           {s.schoolName || s.schoolId}
                         </div>
-                        <div style={{ fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#6B6B6B", marginTop: 2 }}>
+                        <div style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#94A3B8", marginTop: 2 }}>
                           {s.division || dbSchool?.division || ""}
                         </div>
                       </div>
                       {hasSent ? (
-                        <div style={{ background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", borderRadius: 20, padding: "4px 12px", fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#22C55E", fontWeight: 600, whiteSpace: "nowrap" }}>
+                        <div style={{ background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", borderRadius: 20, padding: "4px 12px", fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#22C55E", fontWeight: 600, whiteSpace: "nowrap" }}>
                           EMAIL SENT ✓
                         </div>
                       ) : (
-                        <div style={{ background: "rgba(107,107,107,0.1)", border: "1px solid rgba(107,107,107,0.2)", borderRadius: 20, padding: "4px 12px", fontFamily: "DM Sans, sans-serif", fontSize: "11px", color: "#6B6B6B", whiteSpace: "nowrap" }}>
+                        <div style={{ background: "rgba(107,107,107,0.1)", border: "1px solid rgba(107,107,107,0.2)", borderRadius: 20, padding: "4px 12px", fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#94A3B8", whiteSpace: "nowrap" }}>
                           NO EMAIL YET
                         </div>
                       )}
