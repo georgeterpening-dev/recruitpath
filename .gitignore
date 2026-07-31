@@ -111,3 +111,11 @@ temp/
 
 # Uploaded source reference (not part of codebase)
 src_upload/
+
+# Python virtual environments / caches
+venv/
+__pycache__/
+*.pyc
+
+# Generated pilot output workbooks
+tools/roster-scraper/roster_pilot_*.xlsx
